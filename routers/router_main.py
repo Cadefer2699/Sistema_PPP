@@ -1,20 +1,10 @@
-from flask import (Flask,render_template,request,redirect,jsonify,url_for,make_response,session,)
+from flask import Blueprint, render_template, request
 
-import os
-import hashlib
-import datetime
-import random
-import time
+# Crea el Blueprint
+router_main = Blueprint('router_main', __name__)
 
-
-#from werkzeug.utils import secure_filename
-#from bd import obtener_conexion
-from main import app
-
-
-login_attempts = {}
-
-@app.route("/")
-@app.route("/login", methods=["GET", "POST"])
+# Define las rutas en el blueprint
+@router_main.route("/")
+@router_main.route("/login", methods=["GET", "POST"])
 def login():
-    return render_template("/login.html")
+    return render_template("login.html")
