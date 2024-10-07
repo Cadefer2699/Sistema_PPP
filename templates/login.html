@@ -182,7 +182,7 @@
                         console.log(response);
                         if (response.success) {
                             mostrarAlerta("success", "OK", response.success);
-                            window.location.href = "{{ url_for('router_main.login') }}";
+                            window.location.href = "{{ url_for('router_main.index') }}";
                         } else if (response.error) {
                             mostrarAlerta("error", "Error al Iniciar Sesión", response.error);
                         }
@@ -244,7 +244,7 @@
                         }
                         document.getElementById("loginButton").disabled = false;
                         document.querySelector("#loginButton .spinner-border").classList.add("d-none");
-                        window.location.href = '/login';
+                        window.location.href = '/index';
                         mostrarAlerta("warning", "Sí");
                     }else{
                         document.getElementById("loginButton").disabled = false;

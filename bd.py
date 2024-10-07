@@ -15,31 +15,3 @@ def obtener_conexion():
     except Exception as e:
         print(f"Error al conectar a la base de datos: {e}")
         return None
-
-def obtener_usuarios(conexion):
-    try:
-        with conexion.cursor() as cursor:
-            # Ejecutar la consulta
-            cursor.execute("SELECT * FROM usuario")
-            # Obtener los resultados
-            resultados = cursor.fetchall()
-            return resultados
-    
-    except Exception as e:
-        print(f"Error al ejecutar la consulta: {e}")
-        return None
-
-conexion = obtener_conexion()
-
-if conexion:
-    usuarios = obtener_usuarios(conexion)
-    if usuarios:
-        print("Resultados de la consulta:")
-        for usuario in usuarios:
-            print(usuario)
-    else:
-        print("No se encontraron usuarios o ocurrió un error.")
-    
-    conexion.close()
-else:
-    print("No se pudo establecer conexión con la base de datos.")

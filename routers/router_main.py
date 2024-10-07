@@ -18,6 +18,10 @@ router_main = Blueprint('router_main', __name__)
 def login():
     return render_template("login.html")
 
+@router_main.route("/index")
+def index():
+    return render_template("/index.html")
+
 @router_main.route("/procesar_login", methods=["POST"])
 def procesar_login():
     try:
