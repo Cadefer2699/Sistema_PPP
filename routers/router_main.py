@@ -24,7 +24,7 @@ def procesar_login():
         username = request.json.get('username')
         password = request.json.get('password')
         #usuario = controlador_usuario.obtener_usuario_con_tipopersona_por_username(username)
-        usuario = username
+        usuario = controlador_usuario.obtener_usuario_con_tipopersona_por_username(username)
 
         # Inicializar el diccionario de intentos para el usuario si no existe
         if username not in login_attempts:
@@ -49,7 +49,7 @@ def procesar_login():
         h.update(bytes(password, encoding="utf-8"))
         print(password)
         encpassword = h.hexdigest()
-        if encpassword == usuario[4]:
+        if encpassword == usuario[3]:
             # Obteniendo token
             t = hashlib.new("sha256")
             entale = random.randint(1, 1024)
@@ -69,6 +69,8 @@ def procesar_login():
             return jsonify({'logeo': True, 'token': token})
             #return jsonify({'logeo': True, 'token': token, 'foto':foto, 'nombre':nombre})
         else:
+            print(password)
+            print(encpassword)
             login_attempts[username]['attempts'] += 1
             login_attempts[username]['last_attempt_time'] = time.time()
             return jsonify({'mensaje': 'La contraseña es incorrecta', 'logeo': False})

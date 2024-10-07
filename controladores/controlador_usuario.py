@@ -14,7 +14,7 @@ def obtener_usuario_con_tipopersona_por_username(username):
     usuario = None
     with conexion.cursor() as cursor:
         cursor.execute(
-            "SELECT idUsuario, username, estado, password, token FROM usuario WHERE username =  %s", (username,))
+            "SELECT idUsuario, username, estado, password, token FROM usuario WHERE username =  %s", (username))
         usuario = cursor.fetchone()
     conexion.close()
     return usuario
@@ -42,7 +42,7 @@ def obtener_usuario_por_id(id):
 def actualizar_token(username,token):
     conexion = obtener_conexion()
     with conexion.cursor() as cursor:
-        cursor.execute("UPDATE usuario SET token = %s WHERE usuario = %s",
+        cursor.execute("UPDATE usuario SET token = %s WHERE username = %s",
                        (token,username))
     conexion.commit()
     conexion.close()
