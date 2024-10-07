@@ -80,3 +80,19 @@ def procesar_login():
             return jsonify({'mensaje': 'La contraseña es incorrecta', 'logeo': False})
     except NameError:
         return jsonify({'mensaje':'Error al procesar el login'+NameError, 'logeo':False})
+    
+@router_main.route('/home')
+def home():
+    return render_template('home.html')
+
+@router_main.route('/estudiante')
+def estudiante():
+    return render_template('dashboard/estudiante.html')
+
+@router_main.route('/ppp_registro')
+def ppp_registro():
+    return render_template('ppp_registro.html')
+
+@router_main.route('/perfil')
+def perfil():
+    return render_template('perfil.html')
