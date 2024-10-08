@@ -9,7 +9,7 @@ app.secret_key = 'super-secret'
 
 # Registra el Blueprint
 app.register_blueprint(router_main)
-app.register_blueprint(router_facultad, url_prefix="/facultad")
+app.register_blueprint(router_facultad)
 
 
 if __name__ == "__main__":

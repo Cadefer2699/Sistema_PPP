@@ -14,7 +14,7 @@ def obtener_facultades():
         for row in rows:
             facultad_dict = dict(zip(column_names, row))
             facultades.append(facultad_dict)
-
+    print(facultades)  # Agregar este print para verificar los datos
     conexion.close()
     return facultades
 

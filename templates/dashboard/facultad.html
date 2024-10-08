@@ -5,7 +5,7 @@
 <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url_for('router_main.home') }}">Inicio</a></li>
-        <li class="breadcrumb-item active"><a href="{{ url_for('router_main.facultad') }}">Facultad</a></li>
+        <li class="breadcrumb-item active"><a href="{{ url_for('router_facultad.facultad') }}">Facultad</a></li>
     </ol>
 </nav>
 
@@ -94,68 +94,61 @@
 
 <script>
     $(document).ready(function () {
-        var facultades = [];
-
-        function initializeDataTable() {
-            var table = $('#tabla-facultad').DataTable({
-                paging: false,
-                info: false,
-                responsive: true,
-                autoWidth: true,
-                searching: true,
-                scrollY: "620px",
-                order: [],
-                dom: 'Bfrtip',
-                buttons: [
-                    {
-                        text: '<i class="fas fa-plus"></i> Agregar Nueva Facultad',
-                        className: 'btn_agregar_facultad',
-                        action: function (e) {
-                            e.preventDefault();
-                            $('#formAgregarFacultad')[0].reset();
-                            $('#modalAgregarFacultad').modal('show');
-                        }
+        var table = $('#tabla-facultad').DataTable({
+            paging: false,
+            info: false,
+            responsive: true,
+            autoWidth: true,
+            searching: true,
+            scrollY: "620px",
+            order: [],
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    text: '<i class="fas fa-plus"></i> Agregar Nueva Facultad',
+                    className: 'btn_agregar_facultad',
+                    action: function (e) {
+                        e.preventDefault();
+                        $('#formAgregarFacultad')[0].reset();
+                        $('#modalAgregarFacultad').modal('show');
                     }
-                ],
-                ajax: {
-                    url: "/datos_facultad",
-                    type: "GET",
-                    dataSrc: ""
-                },
-                processing: true,
-                serverSide: false,
-                columns: [
-                    { data: "nombre" },
-                    { data: "estado", className: 'dt-body-center' },
-                    {
-                        data: null, className: 'dt-body-center',
-                        render: function (data, type, row) {
-                            return `
-                                <button class="btn btn-warning btn-sm btnModificar" data-id="${row.idFacultad}" title="Modificar"><i class="fas fa-pencil-alt"></i></button>
-                                <button class="btn btn-danger btn-sm btnEliminar" data-id="${row.idFacultad}" data-nombre="${row.nombre}" title="Eliminar"><i class="fas fa-times"></i></button>
-                            `;
-                        }
-                    }
-                ],
-                language: {
-                    url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
                 }
-            });
-
-            $('#search_box').on('keyup', function () {
-                table.search(this.value).draw();
-            });
-
-            return table;
-        }
-
-        var table;
-        if ($.fn.DataTable.isDataTable('#tabla-facultad')) {
-            table = $('#tabla-facultad').DataTable();
-            table.ajax.reload();
-        } else {
-            table = initializeDataTable();
-        }
+            ],
+            ajax: {
+                url: "/datos_facultades",
+                type: "GET",
+                dataSrc: "",
+                error: function (xhr, status, error) {
+                    console.log("Error al cargar datos: ", error);
+                }
+            },
+            columns: [
+                { data: "nombre" },  // Mapea con la clave 'nombre'
+                {
+                    data: "estado",    // Mapea con la clave 'estado'
+                    className: 'dt-body-center',
+                    render: function (data, type, row) {
+                        return data === 'A' ? 'Activo' : 'Inactivo'; // Cambia 'A' por 'Activo'
+                    }
+                },
+                {
+                    data: null,
+                    className: 'dt-body-center',
+                    render: function (data, type, row) {
+                        return `
+                            <button class="btn btn-warning btn-sm btnModificar" data-id="${row.idFacultad}" title="Modificar"><i class="fas fa-pencil-alt"></i></button>
+                            <button class="btn btn-danger btn-sm btnEliminar" data-id="${row.idFacultad}" data-nombre="${row.nombre}" title="Eliminar"><i class="fas fa-times"></i></button>
+                        `;
+                    }
+                }
+            ],
+            language: {
+                url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+            },
+            initComplete: function(settings, json) {
+                console.log("Datos cargados:", json);  // Verifica que los datos se están cargando
+            }
+        });
 
         $('#formAgregarFacultad').submit(function (e) {
             e.preventDefault();
@@ -265,7 +258,6 @@
                 }
             });
         });
-
     });
 </script>
 {% endblock %}
