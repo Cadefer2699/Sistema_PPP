@@ -14,4 +14,4 @@ def obtener_conexion():
     #junction.proxy.rlwy.net:39981
     except Exception as e:
         print(f"Error al conectar a la base de datos: {e}")
-        return None
+        return None 

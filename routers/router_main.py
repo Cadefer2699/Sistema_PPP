@@ -25,6 +25,13 @@ def index():
 @router_main.route("/procesar_login", methods=["POST"])
 def procesar_login():
     try:
+        conexion = obtener_conexion()
+        if not conexion:
+            # Retorna un mensaje claro de fallo de conexión
+            return jsonify({
+                'logeo': False,
+                'mensaje': 'El servicio se encuentra inactivo.'
+            }), 500
         username = request.json.get('username')
         password = request.json.get('password')
         #usuario = controlador_usuario.obtener_usuario_con_tipopersona_por_username(username)

@@ -7,7 +7,7 @@ def obtener_facultades():
     conexion = obtener_conexion()
     facultades = []
     with conexion.cursor() as cursor:
-        cursor.execute("SELECT * FROM FACULTAD")
+        cursor.execute("SELECT * FROM facultad")
         column_names = [desc[0] for desc in cursor.description]
         rows = cursor.fetchall()
 
@@ -23,7 +23,7 @@ def agregar_facultad(nombre, estado):
     conexion = obtener_conexion()
     try:
         with conexion.cursor() as cursor:
-            cursor.execute("INSERT INTO FACULTAD (nombre, estado) VALUES (%s, %s)", (nombre, estado))
+            cursor.execute("INSERT INTO facultad (nombre, estado) VALUES (%s, %s)", (nombre, estado))
             conexion.commit()
             return {"mensaje": "Facultad agregada correctamente"}
     except Exception as e:
@@ -37,7 +37,7 @@ def modificar_facultad(idFacultad, nombre, estado):
     conexion = obtener_conexion()
     try:
         with conexion.cursor() as cursor:
-            cursor.execute("UPDATE FACULTAD SET nombre = %s, estado = %s WHERE idFacultad = %s", (nombre, estado, idFacultad))
+            cursor.execute("UPDATE facultad SET nombre = %s, estado = %s WHERE idFacultad = %s", (nombre, estado, idFacultad))
             conexion.commit()
             return {"mensaje": "Facultad modificada correctamente"}
     except Exception as e:
@@ -51,7 +51,7 @@ def eliminar_facultad(idFacultad):
     conexion = obtener_conexion()
     try:
         with conexion.cursor() as cursor:
-            cursor.execute("DELETE FROM FACULTAD WHERE idFacultad = %s", (idFacultad,))
+            cursor.execute("DELETE FROM facultad WHERE idFacultad = %s", (idFacultad,))
             conexion.commit()
             return {"mensaje": "Facultad eliminada correctamente"}
     except Exception as e:
@@ -68,7 +68,7 @@ def obtener_facultad_por_id(idFacultad):
     facultad = None
     try:
         with conexion.cursor() as cursor:
-            cursor.execute("SELECT * FROM FACULTAD WHERE idFacultad = %s", (idFacultad,))
+            cursor.execute("SELECT * FROM facultad WHERE idFacultad = %s", (idFacultad,))
             facultad = cursor.fetchone()
             if facultad:
                 columnas = [desc[0] for desc in cursor.description]
@@ -89,7 +89,7 @@ def obtener_facultades_activas():
     facultades_activas = []
     try:
         with conexion.cursor() as cursor:
-            cursor.execute("SELECT COUNT(*) AS facultades_activas FROM FACULTAD WHERE estado = 'A'")
+            cursor.execute("SELECT COUNT(*) AS facultades_activas FROM facultad WHERE estado = 'A'")
             column_names = [desc[0] for desc in cursor.description]
             row = cursor.fetchone()
 
@@ -109,7 +109,7 @@ def obtener_facultades_con_estado():
     facultades = []
     try:
         with conexion.cursor() as cursor:
-            cursor.execute("SELECT idFacultad, nombre, CASE WHEN estado = 'A' THEN 'Activo' ELSE 'Inactivo' END AS estado FROM FACULTAD ORDER BY nombre")
+            cursor.execute("SELECT idFacultad, nombre, CASE WHEN estado = 'A' THEN 'Activo' ELSE 'Inactivo' END AS estado FROM facultad ORDER BY nombre")
             column_names = [desc[0] for desc in cursor.description]
             rows = cursor.fetchall()
 
