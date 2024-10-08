@@ -1,0 +1,271 @@
+{% extends "index.html" %}
+{% block titulo %} Facultad {% endblock %}
+{% block contenido %}
+
+<nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('router_main.home') }}">Inicio</a></li>
+        <li class="breadcrumb-item active"><a href="{{ url_for('router_main.facultad') }}">Facultad</a></li>
+    </ol>
+</nav>
+
+<div class="container-fluid my-4">
+    <div class="card w-100" id="card_facultad">
+        <div class="card-header bg-red-usat text-white" id="headingOne" data-bs-toggle="collapse"
+            data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+            Facultad
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="tabla-facultad" class="table table-striped tabla-facultad tabla-comun" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th style="text-align:center">Nombre</th>
+                            <th style="text-align:center">Estado</th>
+                            <th style="text-align:center">Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Los datos de las facultades se cargarán dinámicamente aquí -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL AGREGAR FACULTAD -->
+    <div class="modal fade" id="modalAgregarFacultad" tabindex="-1" aria-labelledby="modalFacultadLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Agregar Facultad</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formAgregarFacultad">
+                        <div class="mb-3">
+                            <label for="nombreFacultad" class="form-label">Nombre:</label>
+                            <input type="text" class="form-control" id="nombreFacultad" name="nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="estadoFacultad" class="form-label">Estado:</label>
+                            <select class="form-control" id="estadoFacultad" name="estado" required>
+                                <option value="1">Activo</option>
+                                <option value="0">Inactivo</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL MODIFICAR FACULTAD -->
+    <div class="modal fade" id="modalModificarFacultad" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modificar Facultad</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formModificarFacultad">
+                        <div class="mb-3">
+                            <label for="modificarNombreFacultad" class="form-label">Nombre:</label>
+                            <input type="text" class="form-control" id="modificarNombreFacultad" name="nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="modificarEstadoFacultad" class="form-label">Estado:</label>
+                            <select class="form-control" id="modificarEstadoFacultad" name="estado" required>
+                                <option value="1">Activo</option>
+                                <option value="0">Inactivo</option>
+                            </select>
+                        </div>
+                        <input type="hidden" id="modificarIdFacultad" name="idFacultad">
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var facultades = [];
+
+        function initializeDataTable() {
+            var table = $('#tabla-facultad').DataTable({
+                paging: false,
+                info: false,
+                responsive: true,
+                autoWidth: true,
+                searching: true,
+                scrollY: "620px",
+                order: [],
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        text: '<i class="fas fa-plus"></i> Agregar Nueva Facultad',
+                        className: 'btn_agregar_facultad',
+                        action: function (e) {
+                            e.preventDefault();
+                            $('#formAgregarFacultad')[0].reset();
+                            $('#modalAgregarFacultad').modal('show');
+                        }
+                    }
+                ],
+                ajax: {
+                    url: "/datos_facultad",
+                    type: "GET",
+                    dataSrc: ""
+                },
+                processing: true,
+                serverSide: false,
+                columns: [
+                    { data: "nombre" },
+                    { data: "estado", className: 'dt-body-center' },
+                    {
+                        data: null, className: 'dt-body-center',
+                        render: function (data, type, row) {
+                            return `
+                                <button class="btn btn-warning btn-sm btnModificar" data-id="${row.idFacultad}" title="Modificar"><i class="fas fa-pencil-alt"></i></button>
+                                <button class="btn btn-danger btn-sm btnEliminar" data-id="${row.idFacultad}" data-nombre="${row.nombre}" title="Eliminar"><i class="fas fa-times"></i></button>
+                            `;
+                        }
+                    }
+                ],
+                language: {
+                    url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+                }
+            });
+
+            $('#search_box').on('keyup', function () {
+                table.search(this.value).draw();
+            });
+
+            return table;
+        }
+
+        var table;
+        if ($.fn.DataTable.isDataTable('#tabla-facultad')) {
+            table = $('#tabla-facultad').DataTable();
+            table.ajax.reload();
+        } else {
+            table = initializeDataTable();
+        }
+
+        $('#formAgregarFacultad').submit(function (e) {
+            e.preventDefault();
+            var data = {
+                nombre: $('#nombreFacultad').val(),
+                estado: $('#estadoFacultad').val()
+            };
+
+            $.ajax({
+                url: '/agregar_facultad',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (response) {
+                    if (response.error) {
+                        Swal.fire('Error', response.error, 'error');
+                    } else {
+                        Swal.fire('Éxito', 'Facultad agregada correctamente', 'success');
+                        table.ajax.reload();
+                        $('#modalAgregarFacultad').modal('hide');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    Swal.fire('Error', 'Hubo un error al agregar la facultad', 'error');
+                }
+            });
+        });
+
+        $('#formModificarFacultad').submit(function (e) {
+            e.preventDefault();
+            var data = {
+                idFacultad: $('#modificarIdFacultad').val(),
+                nombre: $('#modificarNombreFacultad').val(),
+                estado: $('#modificarEstadoFacultad').val()
+            };
+
+            $.ajax({
+                url: '/modificar_facultad',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (response) {
+                    if (response.error) {
+                        Swal.fire('Error', response.error, 'error');
+                    } else {
+                        Swal.fire('Éxito', 'Facultad modificada correctamente', 'success');
+                        table.ajax.reload();
+                        $('#modalModificarFacultad').modal('hide');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    Swal.fire('Error', 'Hubo un error al modificar la facultad', 'error');
+                }
+            });
+        });
+
+        $('#tabla-facultad tbody').on('click', '.btnModificar', function () {
+            var id = $(this).data('id');
+            $.ajax({
+                url: '/obtener_facultad_por_id/' + id,
+                type: 'GET',
+                contentType: 'application/json',
+                success: function (response) {
+                    var facultad = response;
+                    $('#modificarIdFacultad').val(facultad.idFacultad);
+                    $('#modificarNombreFacultad').val(facultad.nombre);
+                    $('#modificarEstadoFacultad').val(facultad.estado);
+                    $('#modalModificarFacultad').modal('show');
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        $('#tabla-facultad tbody').on('click', '.btnEliminar', function () {
+            var id = $(this).data('id');
+            var nombre = $(this).data('nombre');
+            Swal.fire({
+                title: `¿Seguro que quieres eliminar la facultad: ${nombre}?`,
+                text: "No podrás revertir esta acción.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminarla!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/eliminar_facultad',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ idFacultad: id }),
+                        success: function (response) {
+                            if (response.error) {
+                                Swal.fire('Error', response.error, 'error');
+                            } else {
+                                Swal.fire('Éxito', 'La operación se realizó correctamente.', 'success');
+                                table.ajax.reload();
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            Swal.fire('Error', 'Hubo un error al eliminar la facultad', 'error');
+                        }
+                    });
+                }
+            });
+        });
+
+    });
+</script>
+{% endblock %}

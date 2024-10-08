@@ -35,40 +35,42 @@
                         Inicio
                     </li>
 
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ url_for('router_main.home') }}">
-                            <i class="align-middle" data-feather="home"></i>
-                            <span class="align-middle">Resumen</span>
-                        </a>
-                    </li>
 
                     <!-- Menú Estudiante -->
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ url_for('router_main.estudiante') }}">
                             <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">ESTUDIANTE</span>
+                            <span class="align-middle">Estudiante</span>
                         </a>
                     </li>
 
                     <!-- Menú PPP -->
                     <li class="sidebar-item">
-                        <span class="sidebar-link d-flex align-items-center">
-                            <i class="align-middle" data-feather="briefcase"></i>
+                        <a class="sidebar-link" href="{{ url_for('router_main.ppp_registro') }}">
+                            <i class="align-middle" data-feather="user"></i>
                             <span class="align-middle">PPP</span>
-                            <span class="ml-auto">
-                                <span class="btn btn-sm ms-2" onclick="mostrar(this)">
-                                    <i class="fa fa-caret-down text-end"></i>
-                                </span>
-                            </span>
-                        </span>
-                        <ul class="list-unstyled px-3" hidden>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link" href="{{ url_for('router_main.ppp_registro') }}">
-                                    <i class="align-middle" data-feather="edit"></i>
-                                    <span class="align-middle">Registro de PPP</span>
-                                </a>
-                            </li>
-                        </ul>
+                        </a>
+                    </li>
+                    <!-- Menú PPP -->
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ url_for('router_main.docente') }}">
+                            <i class="align-middle" data-feather="user"></i>
+                            <span class="align-middle">Docente</span>
+                        </a>
+                    </li>
+                    <!-- Menú PPP -->
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ url_for('router_facultad.facultad') }}">
+                            <i class="align-middle" data-feather="user"></i>
+                            <span class="align-middle">Facultad</span>
+                        </a>
+                    </li>
+                    <!-- Menú PPP -->
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ url_for('router_main.escuela') }}">
+                            <i class="align-middle" data-feather="user"></i>
+                            <span class="align-middle">Escuela</span>
+                        </a>
                     </li>
                 </ul>
             </div>

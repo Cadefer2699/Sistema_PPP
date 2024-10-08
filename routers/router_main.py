@@ -96,3 +96,16 @@ def ppp_registro():
 @router_main.route('/perfil')
 def perfil():
     return render_template('perfil.html')
+
+@router_main.route("/docente")
+def docente():
+    return render_template('dashboard/docente.html')  
+
+@router_main.route("/facultad")
+def facultad():
+    return render_template('dashboard/facultad.html') 
+
+@router_main.route("/escuela")
+def escuela():
+    return render_template('dashboard/escuela.html') 
+
