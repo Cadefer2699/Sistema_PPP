@@ -12,6 +12,11 @@ def datos_facultades():
     facultades = controlador_facultad.obtener_facultades()
     return jsonify(facultades)
 
+@router_facultad.route("/obtener_facultad_por_id/<int:idFacultad>", methods=["GET"])
+def obtener_facultad_por_id(idFacultad):
+    facultades = controlador_facultad.obtener_facultad_por_id(idFacultad)
+    return jsonify(facultades)
+
 @router_facultad.route("/agregar_facultad", methods=["POST"])
 def agregar_facultad():
     nombre = request.json.get('nombre')
