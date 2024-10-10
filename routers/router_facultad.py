@@ -5,7 +5,7 @@ router_facultad = Blueprint('router_facultad', __name__)
 
 @router_facultad.route("/facultad")
 def facultad():
-    return render_template('dashboard/facultad.html')
+    return render_template('gestion_academica/facultad.html')
 
 @router_facultad.route("/datos_facultades", methods=["GET"])
 def datos_facultades():

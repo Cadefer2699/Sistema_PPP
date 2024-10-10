@@ -94,7 +94,7 @@ def home():
 
 @router_main.route('/estudiante')
 def estudiante():
-    return render_template('dashboard/estudiante.html')
+    return render_template('gestion_academica/estudiante.html')
 
 @router_main.route('/ppp_registro')
 def ppp_registro():
@@ -110,7 +110,7 @@ def docente():
 
 @router_main.route("/facultad")
 def facultad():
-    return render_template('dashboard/facultad.html') 
+    return render_template('gestion_academica/facultad.html') 
 
 @router_main.route("/escuela")
 def escuela():
