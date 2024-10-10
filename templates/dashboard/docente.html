@@ -1,0 +1,189 @@
+{% extends "index.html" %}
+{% block titulo %} Docentes {% endblock %}
+{% block contenido %}
+
+<nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('router_main.home') }}">Inicio</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Docentes</li>
+    </ol>
+</nav>
+
+<div class="container-fluid my-4">
+    <div class="card w-100">
+        <div class="card-header bg-red-usat text-white" id="headingOne" data-bs-toggle="collapse"
+        data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+            Docentes
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="tabla-docente" class="table table-striped tabla-docentes" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">Nombre</th>
+                            <th class="text-center">Apellidos</th>
+                            <th class="text-center">Cargo</th>
+                            <th class="text-center">Correo</th>
+                            <th class="text-center">Estado</th>
+                            <th class="text-center">Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Los datos se cargarán dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL VER DOCENTE -->
+<div class="modal fade" id="modalVerDocente" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detalle Docente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- LOS DATOS SE CARGAN DINAMICAMENTE -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL AGREGAR DOCENTE -->
+<div class="modal fade" id="modalAgregarDocente" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Agregar Docente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formAgregarDocente">
+                    <div class="mb-3">
+                        <label for="nombreDocente" class="form-label">Nombre:</label>
+                        <input type="text" class="form-control" id="nombreDocente" name="nombreDocente" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="apellidosDocente" class="form-label">Apellidos:</label>
+                        <input type="text" class="form-control" id="apellidosDocente" name="apellidosDocente" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cargoDocente" class="form-label">Cargo:</label>
+                        <input type="text" class="form-control" id="cargoDocente" name="cargoDocente" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="correoDocente" class="form-label">Correo:</label>
+                        <input type="email" class="form-control" id="correoDocente" name="correoDocente" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="estadoDocente" class="form-label">Estado:</label>
+                        <select class="form-control" id="estadoDocente" name="estadoDocente" required>
+                            <option value="A">Activo</option>
+                            <option value="I">Inactivo</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL MODIFICAR DOCENTE -->
+<div class="modal fade" id="modalModificarDocente" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modificar Docente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formModificarDocente">
+                    <input type="hidden" id="idDocenteMod" name="idDocenteMod">
+                    <div class="mb-3">
+                        <label for="nombreDocenteMod" class="form-label">Nombre:</label>
+                        <input type="text" class="form-control" id="nombreDocenteMod" name="nombreDocenteMod" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="apellidosDocenteMod" class="form-label">Apellidos:</label>
+                        <input type="text" class="form-control" id="apellidosDocenteMod" name="apellidosDocenteMod" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cargoDocenteMod" class="form-label">Cargo:</label>
+                        <input type="text" class="form-control" id="cargoDocenteMod" name="cargoDocenteMod" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="correoDocenteMod" class="form-label">Correo:</label>
+                        <input type="email" class="form-control" id="correoDocenteMod" name="correoDocenteMod" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="estadoDocenteMod" class="form-label">Estado:</label>
+                        <select class="form-control" id="estadoDocenteMod" name="estadoDocenteMod" required>
+                            <option value="A">Activo</option>
+                            <option value="I">Inactivo</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para confirmar eliminación -->
+<div class="modal fade" id="modalEliminarDocente" tabindex="-1" aria-labelledby="modalEliminarDocenteLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center fw-bold">Eliminar Docente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center">
+                <p>¿Estás seguro de que deseas eliminar al docente <strong id="nombreDocenteEliminar"></strong>?</p>
+                <input type="hidden" id="idDocenteEliminar" name="idDocenteEliminar">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" id="confirmarEliminarDocente">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para confirmar baja -->
+<div class="modal fade" id="modalDarDeBajaDocente" tabindex="-1" aria-labelledby="modalDarDeBajaDocenteLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center fw-bold">Dar de Baja Docente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center">
+                <p>¿Estás seguro de que deseas dar de baja al docente <strong id="nombreDocenteDarDeBaja"></strong>?</p>
+                <input type="hidden" id="idDocenteDarDeBaja" name="idDocenteDarDeBaja">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" id="confirmarDarDeBajaDocente">Dar de Baja</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Incluye las librerías necesarias -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{{ url_for('static', filename='js/docente.js') }}"></script>
+
+{% endblock %}
