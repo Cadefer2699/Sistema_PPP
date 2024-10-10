@@ -32,11 +32,10 @@ def modificar_facultad():
     resultado = controlador_facultad.modificar_facultad(idfacultad, nombre, estado)
     return jsonify(resultado)
 
-@router_facultad.route("/cambiar_estado_facultad", methods=["POST"])
-def cambiar_estado_facultad():
+@router_facultad.route("/dar_de_baja_facultad", methods=["POST"])
+def dar_de_baja_facultad():
     idfacultad = request.json.get('idFacultad')
-    nuevo_estado = request.json.get('estado')
-    resultado = controlador_facultad.cambiar_estado_facultad(idfacultad, nuevo_estado)
+    resultado = controlador_facultad.dar_de_baja_facultad(idfacultad)
     return jsonify(resultado)
 
 @router_facultad.route("/eliminar_facultad", methods=["POST"])

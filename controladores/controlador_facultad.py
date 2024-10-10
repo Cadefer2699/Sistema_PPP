@@ -112,6 +112,26 @@ def eliminar_facultad(idFacultad):
     finally:
         conexion.close()
 
+def dar_de_baja_facultad(idFacultad):
+    # Validaciones
+    if not idFacultad:
+        return {"error": "El ID de la facultad es requerido."}
+
+    conexion = obtener_conexion()
+    if not conexion:
+        return {"error": "No se pudo establecer conexión con la base de datos."}
+
+    try:
+        with conexion.cursor() as cursor:
+            cursor.callproc('GestionFacultad', [4, idFacultad, None, None])
+            conexion.commit()
+            return {"mensaje": "Facultad dada de baja correctamente"}
+    except Exception as e:
+        conexion.rollback()
+        return {"error": str(e)}
+    finally:
+        conexion.close()
+
 def cambiar_estado_facultad(idFacultad, nuevo_estado):
     # Validaciones
     if not idFacultad or not nuevo_estado:
