@@ -166,12 +166,12 @@
 <script>
     $(document).ready(function () {
         var table = $('#tabla-facultad').DataTable({
-            paging: false,
+            paging: true,
             info: false,
             responsive: true,
             autoWidth: false,
             searching: true,
-            scrollY: "510px",
+            scrollY: false,
             order: [], 
             dom: `
                 <"row mb-3"<"col-12 text-center"B>>
@@ -231,7 +231,7 @@
             "serverSide": false,
             "columns": [
                 { "data": "idFacultad", "className": 'text-center' },
-                { "data": "nombre", "className": 'text-center' },
+                { "data": "nombre"},
                 { 
                     "data": "estado",
                     "className": 'text-center',
