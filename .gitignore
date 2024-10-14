@@ -2,6 +2,6 @@
 __pycache__/
 *.py[cod]
 
-# Ignorar archivos de caché de la aplicación
+
 .cache/
 .env
