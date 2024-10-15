@@ -120,3 +120,7 @@ def escuela():
 def informeInicialEstudiante():
     return render_template('gestion_academica/informeInicialEstudiante.html') 
 
+@router_main.route("/InformeInicialEmpresa")
+def informeInicialEmpresa():
+    return render_template('gestion_academica/informeInicialEmpresa.html') 
+
