@@ -116,3 +116,7 @@ def facultad():
 def escuela():
     return render_template('dashboard/escuela.html') 
 
+@router_main.route("/InformeInicialEstudiante")
+def informeInicialEstudiante():
+    return render_template('gestion_academica/informeInicialEstudiante.html') 
+
