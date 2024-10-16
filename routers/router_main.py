@@ -22,6 +22,14 @@ def login():
 def index():
     return render_template("/index.html")
 
+@router_main.route("/indexga")
+def gestion_academica():
+    return render_template("/gestion_academica/indexga.html")
+
+@router_main.route("/indexppp")
+def practicas_pre_profesionales():
+    return render_template("/ppp/indexppp.html")
+
 @router_main.route("/procesar_login", methods=["POST"])
 def procesar_login():
     try:

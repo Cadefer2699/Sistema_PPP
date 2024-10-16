@@ -1,87 +1,199 @@
-{% extends "dashboard/home.html" %}
-{% block titulo %} Inicio {% endblock %}
-{% block contenido %}
-<section class="section">
-    <div class="container-fluid p-0">
-        <h1 class="h3 mb-3"><strong>Panel de análisis</strong></h1>
+<!DOCTYPE html>
+<html lang="es">
 
-        <div class="row border">
-            <div class="col-xl-6 col-xxl-4 d-flex">
-                <div class="w-100">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <!-- Aquí puedes añadir tu contenido -->
-                        </div>
-                    </div>
-                </div>
-            </div>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USAT - Inicio</title>
 
-            <!-- Aquí puedes añadir más secciones según lo necesites -->
-        </div>
-
-        <div class="row">
-            <!-- Puedes seguir añadiendo más estructuras de layout sin contenido aquí -->
-        </div>
-    </div>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
     <style>
-        /* Añade tu propio estilo si es necesario */
-        .skeleton {
-            background-color: #e0e0e0;
-            background-image: linear-gradient(90deg, #e0e0e0, #f0f0f0, #e0e0e0);
-            background-size: 200% 100%;
-            background-position: 200% center;
-            animation: loading 1.5s infinite;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        @keyframes loading {
-            to {
-                background-position: -200% center;
-            }
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
         }
 
-        .skeleton-text {
-            width: 100%;
-            height: 20px;
-            margin-bottom: 10px;
+        .main-content {
+            position: relative;
+            background-color: rgba(166, 39, 43, 0.4);
+            height: calc(100% - 100px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
         }
 
-        .skeleton-table {
-            width: 100%;
-            height: 50px;
-        }
-
-        .skeleton-chart {
-            width: 100%;
-            height: 300px;
-        }
-
-        .table-header-fixed {
-            position: sticky;
+        .main-content::before {
+            content: '';
+            position: absolute;
             top: 0;
-            background-color: #fff;
-            z-index: 1;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('/static/img/usatentrada.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 1;
+            z-index: -1;
         }
 
-        @media (max-width: 768px) {
-            .table td:nth-child(1),
-            .table th:nth-child(1) {
-                white-space: normal !important;
-                word-break: break-word !important;
+        .index-title {
+            font-size: 4rem;
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 3px 3px 0 rgb(57, 57, 57);
+        }
+
+        .module-button {
+            width: 220px;
+            height: 220px;
+            padding: 10px;
+            background-color: #A6272B;
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-decoration: none;
+            margin: 10px;
+            transition: background-color 0.3s, color 0.3s;
+            position: relative;
+        }
+
+        .module-button:hover {
+            background-color: #ffffff;
+            color: #A6272B;
+            cursor: pointer;
+        }
+
+        .module-button img {
+            width: 35%;
+            height: 35%;
+            margin-top: 8%;
+        }
+
+        @media (max-width: 576px) {
+            .module-button {
+                width: 180px;
+                height: 180px;
+                font-size: 1rem;
             }
-            .table th, .table td {
-                font-size: 14px;
-            }
-            .table td:nth-child(1) {
-                min-width: 150px;
-            }
+        }
+
+        .footer {
+            background-color: #cfcfcf;
+            text-align: center;
+            padding: 20px 0;
+            color: rgb(92, 92, 92);
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 1rem;
+            vertical-align: middle;
+        }
+
+        .navbar-custom {
+            background-color: #A6272B;
+        }
+
+        .navbar-custom .navbar-text {
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .navbar-custom .nav-link {
+            color: white;
+            font-weight: bold;
+        }
+
+        .navbar-custom .nav-link:hover {
+            color: #e0e0e0;
         }
     </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <span class="navbar-text me-auto">
+                Bienvenido al sistema!
+            </span>
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        {% if foto_perfil %}
+                            <img src="{{ url_for('static', filename='img/' + foto_perfil) }}" alt="foto_perfil"
+                                class="avatar img-fluid rounded me-1" style="width:30px; height:30px;" />
+                        {% endif %}
+                        {{ usuario }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{{ url_for('router_main.perfil') }}">Perfil</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" onclick="cerrarSesion()">Cerrar Sesión</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="main-content">
+        <div class="container text-center">
+            <h1 class="index-title">Sistema de Gestión de Prácticas Pre Profesionales - USAT</h1>
+            <div class="d-flex flex-wrap justify-content-center">
+                <a href="{{ url_for('router_main.gestion_academica') }}" class="module-button">
+                    Módulo de Gestión Académica
+                    <img src="{{ url_for('static', filename='img/gaicono.png') }}" alt="Icono GA">
+                </a>
+                <a href="{{ url_for('router_main.practicas_pre_profesionales') }}" class="module-button">
+                    Módulo de Prácticas Pre Profesionales
+                    <img src="{{ url_for('static', filename='img/pppicono.png') }}" alt="Icono PPP">
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>USAT - 2024-I &copy; Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5+5hb7ie4+AiHTqX5+7cNX2pTbVBjo6A+lMszKfP"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-QNVZyW/n5oK5BnEzG+O02mNF16l3B/6Y0uDRWXj1HspodE80N5tFzsyEJx2E0l9Y"
+        crossorigin="anonymous"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Aquí puedes añadir tu lógica de JavaScript si es necesario
-        });
+        function cerrarSesion() {
+            localStorage.clear();
+            sessionStorage.clear();
+            window.location.href = '/login';
+        }
     </script>
-</section>
-{% endblock %}
+</body>
+
+</html>

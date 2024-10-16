@@ -1,4 +1,4 @@
-{% extends "index.html" %}
+{% extends "/gestion_academica/indexga.html" %}
 {% block titulo %} Facultad {% endblock %}
 {% block contenido %}
 
@@ -166,12 +166,12 @@
 <script>
     $(document).ready(function () {
         var table = $('#tabla-facultad').DataTable({
-            paging: true,
+            paging: false,
             info: false,
             responsive: true,
             autoWidth: false,
             searching: true,
-            scrollY: false,
+            scrollY: "510px",
             order: [], 
             dom: `
                 <"row mb-3"<"col-12 text-center"B>>
