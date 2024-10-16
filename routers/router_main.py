@@ -16,19 +16,19 @@ router_main = Blueprint('router_main', __name__)
 @router_main.route("/")
 @router_main.route("/login", methods=["GET", "POST"])
 def login():
-    return render_template("login.html")
+    return render_template("/dashboard/login.html")
 
 @router_main.route("/index")
 def index():
-    return render_template("/index.html")
+    return render_template("/dashboard/index.html")
 
 @router_main.route("/indexga")
 def gestion_academica():
-    return render_template("/gestion_academica/indexga.html")
+    return render_template("/gestion_academica/index.html")
 
 @router_main.route("/indexppp")
 def practicas_pre_profesionales():
-    return render_template("/ppp/indexppp.html")
+    return render_template("/ppp/index.html")
 
 @router_main.route("/procesar_login", methods=["POST"])
 def procesar_login():
@@ -126,17 +126,17 @@ def escuela():
 
 @router_main.route("/InformeInicialEstudiante")
 def informeInicialEstudiante():
-    return render_template('gestion_academica/informeInicialEstudiante.html') 
+    return render_template('ppp/informeInicialEstudiante.html') 
 
 @router_main.route("/InformeInicialEmpresa")
 def informeInicialEmpresa():
-    return render_template('gestion_academica/informeInicialEmpresa.html') 
+    return render_template('ppp/informeInicialEmpresa.html') 
 
 @router_main.route("/InformeFinalEstudiante")
 def informeFinalEstudiante():
-    return render_template('gestion_academica/informeFinalEstudiante.html') 
+    return render_template('ppp/informeFinalEstudiante.html') 
 
 @router_main.route("/InformeFinalEmpresa")
 def informeFinalEmpresa():
-    return render_template('gestion_academica/informeFinalEmpresa.html')
+    return render_template('ppp/informeFinalEmpresa.html')
 
