@@ -292,35 +292,18 @@
                 { "data": "numDoc", "className": 'text-center' },
                 { "data": "nombre", "className": 'text-center' },
                 { "data": "apellidos", "className": 'text-center' },
-                { "data": "codUniversitario", "className": 'text-center' },
-                { "data": "tel1", "className": 'text-center' },
-                { "data": "tel2", "className": 'text-center' },
                 { "data": "correoP", "className": 'text-center' },
                 { "data": "correoUSAT", "className": 'text-center' },
-                { 
-                    "data": "estado",
-                    "className": 'text-center',
-                    "render": function (data, type, row) {
-                        return data === 'A' ? 'Activo' : 'Inactivo';
-                    }
-                },
-                { "data": "idUsuario", "className": 'text-center' },
-                { "data": "idGenero", "className": 'text-center' },
-                { "data": "idTipoDoc", "className": 'text-center' },
-                { "data": "idEscuela", "className": 'text-center' },
-                {
-                    "data": null, 
-                    "className": 'text-center',
-                    "render": function (data, type, row) {
-                        return `
-                            <button class="btn btn-primary btn-sm btnVer" data-id="${row.idEstudiante}" title="Ver"><i class="fas fa-eye"></i></button>
-                            <button class="btn btn-warning btn-sm btnModificar" data-id="${row.idEstudiante}" title="Modificar"><i class="fas fa-pencil-alt"></i></button>
-                            <button class="btn btn-danger btn-sm btnEliminar" data-id="${row.idEstudiante}" data-nombre="${row.nombre}" title="Eliminar"><i class="fas fa-times"></i></button>
-                            <button class="btn btn-secondary btn-sm btnDarDeBaja" data-id="${row.idEstudiante}" title="Dar de Baja"><i class="fas fa-arrow-down"></i></button>
-                        `;
-                    }
-                }
+                { "data": "tel1", "className": 'text-center' },
+                { "data": null, "className": 'text-center', "render": function(data, type, row) {
+                    return `
+                        <button class="btn btn-primary btn-sm btnVer" data-id="${row.idUsuario}" title="Ver"><i class="fas fa-eye"></i></button>
+                        <button class="btn btn-warning btn-sm btnModificar" data-id="${row.idUsuario}" title="Modificar"><i class="fas fa-pencil-alt"></i></button>
+                        <button class="btn btn-danger btn-sm btnEliminar" data-id="${row.idUsuario}" title="Eliminar"><i class="fas fa-times"></i></button>
+                    `;
+                }}
             ],
+
             "language": {
                 "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
             }
