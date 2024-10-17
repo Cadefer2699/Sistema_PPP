@@ -140,3 +140,8 @@ def informeFinalEstudiante():
 def informeFinalEmpresa():
     return render_template('gestion_academica/informeFinalEmpresa.html')
 
+
+@router_main.route("/practicas")
+def ppp():
+    return render_template('ppp/ppp_registro.html')
+
