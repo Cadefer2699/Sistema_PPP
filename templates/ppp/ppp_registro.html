@@ -19,7 +19,8 @@
                 <table id="tabla-practicas" class="table table-striped tabla-practicas" style="width:100%">
                     <thead>
                         <tr>
-                            <th style="text-align:center">ID Práctica</th>
+                            <th style="text-align:center">ID Práctica</th>   <!-- ID de la práctica -->
+                            <th style="text-align:center">Estudiante</th>   <!-- Nombre completo del estudiante -->
                             <th style="text-align:center">Fecha Inicio</th>
                             <th style="text-align:center">Fecha Fin</th>
                             <th style="text-align:center">Modalidad</th>
@@ -268,10 +269,11 @@
             "processing": true,
             "serverSide": false,
             "columns": [
-                { "data": "idPractica", "className": 'text-center' },
+                { "data": "idPractica", "className": 'text-center' }, 
+                { "data": "estudiante", "className": 'text-center' },  
                 { "data": "fechaInicio", "className": 'text-center' },
                 { "data": "fechaFin", "className": 'text-center' },
-                { "data": "modalidad", "className": 'text-center' },
+                { "data": "modalidad", "className": 'text-center' },    
                 { "data": "area", "className": 'text-center' },
                 { "data": "numeroHorasPPP", "className": 'text-center' },
                 { "data": "numeroHorasRealizadas", "className": 'text-center' },

@@ -10,7 +10,25 @@ def obtener_practicas():
     practicas = []
     try:
         with conexion.cursor() as cursor:
-            cursor.execute("SELECT * FROM practicas_preprofesionales")
+            # Ajusta la consulta para obtener el idPractica y el nombre completo del estudiante por separado
+            query = """
+                SELECT 
+                    p.idPractica,
+                    CONCAT(e.nombre, ' ', e.apellidos) AS estudiante, 
+                    p.fechaInicio,
+                    p.fechaFin,
+                    CASE 
+                        WHEN p.modalidad = 'P' THEN 'Presencial'
+                        WHEN p.modalidad = 'V' THEN 'Virtual'
+                        WHEN p.modalidad = 'M' THEN 'Mixta'
+                    END AS modalidad,
+                    p.area,
+                    p.numeroHorasPPP,
+                    p.numeroHorasRealizadas
+                FROM practicas_preprofesionales p
+                JOIN estudiante e ON p.numDocEstudiante = e.numDoc
+            """
+            cursor.execute(query)
             column_names = [desc[0] for desc in cursor.description]
             rows = cursor.fetchall()
 
