@@ -1,9 +1,10 @@
-{% extends "/gestion_academica/indexga.html" %}
+{% extends "/gestion_academica/index.html" %}
 {% block titulo %} Estudiantes {% endblock %}
 {% block contenido %}
 <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url_for('router_main.index') }}">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('router_main.gestion_academica') }}">Módulo de Gestión Académica</a></li>
         <li class="breadcrumb-item active"><a href="{{ url_for('router_main.estudiante') }}">Estudiantes</a></li>
     </ol>
 </nav>

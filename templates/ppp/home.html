@@ -74,7 +74,7 @@
         .module-button {
             width: 200px;
             height: 200px;
-            background-color: #E33439;
+            background-color: #A6272B;
             color: #ffffff;
             border: none;
             border-radius: 10px;
@@ -91,7 +91,7 @@
 
         .module-button:hover {
             background-color: #ffffff;
-            color: #E33439;
+            color: #A6272B;
             cursor: pointer;
         }
 
@@ -122,7 +122,7 @@
 
         /* Estilos para el encabezado */
         .navbar-custom {
-            background-color: #E33439;
+            background-color: #A6272B;
         }
 
         .navbar-custom .navbar-text {
@@ -157,51 +157,6 @@
                     <img src="{{ url_for('static', filename='login/images/usat_logo_atrás.png') }}" alt="logoescuela"
                         style="max-width: 160px; display: flex;">
                 </a>
-
-                <!-- Bloque para los menús de Gestión Académica -->
-                <ul class="sidebar-nav">
-                    <li class="sidebar-header">
-                        Módulo de Gestión Académica
-                    </li>
-
-                    {% block gestion_academica %}
-                    <!-- Menús de Gestión Académica -->
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ url_for('router_main.estudiante') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Estudiante</span>
-                        </a>
-                    </li>
-
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ url_for('router_main.ppp') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">PPP</span>
-                        </a>
-                    </li>
-
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ url_for('router_main.docente') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Docente</span>
-                        </a>
-                    </li>
-
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ url_for('router_facultad.facultad') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Facultad</span>
-                        </a>
-                    </li>
-
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ url_for('router_main.escuela') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Escuela</span>
-                        </a>
-                    </li>
-                    {% endblock %}
-                </ul>
 
                 <!-- Bloque para los menús de Prácticas Pre Profesionales -->
                 <ul class="sidebar-nav">
