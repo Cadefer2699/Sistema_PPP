@@ -45,7 +45,7 @@ def obtener_facultad_por_id(idFacultad):
     finally:
         conexion.close()
 
-def agregar_facultad(nombre, estado):
+def agregar_facultad(nombre, abreviatura, estado):
     # Validaciones
     if not nombre or not estado:
         return {"error": "El nombre y el estado son requeridos."}
@@ -58,8 +58,10 @@ def agregar_facultad(nombre, estado):
 
     try:
         with conexion.cursor() as cursor:
-            # Llamar al procedimiento almacenado para insertar
-            cursor.callproc('GestionFacultad', [1, None, nombre, estado])
+            cursor.execute("""
+                INSERT INTO facultad (nombre, abreviatura, estado) 
+                VALUES (%s, %s, %s, %s, %s)
+            """, (nombre, abreviatura, estado))
             conexion.commit()
             return {"mensaje": "Facultad agregada correctamente"}
     except Exception as e:
@@ -68,7 +70,7 @@ def agregar_facultad(nombre, estado):
     finally:
         conexion.close()
 
-def modificar_facultad(idFacultad, nombre, estado):
+def modificar_facultad(idFacultad, nombre, abreviatura, estado):
     # Validaciones
     if not idFacultad or not nombre or not estado:
         return {"error": "El ID, nombre y estado son requeridos."}
@@ -81,8 +83,11 @@ def modificar_facultad(idFacultad, nombre, estado):
 
     try:
         with conexion.cursor() as cursor:
-            # Llamar al procedimiento almacenado para modificar
-            cursor.callproc('GestionFacultad', [2, idFacultad, nombre, estado])
+            cursor.execute("""
+                UPDATE facultad 
+                SET nombre = %s, abreviatura = %s, estado = %s 
+                WHERE idFacultad = %s
+            """, (nombre, abreviatura, estado, idFacultad))
             conexion.commit()
             return {"mensaje": "Facultad modificada correctamente"}
     except Exception as e:
@@ -102,8 +107,7 @@ def eliminar_facultad(idFacultad):
 
     try:
         with conexion.cursor() as cursor:
-            # Llamar al procedimiento almacenado para eliminar
-            cursor.callproc('GestionFacultad', [3, idFacultad, None, None])
+            cursor.execute("DELETE FROM facultad WHERE idFacultad = %s", (idFacultad,))
             conexion.commit()
             return {"mensaje": "Facultad eliminada correctamente"}
     except Exception as e:
@@ -123,7 +127,7 @@ def dar_de_baja_facultad(idFacultad):
 
     try:
         with conexion.cursor() as cursor:
-            cursor.callproc('GestionFacultad', [4, idFacultad, None, None])
+            cursor.execute("UPDATE facultad SET estado = 'I' WHERE idFacultad = %s", (idFacultad,))
             conexion.commit()
             return {"mensaje": "Facultad dada de baja correctamente"}
     except Exception as e:
@@ -145,8 +149,7 @@ def cambiar_estado_facultad(idFacultad, nuevo_estado):
 
     try:
         with conexion.cursor() as cursor:
-            # Llamar al procedimiento almacenado para cambiar estado
-            cursor.callproc('GestionFacultad', [4, idFacultad, None, nuevo_estado])
+            cursor.execute("UPDATE facultad SET estado = %s WHERE idFacultad = %s", (idFacultad, nuevo_estado))
             conexion.commit()
             return {"mensaje": "Estado de la facultad actualizado correctamente"}
     except Exception as e:
