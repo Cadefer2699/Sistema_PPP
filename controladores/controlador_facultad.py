@@ -60,7 +60,7 @@ def agregar_facultad(nombre, abreviatura, estado):
         with conexion.cursor() as cursor:
             cursor.execute("""
                 INSERT INTO facultad (nombre, abreviatura, estado) 
-                VALUES (%s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s)
             """, (nombre, abreviatura, estado))
             conexion.commit()
             return {"mensaje": "Facultad agregada correctamente"}

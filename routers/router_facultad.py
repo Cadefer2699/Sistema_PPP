@@ -20,8 +20,9 @@ def obtener_facultad_por_id(idFacultad):
 @router_facultad.route("/agregar_facultad", methods=["POST"])
 def agregar_facultad():
     nombre = request.json.get('nombre')
+    abreviatura = request.json.get('abreviatura')
     estado = request.json.get('estado')
-    resultado = controlador_facultad.agregar_facultad(nombre, estado)
+    resultado = controlador_facultad.agregar_facultad(nombre, abreviatura, estado)
     return jsonify(resultado)
 
 @router_facultad.route("/modificar_facultad", methods=["POST"])
