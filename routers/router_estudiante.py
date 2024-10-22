@@ -14,32 +14,58 @@ def datos_estudiantes():
 
 @router_estudiante.route("/obtener_estudiante_por_id/<int:idEstudiante>", methods=["GET"])
 def obtener_estudiante_por_id(idEstudiante):
-    estudiantes = controlador_estudiante.obtener_estudiante_por_id(idEstudiante)
-    return jsonify(estudiantes)
+    estudiante = controlador_estudiante.obtener_estudiante_por_id(idEstudiante)
+    return jsonify(estudiante)
 
 @router_estudiante.route("/agregar_estudiante", methods=["POST"])
 def agregar_estudiante():
-    nombre = request.json.get('nombre')
-    estado = request.json.get('estado')
-    resultado = controlador_estudiante.agregar_estudiante(nombre, estado)
+    data = request.json
+    numDoc = data.get('numDoc')
+    nombre = data.get('nombre')
+    apellidos = data.get('apellidos')
+    codUniversitario = data.get('codUniversitario')
+    tel1 = data.get('tel1')
+    tel2 = data.get('tel2')
+    correoP = data.get('correoP')
+    correoUSAT = data.get('correoUSAT')
+    estado = data.get('estado')
+    idGenero = data.get('idGenero')
+    idTipoDoc = data.get('idTipoDoc')
+    idUsuario = data.get('idUsuario')
+    idEscuela = data.get('idEscuela')
+
+    resultado = controlador_estudiante.agregar_estudiante(numDoc, nombre, apellidos, codUniversitario, tel1, tel2, correoP, correoUSAT, estado, idGenero, idTipoDoc, idUsuario, idEscuela)
     return jsonify(resultado)
 
 @router_estudiante.route("/modificar_estudiante", methods=["POST"])
 def modificar_estudiante():
-    idestudiante = request.json.get('idEstudiante')
-    nombre = request.json.get('nombre')
-    estado = request.json.get('estado')
-    resultado = controlador_estudiante.modificar_estudiante(idestudiante, nombre, estado)
+    data = request.json
+    idEstudiante = data.get('idEstudiante')
+    numDoc = data.get('numDoc')
+    nombre = data.get('nombre')
+    apellidos = data.get('apellidos')
+    codUniversitario = data.get('codUniversitario')
+    tel1 = data.get('tel1')
+    tel2 = data.get('tel2')
+    correoP = data.get('correoP')
+    correoUSAT = data.get('correoUSAT')
+    estado = data.get('estado')
+    idGenero = data.get('idGenero')
+    idTipoDoc = data.get('idTipoDoc')
+    idUsuario = data.get('idUsuario')
+    idEscuela = data.get('idEscuela')
+
+    resultado = controlador_estudiante.modificar_estudiante(idEstudiante, numDoc, nombre, apellidos, codUniversitario, tel1, tel2, correoP, correoUSAT, estado, idGenero, idTipoDoc, idUsuario, idEscuela)
     return jsonify(resultado)
 
 @router_estudiante.route("/dar_de_baja_estudiante", methods=["POST"])
 def dar_de_baja_estudiante():
-    idestudiante = request.json.get('idEstudiante')
-    resultado = controlador_estudiante.dar_de_baja_estudiante(idestudiante)
+    idEstudiante = request.json.get('idEstudiante')
+    resultado = controlador_estudiante.modificar_estudiante(idEstudiante, None, None, None, None, None, None, None, 'I', None, None, None, None)
     return jsonify(resultado)
 
 @router_estudiante.route("/eliminar_estudiante", methods=["POST"])
 def eliminar_estudiante():
-    idestudiante = request.json.get('idEstudiante')
-    resultado = controlador_estudiante.eliminar_estudiante(idestudiante)
+    idEstudiante = request.json.get('idEstudiante')
+    resultado = controlador_estudiante.eliminar_estudiante(idEstudiante)
     return jsonify(resultado)

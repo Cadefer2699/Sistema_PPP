@@ -6,11 +6,20 @@ def obtener_estudiantes():
     conexion = obtener_conexion()
     if not conexion:
         return {"error": "No se pudo establecer conexión con la base de datos."}
-    
+
     estudiantes = []
     try:
         with conexion.cursor() as cursor:
-            cursor.execute("SELECT * FROM estudiante")
+            cursor.execute("""
+                SELECT p.numDoc, p.nombre, p.apellidos, p.codUniversitario, p.tel1, p.tel2, 
+                       p.correoP, p.correoUSAT, p.estado, g.nombre as genero, td.nombre as tipoDocumento, 
+                       e.nombre as escuela, u.username as usuario
+                FROM persona p
+                LEFT JOIN genero g ON p.idGenero = g.idGenero
+                LEFT JOIN tipo_documento td ON p.idTipoDoc = td.idTipoDoc
+                LEFT JOIN escuela e ON p.idEscuela = e.idEscuela
+                LEFT JOIN usuario u ON p.idUsuario = u.idUsuario
+            """)
             column_names = [desc[0] for desc in cursor.description]
             rows = cursor.fetchall()
 
@@ -21,70 +30,78 @@ def obtener_estudiantes():
         return {"error": str(e)}
     finally:
         conexion.close()
-    
+
     return estudiantes
 
 def obtener_estudiante_por_id(idEstudiante):
     conexion = obtener_conexion()
     if not conexion:
         return {"error": "No se pudo establecer conexión con la base de datos."}
-    
+
     estudiante = None
     try:
         with conexion.cursor() as cursor:
-            cursor.execute("SELECT * FROM estudiante WHERE idEstudiante = %s", (idEstudiante,))
+            cursor.execute("""
+                SELECT p.numDoc, p.nombre, p.apellidos, p.codUniversitario, p.tel1, p.tel2, 
+                       p.correoP, p.correoUSAT, p.estado, g.nombre as genero, td.nombre as tipoDocumento, 
+                       e.nombre as escuela, u.username as usuario
+                FROM persona p
+                LEFT JOIN genero g ON p.idGenero = g.idGenero
+                LEFT JOIN tipo_documento td ON p.idTipoDoc = td.idTipoDoc
+                LEFT JOIN escuela e ON p.idEscuela = e.idEscuela
+                LEFT JOIN usuario u ON p.idUsuario = u.idUsuario
+                WHERE p.idPersona = %s
+            """, (idEstudiante,))
             row = cursor.fetchone()
+
             if row:
                 columnas = [desc[0] for desc in cursor.description]
                 estudiante_dict = dict(zip(columnas, row))
                 return estudiante_dict
             else:
-                return {"error": "Estudiante no encontrada"}
+                return {"error": "Estudiante no encontrado"}
     except Exception as e:
         return {"error": str(e)}
     finally:
         conexion.close()
 
-def agregar_estudiante(nombre, estado):
-    # Validaciones
-    if not nombre or not estado:
-        return {"error": "El nombre y el estado son requeridos."}
-    if estado not in ['A', 'I']:
-        return {"error": "El estado debe ser 'A' (Activo) o 'I' (Inactivo)."}
-
+def agregar_estudiante(numDoc, nombre, apellidos, codUniversitario, tel1, tel2, correoP, correoUSAT, estado, idGenero, idTipoDoc, idUsuario, idEscuela):
     conexion = obtener_conexion()
     if not conexion:
         return {"error": "No se pudo establecer conexión con la base de datos."}
 
     try:
         with conexion.cursor() as cursor:
-            # Llamar al procedimiento almacenado para insertar
-            cursor.callproc('GestionEstudiante', [1, None, nombre, estado])
+            # Inserta el nuevo estudiante en la tabla persona
+            cursor.execute("""
+                INSERT INTO persona (numDoc, nombre, apellidos, codUniversitario, tel1, tel2, correoP, correoUSAT, estado, idGenero, idTipoDoc, idUsuario, idEscuela)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (numDoc, nombre, apellidos, codUniversitario, tel1, tel2, correoP, correoUSAT, estado, idGenero, idTipoDoc, idUsuario, idEscuela))
             conexion.commit()
-            return {"mensaje": "Estudiante agregada correctamente"}
+            return {"mensaje": "Estudiante agregado correctamente"}
     except Exception as e:
         conexion.rollback()
         return {"error": str(e)}
     finally:
         conexion.close()
 
-def modificar_estudiante(idEstudiante, nombre, estado):
-    # Validaciones
-    if not idEstudiante or not nombre or not estado:
-        return {"error": "El ID, nombre y estado son requeridos."}
-    if estado not in ['A', 'I']:
-        return {"error": "El estado debe ser 'A' (Activo) o 'I' (Inactivo)."}
-
+def modificar_estudiante(idEstudiante, numDoc, nombre, apellidos, codUniversitario, tel1, tel2, correoP, correoUSAT, estado, idGenero, idTipoDoc, idUsuario, idEscuela):
     conexion = obtener_conexion()
     if not conexion:
         return {"error": "No se pudo establecer conexión con la base de datos."}
 
     try:
         with conexion.cursor() as cursor:
-            # Llamar al procedimiento almacenado para modificar
-            cursor.callproc('GestionEstudiante', [2, idEstudiante, nombre, estado])
+            # Actualiza la información del estudiante en la tabla persona
+            cursor.execute("""
+                UPDATE persona
+                SET numDoc = %s, nombre = %s, apellidos = %s, codUniversitario = %s, tel1 = %s, tel2 = %s, 
+                    correoP = %s, correoUSAT = %s, estado = %s, idGenero = %s, idTipoDoc = %s, 
+                    idUsuario = %s, idEscuela = %s
+                WHERE idPersona = %s
+            """, (numDoc, nombre, apellidos, codUniversitario, tel1, tel2, correoP, correoUSAT, estado, idGenero, idTipoDoc, idUsuario, idEscuela, idEstudiante))
             conexion.commit()
-            return {"mensaje": "Estudiante modificada correctamente"}
+            return {"mensaje": "Estudiante modificado correctamente"}
     except Exception as e:
         conexion.rollback()
         return {"error": str(e)}
@@ -92,20 +109,16 @@ def modificar_estudiante(idEstudiante, nombre, estado):
         conexion.close()
 
 def eliminar_estudiante(idEstudiante):
-    # Validaciones
-    if not idEstudiante:
-        return {"error": "El ID de la estudiante es requerido."}
-
     conexion = obtener_conexion()
     if not conexion:
         return {"error": "No se pudo establecer conexión con la base de datos."}
 
     try:
         with conexion.cursor() as cursor:
-            # Llamar al procedimiento almacenado para eliminar
-            cursor.callproc('GestionEstudiante', [3, idEstudiante, None, None])
+            # Elimina al estudiante de la tabla persona
+            cursor.execute("DELETE FROM persona WHERE idPersona = %s", (idEstudiante,))
             conexion.commit()
-            return {"mensaje": "Estudiante eliminada correctamente"}
+            return {"mensaje": "Estudiante eliminado correctamente"}
     except Exception as e:
         conexion.rollback()
         return {"error": str(e)}
