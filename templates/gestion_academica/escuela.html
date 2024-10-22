@@ -1,10 +1,11 @@
-{% extends "/gestion_academica/indexga.html" %}
+{% extends "/gestion_academica/index.html" %}
 {% block titulo %} Escuela {% endblock %}
 {% block contenido %}
 
 <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ url_for('router_main.home') }}">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('router_main.index') }}">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('router_main.gestion_academica') }}">Módulo de Gestión Académica</a></li>
         <li class="breadcrumb-item active" aria-current="page">Escuelas</li>
     </ol>
 </nav>
@@ -72,7 +73,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="abreviaturaEscuela" class="form-label">Abreviatura:</label>
-                        <input type="text" class="form-control" id="abreviaturaEscuela" name="abreviaturaEscuela" maxlength="4 required>
+                        <input type="text" class="form-control" id="abreviaturaEscuela" name="abreviaturaEscuela" required>
                     </div>
                     <div class="mb-3">
                         <label for="estadoEscuela" class="form-label">Estado:</label>
@@ -82,16 +83,14 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="idFacultad" class="form-label">Facultad:</label>
-                        <select class="form-control" id="idFacultad" name="idFacultad" required>
-                            <!-- Opciones de facultades se cargarán dinámicamente -->
+                        <label for="estadoEscuela" class="form-label">Facultad:</label>
+                        <select class="form-control" id="estadoEscuela" name="estadoEscuela" required>
+                            <option value="A">Facultad de Derecho</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="idHoras" class="form-label">Horas:</label>
-                        <select class="form-control" id="idHoras" name="idHoras" required>
-                            <!-- Opciones de horas se cargarán dinámicamente -->
-                        </select>
+                        <label for="abreviaturaEscuela" class="form-label">Horas Requeridas:</label>
+                        <input type="number" class="form-control" id="abreviaturaEscuela" name="abreviaturaEscuela" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Guardar</button>
                 </form>
@@ -112,31 +111,29 @@
                 <form id="formModificarEscuela">
                     <input type="hidden" id="idEscuelaMod" name="idEscuelaMod">
                     <div class="mb-3">
-                        <label for="nombreEscuelaMod" class="form-label">Nombre:</label>
-                        <input type="text" class="form-control" id="nombreEscuelaMod" name="nombreEscuelaMod" required>
+                        <label for="nombreEscuela" class="form-label">Nombre:</label>
+                        <input type="text" class="form-control" id="nombreEscuela" name="nombreEscuela" required>
                     </div>
                     <div class="mb-3">
-                        <label for="abreviaturaEscuelaMod" class="form-label">Abreviatura:</label>
-                        <input type="text" class="form-control" id="abreviaturaEscuelaMod" name="abreviaturaEscuelaMod" maxlength="4 required>
+                        <label for="abreviaturaEscuela" class="form-label">Abreviatura:</label>
+                        <input type="text" class="form-control" id="abreviaturaEscuela" name="abreviaturaEscuela" required>
                     </div>
                     <div class="mb-3">
-                        <label for="estadoEscuelaMod" class="form-label">Estado:</label>
-                        <select class="form-control" id="estadoEscuelaMod" name="estadoEscuelaMod" required>
+                        <label for="estadoEscuela" class="form-label">Estado:</label>
+                        <select class="form-control" id="estadoEscuela" name="estadoEscuela" required>
                             <option value="A">Activo</option>
                             <option value="I">Inactivo</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="idFacultadMod" class="form-label">Facultad:</label>
-                        <select class="form-control" id="idFacultadMod" name="idFacultadMod" required>
-                            <!-- Opciones de facultades se cargarán dinámicamente -->
+                        <label for="estadoEscuela" class="form-label">Facultad:</label>
+                        <select class="form-control" id="estadoEscuela" name="estadoEscuela" required>
+                            <option value="A">Facultad de Derecho</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="idHorasMod" class="form-label">Horas:</label>
-                        <select class="form-control" id="idHorasMod" name="idHorasMod" required>
-                            <!-- Opciones de horas se cargarán dinámicamente -->
-                        </select>
+                        <label for="abreviaturaEscuela" class="form-label">Horas Requeridas:</label>
+                        <input type="number" class="form-control" id="abreviaturaEscuela" name="abreviaturaEscuela" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                 </form>
@@ -145,26 +142,69 @@
     </div>
 </div>
 
-<!-- Incluye las librerías necesarias -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<!-- Modal para confirmar eliminación -->
+<div class="modal fade" id="modalEliminarEscuela" tabindex="-1" aria-labelledby="modalEliminarEscuelaLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center fw-bold">Eliminar Escuela</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center">
+                <p>¿Estás seguro de que deseas eliminar la escuela <strong id="nombreEscuelaEliminar"></strong>?</p>
+                <input type="hidden" id="idEscuelaEliminar" name="idEscuelaEliminar">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" id="confirmarEliminarEscuela">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para confirmar dada de baja -->
+<div class="modal fade" id="modalDarDeBajaEscuela" tabindex="-1" aria-labelledby="modalDarDeBajaEscuelaLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center fw-bold">Dar de Baja Escuela</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center">
+                <p>¿Estás seguro de que deseas dar de baja la escuela <strong id="nombreEscuelaDarDeBaja"></strong>?</p>
+                <input type="hidden" id="idEscuelaDarDeBaja" name="idEscuelaDarDeBaja">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" id="confirmarDarDeBajaEscuela">Dar de Baja</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% block scripts %}
+    <!-- Librerías específicas para los botones de DataTables -->
 <script src="https://cdn.datatables.net/buttons/2.3.4/js/dataTables.buttons.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.print.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     $(document).ready(function () {
+        if ($.fn.DataTable.isDataTable('#tabla-escuela')) {
+            $('#tabla-escuela').DataTable().destroy();
+        }
         var table = $('#tabla-escuela').DataTable({
-            paging: false,
-            info: false,
+            paging: true, // Activamos la paginación
+            pageLength: 10, // Número de filas por página (puedes cambiarlo según tus necesidades)
+            lengthMenu: [5, 10, 15, 20], // Opciones de filas por página
+            info: true, // Mostrar información sobre el total de filas y páginas
             responsive: true,
             autoWidth: false,
             searching: true,
-            scrollY: "510px",
             order: [],
             dom: `
                 <"row mb-3"<"col-12 text-center"B>>
@@ -175,19 +215,44 @@
             buttons: [
                 {
                     extend: 'collection',
-                    text: '<i class="fas fa-file-export"></i> Exportar',
+                    text: '<i class="fas fa-file-export"></i> Exportar/Imprimir',
+                    className: 'btn btn-secondary mb-2',
                     buttons: [
                         {
-                            extend: 'excelHtml5',
-                            title: 'Escuelas',
-                            text: '<i class="fas fa-file-excel"></i> Exportar a Excel',
+                            extend: 'copy',
+                            text: '<i class="fas fa-copy"></i> Copiar',
+                            className: 'dropdown-item'
                         },
                         {
-                            extend: 'pdfHtml5',
-                            title: 'Escuelas',
-                            text: '<i class="fas fa-file-pdf"></i> Exportar a PDF',
+                            extend: 'csv',
+                            text: '<i class="fas fa-file-csv"></i> CSV',
+                            className: 'dropdown-item'
+                        },
+                        {
+                            extend: 'excel',
+                            text: '<i class="fas fa-file-excel"></i> Excel',
+                            className: 'dropdown-item'
+                        },
+                        {
+                            extend: 'pdf',
+                            text: '<i class="fas fa-file-pdf"></i> PDF',
+                            className: 'dropdown-item'
+                        },
+                        {
+                            extend: 'print',
+                            text: '<i class="fas fa-print"></i> Imprimir',
+                            className: 'dropdown-item'
                         }
                     ]
+                }, 
+                {
+                    text: '<i class="fas fa-plus"></i> Agregar Nueva Escuela',
+                    className: 'btn_agregar_escuela btn btn-primary mb-2',
+                    action: function (e, dt, node, config) {
+                        e.preventDefault();
+                        $('#formAgregarEscuela')[0].reset();
+                        $('#modalAgregarEscuela').modal('show');
+                    }
                 }
             ],
             ajax: {
@@ -294,7 +359,7 @@
         $('#tabla-escuela tbody').on('click', '.btnVer', function () {
             var id = $(this).data('id');
             $.ajax({
-                url: '/ver_escuela/' + id,
+                url: '/obtener_escuela_por_id/' + id,
                 type: 'GET',
                 success: function (data) {
                     $('#modalVerEscuela .modal-body').html(`
@@ -388,4 +453,5 @@
         });
     });
 </script>
+{% endblock %}
 {% endblock %}

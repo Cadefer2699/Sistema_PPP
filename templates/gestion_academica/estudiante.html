@@ -1,4 +1,4 @@
-{% extends "/gestion_academica/indexga.html" %}
+{% extends "/gestion_academica/index.html" %}
 {% block titulo %} Estudiantes {% endblock %}
 {% block contenido %}
 <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
@@ -225,7 +225,7 @@
 <script>
     $(document).ready(function () {
         var table = $('#tabla-estudiante').DataTable({
-            paging: false,
+            paging: true,
             info: false,
             responsive: true,
             autoWidth: true,

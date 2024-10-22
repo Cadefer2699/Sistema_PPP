@@ -1,17 +1,17 @@
-{% extends "/gestion_academica/indexga.html" %}
-{% block titulo %} Informe Final de Prácticas (Empresa) {% endblock %}
+{% extends "/ppp/index.html" %}
+{% block titulo %} Informe Inicial de Prácticas (Empresa) {% endblock %}
 {% block contenido %}
 <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url_for('router_main.index') }}">Inicio</a></li>
-        <li class="breadcrumb-item active"><a href="{{ url_for('router_main.informeFinalEmpresa') }}">Informe de Prácticas (Empresa)</a></li>
+        <li class="breadcrumb-item active"><a href="{{ url_for('router_main.informeInicialEmpresa') }}">Informe de Prácticas (Empresa)</a></li>
     </ol>
 </nav>
 
 <div class="container-fluid my-4">
     <div class="card w-100">
         <div class="card-header bg-red-usat text-white">
-            Informe Final de Prácticas Pre Profesionales (Elaborado por la Empresa)
+            Informe Inicial de Prácticas Pre Profesionales (Elaborado por la Empresa)
         </div>
         <div class="card-body">
             <form action="" method="POST">
@@ -53,41 +53,30 @@
                     </div>
                 </fieldset>
 
-                <!-- Valoración sobre el Trabajo del Estudiante -->
+                <!-- Aceptación y Compromiso -->
                 <fieldset>
-                    <legend>Valoración sobre el Trabajo del Estudiante</legend>
+                    <legend>Aceptación y Compromiso</legend>
                     <div class="mb-3">
-                        <label for="cumplimiento_objetivos" class="form-label">Cumplimiento de los Objetivos:</label>
-                        <textarea class="form-control" id="cumplimiento_objetivos" name="cumplimiento_objetivos" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="cumplimiento_horas" class="form-label">Cumplimiento del Total de Horas Planificadas:</label>
-                        <textarea class="form-control" id="cumplimiento_horas" name="cumplimiento_horas" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="responsabilidad" class="form-label">Responsabilidad (Disciplina, Puntualidad, Horarios, Relaciones Humanas, etc.):</label>
-                        <textarea class="form-control" id="responsabilidad" name="responsabilidad" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="otros_aspectos" class="form-label">Algún Otro Aspecto de Interés:</label>
-                        <textarea class="form-control" id="otros_aspectos" name="otros_aspectos" rows="3"></textarea>
+                        <label for="aceptacion" class="form-label">Aceptación y compromiso de la empresa para atender al estudiante:</label>
+                        <textarea class="form-control" id="aceptacion" name="aceptacion" rows="3" required></textarea>
                     </div>
                 </fieldset>
 
-                <!-- Fecha y Firma -->
+                <!-- Descripción de las labores del practicante -->
+                <fieldset>
+                    <legend>Labores del Practicante</legend>
+                    <div class="mb-3">
+                        <label for="labores_practicante" class="form-label">Descripción de las labores que realizará el practicante:</label>
+                        <textarea class="form-control" id="labores_practicante" name="labores_practicante" rows="3" required></textarea>
+                    </div>
+                </fieldset>
+
+                <!-- Fecha y firma -->
                 <fieldset>
                     <legend>Fecha y Firma</legend>
                     <div class="mb-3">
                         <label for="fecha_firma" class="form-label">Fecha de la Firma:</label>
                         <input type="date" class="form-control" id="fecha_firma" name="fecha_firma" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="firma_responsable" class="form-label">Nombre y Apellidos del Responsable:</label>
-                        <input type="text" class="form-control" id="firma_responsable" name="firma_responsable" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="cargo_firma" class="form-label">Cargo del Responsable:</label>
-                        <input type="text" class="form-control" id="cargo_firma" name="cargo_firma" required>
                     </div>
                 </fieldset>
 
