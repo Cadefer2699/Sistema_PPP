@@ -7,7 +7,7 @@ def obtener_usuarios():
     usuarios = []
     try:
         with conexion.cursor() as cursor:
-            cursor.execute("SELECT idUsuario, username, password, token FROM usuario")
+            cursor.execute("SELECT idUsuario, username, password FROM usuario")
             column_names = [desc[0] for desc in cursor.description]
             rows = cursor.fetchall()
 
@@ -25,7 +25,7 @@ def obtener_usuario_con_tipopersona_por_username(username):
     usuario = None
     with conexion.cursor() as cursor:
         cursor.execute(
-            "SELECT idUsuario, username, estado, password, token FROM usuario WHERE username =  %s", (username))
+            "SELECT idUsuario, username, estado, password FROM usuario WHERE username =  %s", (username))
         usuario = cursor.fetchone()
     conexion.close()
     return usuario
@@ -35,7 +35,7 @@ def obtener_usuario_por_username(username):
     usuario = None
     with conexion.cursor() as cursor:
         cursor.execute(
-            "SELECT idusuario, username, password, estado, idpersona, token FROM usuario WHERE username = %s", (username,))
+            "SELECT idusuario, username, password, estado, idpersona FROM usuario WHERE username = %s", (username,))
         usuario = cursor.fetchone()
     conexion.close()
     return usuario
@@ -45,7 +45,7 @@ def obtener_usuario_por_id(id):
     usuario = None
     with conexion.cursor() as cursor:
         cursor.execute(
-            "SELECT idusuario, username, password, estado, idpersona, token FROM usuario WHERE idusuario = %s", (id,))
+            "SELECT idusuario, username, password, estado, idpersona FROM usuario WHERE idusuario = %s", (id,))
         usuario = cursor.fetchone()
     conexion.close()
     return usuario
@@ -64,7 +64,7 @@ def obtener_datos_usuario (id):
     usuario = None
     with conexion.cursor() as cursor:
         cursor.execute(
-            "SELECT p.nombres, p.apellidos, p.n_documento, p.correo, p.telefono, u.username, p.foto FROM persona p inner join usuario u on p.idpersona = u.idpersona WHERE idusuario = %s", (id,))
+            "SELECT p.nombre FROM persona p inner join usuario u on p.idusuario = u.idusuario WHERE u.idusuario = %s", (id,))
         usuario = cursor.fetchone()
     conexion.close()
     return usuario

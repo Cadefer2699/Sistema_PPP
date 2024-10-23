@@ -25,183 +25,21 @@
 </head>
 
 <body>
-    <div class="wrapper">
-        <!-- Pantalla de carga -->
-        <div id="loader" class="loader-wrapper">
-            <div class="loader"></div>
-        </div>
-
-        <!-- Menú Lateral (Sidebar) -->
-        {% block sidebar %}
-        <nav id="sidebar" class="sidebar js-sidebar">
-            <div class="sidebar-content js-simplebar">
-                <a class="sidebar-brand" href="{{ url_for('router_main.index') }}">
-                    <img src="{{ url_for('static', filename='login/images/usat_logo_atrás.png') }}" alt="logoescuela"
-                        style="max-width: 160px; display: flex;">
-                </a>
-
-                <ul class="sidebar-nav">
-                    <li class="sidebar-header">
-                        Inicio
-                    </li>
-
-                    <!-- Menús -->
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ url_for('router_main.estudiante') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Estudiante</span>
-                        </a>
-                    </li>
-
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ url_for('router_main.ppp') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">PPP</span>
-                        </a>
-                    </li>
-
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ url_for('router_main.docente') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Docente</span>
-                        </a>
-                    </li>
-
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ url_for('router_facultad.facultad') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Facultad</span>
-                        </a>
-                    </li>
-
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ url_for('router_main.escuela') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Escuela</span>
-                        </a>
-                    </li>
-                    <!-- Menú Informe Inicial Estudiante -->
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ url_for('router_main.informeInicialEstudiante') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Informe Inicial Estudiante</span>
-                        </a>
-                    </li>
-                    <!-- Menú Informe Inicial Empresa -->
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ url_for('router_main.informeInicialEmpresa') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Informe Inicial Empresa</span>
-                        </a>
-                    </li>
-                    <!-- Menú Informe Final Estudiante -->
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ url_for('router_main.informeFinalEstudiante') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Informe Final Estudiante</span>
-                        </a>
-                    </li>
-                    <!-- Menú Informe Final Empresa -->
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ url_for('router_main.informeFinalEmpresa') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Informe Final Empresa</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        {% endblock %}
-
-        <!-- Contenido Principal -->
-        <div class="main bg-grey-usat">
-            <!-- Barra de Navegación Superior (Navbar) -->
-            {% block navbar %}
-            <nav class="navbar navbar-expand navbar-light navbar-bg sticky-top">
-                <a class="sidebar-toggle js-sidebar-toggle">
-                    <i class="hamburger align-self-center"></i>
-                </a>
-                <div class="navbar-collapse collapse">
-                    <ul class="navbar-nav navbar-align">
-                        <li class="nav-item dropdown">
-                            <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#"
-                                data-bs-toggle="dropdown">
-                                <i class="align-middle" data-feather="settings"></i>
-                            </a>
-                            <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
-                                data-bs-toggle="dropdown">
-                                {% if foto_perfil %}
-                                    <img id="github-profile-pic" src="{{ url_for('static', filename='img/' + foto_perfil) }}"
-                                        class="avatar img-fluid rounded me-1" alt="foto_perfil" />
-                                {% endif %}
-                                <span id="usernamenav" class="text-dark">{{ usuario }}</span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item" href="{{ url_for('router_main.perfil') }}">
-                                    <i class="align-middle me-1" data-feather="user"></i>
-                                    Perfil
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" id="btnCerrarSesion" onclick="cerrarSesion()">Cerrar Sesión</a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-            {% endblock %}
-
-            <!-- Área de Contenido Dinámico -->
-            <main class="content" id="container-body" style="padding: 15px;">
-                {% block contenido %}{% endblock %}
-            </main>
-
-            <!-- Pie de Página (Footer) -->
-            <footer class="footer">
-                <div class="container-fluid">
-                    <div class="row text-muted">
-                        <div class="col-6 text-start">
-                            <p class="mb-0">
-                                <a class="text-muted" href="https://adminkit.io/" target="_blank"><strong>USAT</strong></a>
-                                - <a class="text-muted" href="https://adminkit.io/" target="_blank"><strong>2024-I</strong></a> &copy;
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </footer>
-        </div>
-    </div>
-
-    <!-- Inclusión de Scripts -->
-
-    <!-- jQuery (Versión Completa) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Popper.js (Necesario para Bootstrap) -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-zxRejdoFDcngA6sZ82AA4ZNZB8sEOB0lLw9/+8DkzjSmtLOqXiwj8ULjHzTp6NZO"
         crossorigin="anonymous"></script>
-
-    <!-- Bootstrap JS (Versión 5.3.3) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-
-    <!-- DataTables JS (Si estás usando DataTables) -->
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-
-    <!-- SweetAlert2 JS -->
     <script src="{{ url_for('static', filename='login/libs/sweetalert2/sweetalert2.js') }}"></script>
-
-    <!-- Feather Icons (Si los estás usando) -->
     <script src="https://unpkg.com/feather-icons"></script>
     <script>
         feather.replace()
     </script>
-
-    <!-- Tus Scripts Personalizados -->
     <script src="/static/js/javascript.js"></script>
 
-    <!-- Script Inline para Cerrar Sesión -->
     <script>
         function cerrarSesion() {
             localStorage.clear();

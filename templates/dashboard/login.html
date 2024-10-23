@@ -223,133 +223,107 @@
         }
     </script>
 
-    <script>
-        function mostrarAlerta(icon, title, text) {
-            Swal.fire({
-                icon: icon,
-                title: title,
-                text: text,
-                confirmButtonText: 'OK'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = '/index';
-                }
-            });
-        }
+<script>
+    function mostrarAlerta(icon, title, text) {
+        Swal.fire({
+            icon: icon,
+            title: title,
+            text: text,
+            confirmButtonText: 'OK'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/index';
+            }
+        });
+    }
+    function mostrarError(icon, title, text) {
+        Swal.fire({
+            icon: icon,
+            title: title,
+            text: text,
+            confirmButtonText: 'OK'
+        })
+    }
 
-        $('#btnLogin').click(function () {
-            var username = $('#username').val();
-            var password = $('#password').val();
-            var recordar = $('#recordar_check').prop('checked');
-            try {
-                $.ajax({
-                    url: '/login1',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
+    function procesar_login() {
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        var recordar = document.getElementById("recordar_check").checked;
+
+        if (username.trim() == "" || password.trim() == "") {
+            if (username.trim() == "" && password.trim() == "") {
+                mostrarError("warning", "No se pudo acceder al sistema",
+                    "Por favor ingrese un nombre de usuario y contraseña");
+            } else if (username.trim() == "") {
+                mostrarError("warning", "No se pudo acceder al sistema", "Por favor ingrese un nombre de usuario");
+            } else if (password.trim() == "") {
+                mostrarError("warning", "No se pudo acceder al sistema", "Por favor ingrese una contraseña");
+            }
+        } else {
+            document.getElementById("loginButton").disabled = true;
+            document.querySelector("#loginButton .spinner-border").classList.remove("d-none");
+            fetch('/procesar_login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify({
                         username: username,
                         password: password,
-                    }),
-                    success: function (response) {
-                        console.log(response);
-                        if (response.success) {
-                            mostrarAlerta("success", "OK", response.success);
-                            setTimeout(() => {
-                                window.location.href = "{{ url_for('router_main.index') }}";
-                            }, 2000);
-                        } else if (response.error) {
-                            mostrarAlerta("error", "Error al Iniciar Sesión", response.error);
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.log(error);
-                        mostrarAlerta("error", "Error en la Procesamiento de Solicitud", error);
-                    }
-                });
-            } catch (e) {
-                mostrarAlerta("error", "Error en AJAX", error.responseText);
-            }
-        });
-
-        function procesar_login() {
-            var username = document.getElementById("username").value;
-            var password = document.getElementById("password").value;
-            var recordar = document.getElementById("recordar_check").checked;
-
-            if (username.trim() == "" || password.trim() == "") {
-                if (username.trim() == "" && password.trim() == "") {
-                    mostrarAlerta("warning", "No se pudo acceder al sistema",
-                        "Por favor ingrese un nombre de usuario y contraseña");
-                } else if (username.trim() == "") {
-                    mostrarAlerta("warning", "No se pudo acceder al sistema", "Por favor ingrese un nombre de usuario");
-                } else if (password.trim() == "") {
-                    mostrarAlerta("warning", "No se pudo acceder al sistema", "Por favor ingrese una contraseña");
-                }
-            } else {
-                document.getElementById("loginButton").disabled = true;
-                document.querySelector("#loginButton .spinner-border").classList.remove("d-none");
-                fetch('/procesar_login', {
-                        method: 'POST',
-                        headers: {
-                            'Content-type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            username: username,
-                            password: password,
-                        })
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.logeo) {
-                            if (recordar) {
-                                localStorage.setItem('username', username);
-                                localStorage.setItem('token', data.token);
-                                localStorage.setItem('n', data.nombre);
-                                localStorage.setItem('f', data.foto);
-                            } else {
-                                sessionStorage.setItem('username', username);
-                                sessionStorage.setItem('token', data.token);
-                                sessionStorage.setItem('n', data.nombre);
-                                sessionStorage.setItem('f', data.foto);
-                            }
-                            document.getElementById("loginButton").disabled = false;
-                            document.querySelector("#loginButton .spinner-border").classList.add("d-none");
-
-                            mostrarAlerta("success", "Bienvenido", "Has iniciado sesión correctamente.");
-                            
-                            setTimeout(() => {
-                                window.location.href = '/index';
-                            }, 3000);
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.logeo) {
+                        if (recordar) {
+                            localStorage.setItem('username', username);
+                            localStorage.setItem('token', data.token);
+                            localStorage.setItem('n', data.nombre);
+                            localStorage.setItem('f', data.foto);
                         } else {
-                            document.getElementById("loginButton").disabled = false;
-                            document.querySelector("#loginButton .spinner-border").classList.add("d-none");
-                            mostrarAlerta("error", "No se pudo acceder al sistema", data.mensaje);
+                            sessionStorage.setItem('username', username);
+                            sessionStorage.setItem('token', data.token);
+                            sessionStorage.setItem('n', data.nombre);
+                            sessionStorage.setItem('f', data.foto);
                         }
-                    })
-                    .catch(error => {
                         document.getElementById("loginButton").disabled = false;
                         document.querySelector("#loginButton .spinner-border").classList.add("d-none");
-                        mostrarAlerta("error", "Error al acceder al sistema", error);
-                    });
-            }
+
+                        mostrarAlerta("success", "Bienvenido", "Has iniciado sesión correctamente.");
+                        
+                        setTimeout(() => {
+                            window.location.href = '/index';
+                        }, 3000);
+                    } else {
+                        document.getElementById("loginButton").disabled = false;
+                        document.querySelector("#loginButton .spinner-border").classList.add("d-none");
+                        mostrarError("error", "No se pudo acceder al sistema", data.mensaje);
+                    }
+                })
+                .catch(error => {
+                    document.getElementById("loginButton").disabled = false;
+                    document.querySelector("#loginButton .spinner-border").classList.add("d-none");
+                    mostrarError("error", "Error al acceder al sistema", error);
+                });
         }
+    }
 
-        document.getElementById("username").addEventListener('keypress', function (event) {
-            if (event.key === 'Enter') {
-                if (document.getElementById("username").value.trim().length > 0 &&
-                    document.getElementById("password").value.trim().length > 0)
-                    procesar_login();
-            }
-        });
+    document.getElementById("username").addEventListener('keypress', function (event) {
+        if (event.key === 'Enter') {
+            if (document.getElementById("username").value.trim().length > 0 &&
+                document.getElementById("password").value.trim().length > 0)
+                procesar_login();
+        }
+    });
 
-        document.getElementById("password").addEventListener('keypress', function (event) {
-            if (event.key === 'Enter') {
-                if (document.getElementById("username").value.trim().length > 0 &&
-                    document.getElementById("password").value.trim().length > 0)
-                    procesar_login();
-            }
-        });
-    </script>
+    document.getElementById("password").addEventListener('keypress', function (event) {
+        if (event.key === 'Enter') {
+            if (document.getElementById("username").value.trim().length > 0 &&
+                document.getElementById("password").value.trim().length > 0)
+                procesar_login();
+        }
+    });
+</script>
 
 </body>
 
