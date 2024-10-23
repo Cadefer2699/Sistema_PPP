@@ -11,7 +11,7 @@ def obtener_estudiantes():
     try:
         with conexion.cursor() as cursor:
             cursor.execute("""
-                SELECT p.numDoc, p.nombre, p.apellidos, p.codUniversitario, p.tel1, p.tel2, 
+                SELECT p.idPersona, p.numDoc, p.nombre, p.apellidos, p.codUniversitario, p.tel1, p.tel2, 
                        p.correoP, p.correoUSAT, p.estado, g.nombre as genero, td.nombre as tipoDocumento, 
                        e.nombre as escuela, u.username as usuario
                 FROM persona p
@@ -42,7 +42,7 @@ def obtener_estudiante_por_id(idEstudiante):
     try:
         with conexion.cursor() as cursor:
             cursor.execute("""
-                SELECT p.numDoc, p.nombre, p.apellidos, p.codUniversitario, p.tel1, p.tel2, 
+                SELECT p.idPersona, p.numDoc, p.nombre, p.apellidos, p.codUniversitario, p.tel1, p.tel2, 
                        p.correoP, p.correoUSAT, p.estado, g.nombre as genero, td.nombre as tipoDocumento, 
                        e.nombre as escuela, u.username as usuario
                 FROM persona p
@@ -86,6 +86,8 @@ def agregar_estudiante(numDoc, nombre, apellidos, codUniversitario, tel1, tel2, 
         conexion.close()
 
 def modificar_estudiante(idEstudiante, numDoc, nombre, apellidos, codUniversitario, tel1, tel2, correoP, correoUSAT, estado, idGenero, idTipoDoc, idUsuario, idEscuela):
+    if not tel2:
+        tel2 = None
     conexion = obtener_conexion()
     if not conexion:
         return {"error": "No se pudo establecer conexión con la base de datos."}

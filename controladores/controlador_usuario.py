@@ -2,11 +2,22 @@ from bd import obtener_conexion
 
 def obtener_usuarios():
     conexion = obtener_conexion()
+    if not conexion:
+        return {"error": "No se pudo establecer conexión con la base de datos."}
     usuarios = []
-    with conexion.cursor() as cursor:
-        cursor.execute("SELECT idUsuario, username, estado, password, token FROM usuario")
-        usuarios = cursor.fetchall()
-    conexion.close()
+    try:
+        with conexion.cursor() as cursor:
+            cursor.execute("SELECT idUsuario, username, password, token FROM usuario")
+            column_names = [desc[0] for desc in cursor.description]
+            rows = cursor.fetchall()
+
+            for row in rows:
+                usuario_dict = dict(zip(column_names, row))
+                usuarios.append(usuario_dict)
+    except Exception as e:
+        return {"error": str(e)}
+    finally:
+        conexion.close()
     return usuarios
 
 def obtener_usuario_con_tipopersona_por_username(username):
