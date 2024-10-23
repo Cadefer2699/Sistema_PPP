@@ -40,7 +40,7 @@ def agregar_estudiante():
 @router_estudiante.route("/modificar_estudiante", methods=["POST"])
 def modificar_estudiante():
     data = request.json
-    idEstudiante = data.get('idEstudiante')
+    idEstudiante = data.get('idPersona')
     numDoc = data.get('numDoc')
     nombre = data.get('nombre')
     apellidos = data.get('apellidos')

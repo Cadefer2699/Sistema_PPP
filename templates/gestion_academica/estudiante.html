@@ -423,7 +423,8 @@
 
                     // Agregar opciones de géneros
                     response.forEach(function (genero) {
-                        var selected = genero.idGenero == selectedGeneroId ? 'selected' : '';  // Seleccionar el género actual del estudiante
+                        // Seleccionar el género actual del estudiante
+                        var selected = parseInt(genero.idGenero) === parseInt(selectedGeneroId) ? 'selected' : '';  
                         generoSelect.append(`<option value="${genero.idGenero}" ${selected}>${genero.nombre}</option>`);
                     });
                 },
@@ -510,6 +511,7 @@
                     if (response.error) {
                         mostrarAlerta("error", "Error", response.error);
                     } else {
+                        $('#formModificarEstudiante')[0].reset();
                         $('#idEstudianteMod').val(response.idPersona);
                         $('#numDocMod').val(response.numDoc);
                         $('#nombreEstudianteMod').val(response.nombre);
@@ -546,10 +548,10 @@
                 correoP: $('#correoPMod').val(),
                 correoUSAT: $('#correoUSATMod').val(),
                 estado: $('#estadoEstudianteMod').val(),
-                idGenero: $('#generoMod').val(),
-                idTipoDoc: $('#tipoDocMod').val(),
-                idUsuario: $('#usuarioMod').val(),
-                idEscuela: $('#escuelaMod').val()
+                idGenero: $('#idGeneroMod').val(),
+                idTipoDoc: $('#idTipoDocMod').val(),
+                idUsuario: $('#idUsuarioMod').val(),
+                idEscuela: $('#idEscuelaMod').val()
             };
 
             $.ajax({
