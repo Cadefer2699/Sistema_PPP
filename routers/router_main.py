@@ -69,8 +69,9 @@ def procesar_login():
 
                 # Obtener datos del usuario para almacenar en la sesión
                 persona = controlador_usuario.obtener_datos_usuario(usuario[0])
-                nombre = persona[0]
-                #foto = persona[2]
+                nombre = persona[0].split()[0]
+                apellido = persona[1].split()[0]
+                foto = persona[2]
 
                 # Almacenar el ID del usuario en la sesión
                 session['user_id'] = usuario[0]
@@ -79,7 +80,8 @@ def procesar_login():
                 return jsonify({
                     'logeo': True,
                     'nombre': nombre,
-                    #'foto': foto
+                    'apellido': apellido,
+                    'foto': foto
                 })
             else:
                 # Aumentar el número de intentos fallidos

@@ -279,11 +279,13 @@
                             localStorage.setItem('username', username);
                             localStorage.setItem('token', data.token);
                             localStorage.setItem('n', data.nombre);
+                            localStorage.setItem('a', data.apellido);
                             localStorage.setItem('f', data.foto);
                         } else {
                             sessionStorage.setItem('username', username);
                             sessionStorage.setItem('token', data.token);
                             sessionStorage.setItem('n', data.nombre);
+                            localStorage.setItem('a', data.apellido);
                             sessionStorage.setItem('f', data.foto);
                         }
                         document.getElementById("loginButton").disabled = false;

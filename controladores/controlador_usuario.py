@@ -64,7 +64,7 @@ def obtener_datos_usuario (id):
     usuario = None
     with conexion.cursor() as cursor:
         cursor.execute(
-            "SELECT p.nombre FROM persona p inner join usuario u on p.idusuario = u.idusuario WHERE u.idusuario = %s", (id,))
+            "SELECT p.nombre, p.apellidos, p.foto FROM persona p inner join usuario u on p.idusuario = u.idusuario WHERE u.idusuario = %s", (id,))
         usuario = cursor.fetchone()
     conexion.close()
     return usuario
