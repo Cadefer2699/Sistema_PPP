@@ -44,7 +44,7 @@ def obtener_estudiante_por_id(idEstudiante):
             cursor.execute("""
                 SELECT p.idPersona, p.numDoc, p.nombre, p.apellidos, p.codUniversitario, p.tel1, p.tel2, 
                        p.correoP, p.correoUSAT, p.estado, g.nombre as genero, td.nombre as tipoDocumento, 
-                       e.nombre as escuela, u.username as usuario
+                        p.idEscuela, u.username as usuario
                 FROM persona p
                 LEFT JOIN genero g ON p.idGenero = g.idGenero
                 LEFT JOIN tipo_documento td ON p.idTipoDoc = td.idTipoDoc
