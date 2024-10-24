@@ -504,7 +504,7 @@
         $('#tabla-estudiante tbody').on('click', '.btnModificar', function () {
             var id = $(this).data('id');
             $.ajax({
-                url: '/obtener_estudiante_por_id/' + id,
+                url: '/obtener_estudiante_por_id_modificar/' + id,
                 type: 'GET',
                 contentType: 'application/json',
                 success: function (response) {
