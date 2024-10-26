@@ -8,6 +8,7 @@ from routers.router_ppp import router_practicas
 from routers.router_genero import router_genero
 from routers.router_tipoDocumento import router_tipoDocumento
 from routers.router_usuario import router_usuario
+from routers.router_tipoPracticas import router_tipoPracticas
 
 
 app = Flask(__name__)
@@ -24,6 +25,7 @@ app.register_blueprint(router_practicas)
 app.register_blueprint(router_genero)
 app.register_blueprint(router_tipoDocumento)
 app.register_blueprint(router_usuario)
+app.register_blueprint(router_tipoPracticas)
 
 
 if __name__ == "__main__":

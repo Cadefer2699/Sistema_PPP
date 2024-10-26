@@ -1,0 +1,459 @@
+{% extends "/gestion_academica/index.html" %}
+{% block titulo %} Supervisión {% endblock %}
+{% block contenido %}
+
+<nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('router_main.index') }}">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('router_main.gestion_academica') }}">Módulo de Gestión Académica</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Supervisión</li>
+    </ol>
+</nav>
+
+<div class="container-fluid my-4">
+    <div class="card w-100">
+        <div class="card-header bg-red-usat text-white" id="headingOne" data-bs-toggle="collapse"
+        data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+            Supervisión
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="tabla-supervision" class="table table-striped tabla-supervision" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">Fecha</th>
+                            <th class="text-center">Funciones</th>
+                            <th class="text-center">Observaciones</th>
+                            <th class="text-center">Estado</th>
+                            <th class="text-center">idPractica</th>
+                            <th class="text-center">Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Los datos se cargarán dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL VER SUPERVISION -->
+<div class="modal fade" id="modalVerSupervision" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detalle Supervisión</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- LOS DATOS SE CARGAN DINAMICAMENTE -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL AGREGAR SUPERVISION -->
+<div class="modal fade" id="modalAgregarSupervision" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Agregar Supervisión</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formAgregarSupervision">
+
+                    <div class="mb-3">
+                        <label for="fechaSupervision" class="form-label">Fecha:</label>
+                        <input type="text" class="form-control" id="fechaSupervision" name="fechaSupervision" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="funcionesSupervision" class="form-label">Funciones:</label>
+                        <input type="text" class="form-control" id="funcionesSupervision" name="funcionesSupervision" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="observacionesSupervision" class="form-label">Observaciones:</label>
+                        <input type="text" class="form-control" id="observacionesSupervision" name="observacionesSupervision" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="estadoSupervision" class="form-label">Estado:</label>
+                        <select class="form-control" id="estadoSupervision" name="estadoSupervision" required>
+                            <option value="A">Activo</option>
+                            <option value="I">Inactivo</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="idPractica" class="form-label">ID Práctica:</label>
+                        <input type="number" class="form-control" id="idPractica" name="idPractica" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL MODIFICAR SUPERVISION -->
+<div class="modal fade" id="modalModificarSupervision" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modificar Supervision</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formModificarSupervision">
+                    <input type="hidden" id="idSupervisionMod" name="idSupervisionMod">
+                    <div class="mb-3">
+                        <label for="fechaSupervision" class="form-label">Fecha:</label>
+                        <input type="text" class="form-control" id="fechaSupervision" name="fechaSupervision" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="funcionesSupervision" class="form-label">Supervisiones:</label>
+                        <input type="text" class="form-control" id="funcionesSupervision" name="funcionesSupervision" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="observacionesSupervision" class="form-label">Observaciones:</label>
+                        <input type="text" class="form-control" id="observacionesSupervision" name="observacionesSupervision" required> 
+                    </div>
+                    <div class="mb-3">
+                        <label for="estadoSupervision" class="form-label">Estado:</label>
+                        <select class="form-control" id="estadoSupervision" name="estadoSupervision" required>
+                            <option value="A">Activo</option>
+                            <option value="I">Inactivo</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="idPractica" class="form-label">Práctica:</label>
+                        <input type="number" class="form-control" id="idPractica" name="idPractica" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para confirmar eliminación Supervision -->
+<div class="modal fade" id="modalEliminarSupervision" tabindex="-1" aria-labelledby="modalEliminarSupervisionLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center fw-bold">Eliminar Supervisión</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center">
+                <p>¿Estás seguro de que deseas eliminar la supervisión <strong id="nombreSupervisionEliminar"></strong>?</p>
+                <input type="hidden" id="idSupervisionEliminar" name="idSupervisionEliminar">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" id="confirmarEliminarSupervision">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para confirmar dada de baja -->
+<div class="modal fade" id="modalDarDeBajaSupervision" tabindex="-1" aria-labelledby="modalDarDeBajaSupervisionLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center fw-bold">Dar de Baja Supervision</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center">
+                <p>¿Estás seguro de que deseas dar de baja la Supervisión <strong id="nombreSupervisionDarDeBaja"></strong>?</p>
+                <input type="hidden" id="idSupervisionDarDeBaja" name="idSupervisionDarDeBaja">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" id="confirmarDarDeBajaSupervision">Dar de Baja</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% block scripts %}
+    <!-- Librerías específicas para los botones de DataTables -->
+<script src="https://cdn.datatables.net/buttons/2.3.4/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.print.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        if ($.fn.DataTable.isDataTable('#tabla-supervision')) {
+            $('#tabla-supervision').DataTable().destroy();
+        }
+        var table = $('#tabla-supervsiion').DataTable({
+            paging: true, // Activamos la paginación
+            pageLength: 10, // Número de filas por página (puedes cambiarlo según tus necesidades)
+            lengthMenu: [5, 10, 15, 20], // Opciones de filas por página
+            info: true, // Mostrar información sobre el total de filas y páginas
+            responsive: true,
+            autoWidth: false,
+            searching: true,
+            order: [],
+            dom: `
+                <"row mb-3"<"col-12 text-center"B>>
+                <"row mb-3"<"col-12"f>>
+                <"row"<"col-12"rt>>
+                <"row"<"col-12"ip>>
+            `,
+            buttons: [
+                {
+                    extend: 'collection',
+                    text: '<i class="fas fa-file-export"></i> Exportar/Imprimir',
+                    className: 'btn btn-secondary mb-2',
+                    buttons: [
+                        {
+                            extend: 'copy',
+                            text: '<i class="fas fa-copy"></i> Copiar',
+                            className: 'dropdown-item'
+                        },
+                        {
+                            extend: 'csv',
+                            text: '<i class="fas fa-file-csv"></i> CSV',
+                            className: 'dropdown-item'
+                        },
+                        {
+                            extend: 'excel',
+                            text: '<i class="fas fa-file-excel"></i> Excel',
+                            className: 'dropdown-item'
+                        },
+                        {
+                            extend: 'pdf',
+                            text: '<i class="fas fa-file-pdf"></i> PDF',
+                            className: 'dropdown-item'
+                        },
+                        {
+                            extend: 'print',
+                            text: '<i class="fas fa-print"></i> Imprimir',
+                            className: 'dropdown-item'
+                        }
+                    ]
+                }, 
+                {
+                    text: '<i class="fas fa-plus"></i> Agregar Nueva Supervision',
+                    className: 'btn_agregar_supervision btn btn-primary mb-2',
+                    action: function (e, dt, node, config) {
+                        e.preventDefault();
+                        $('#formAgregarSupervision')[0].reset();
+                        $('#modalAgregarSupervision').modal('show');
+                    }
+                }
+            ],
+            ajax: {
+                url: '/datos_supervision',
+                type: 'GET',
+                dataSrc: ''
+            },
+            columns: [
+                { data: "idSupervision", className: 'text-center' },
+                { data: "fecha" },
+                { data: "funciones", className: 'text-center' },
+                { data: "observaciones", className: 'text-center' },
+                { data: "estado", className: 'text-center', render: function (data) { return data === 'A' ? 'Activo' : 'Inactivo'; } }, // Asegúrate de que en tu API devuelvas el nombre de la facultad
+                { data: "idPractica", className: 'text-center' }, // Asegúrate de que en tu API devuelvas el nombre de las horas
+                {
+                    data: null,
+                    className: 'text-center',
+                    render: function (data) {
+                        return `
+                            <button class="btn btn-primary btn-sm btnVer" data-id="${data.idSupervision}" title="Ver"><i class="fas fa-eye"></i></button>
+                            <button class="btn btn-warning btn-sm btnModificar" data-id="${data.idSupervision}" title="Modificar"><i class="fas fa-pencil-alt"></i></button>
+                            <button class="btn btn-danger btn-sm btnEliminar" data-id="${data.idSupervision}" title="Eliminar"><i class="fas fa-times"></i></button>
+                            <button class="btn btn-secondary btn-sm btnDarDeBaja" data-id="${data.idSupervision}" title="Dar de Baja"><i class="fas fa-arrow-down"></i></button>
+                            
+                        `;
+                    }
+                }
+            ],
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+            }
+        });
+
+        // Evento para agregar supervisión
+        $('#formAgregarSupervision').submit(function (e) {
+            e.preventDefault();
+            var data = {
+                fecha: $('#fechaSupervision').val(),
+                funciones: $('#funcionesSupervision').val(),
+                observaciones: $('#observacionesSupervision').val(),
+                estado: $('#estadoSupervision').val(),
+                idPractica: $('#idPracatica').val()
+            };
+
+            $.ajax({
+                url: '/agregar_supervision',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (response) {
+                    Swal.fire('Éxito', response.mensaje, 'success');
+                    table.ajax.reload();
+                    $('#modalAgregarSupervision').modal('hide');
+                },
+                error: function () {
+                    Swal.fire('Error', 'Hubo un error al agregar la supervisión.', 'error');
+                }
+            });
+        });
+
+        // Evento para mostrar el modal de agregar supervisión
+        $('#btnAgregarSupervision').click(function () {
+            $('#formAgregarSupervision')[0].reset();
+            $('#modalAgregarSupervision').modal('show');
+            //cargarFacultades(); // Cargar facultades en el modal
+            //cargarHoras(); // Cargar horas en el modal
+        });
+
+        // Función para cargar facultades
+        function cargarFacultades() {
+            $.ajax({
+                url: '/facultades', // Asegúrate de que esta ruta exista y devuelva la lista de facultades
+                type: 'GET',
+                success: function (data) {
+                    $('#idFacultad').empty();
+                    $.each(data, function (index, facultad) {
+                        $('#idFacultad').append(`<option value="${facultad.idFacultad}">${facultad.nombre}</option>`);
+                    });
+                },
+                error: function () {
+                    Swal.fire('Error', 'No se pudieron cargar las facultades.', 'error');
+                }
+            });
+        }
+
+        // Función para cargar horas
+        function cargarHoras() {
+            $.ajax({
+                url: '/horas', // Asegúrate de que esta ruta exista y devuelva la lista de horas
+                type: 'GET',
+                success: function (data) {
+                    $('#idHoras').empty();
+                    $.each(data, function (index, horas) {
+                        $('#idHoras').append(`<option value="${horas.idHoras}">${horas.descripcion}</option>`);
+                    });
+                },
+                error: function () {
+                    Swal.fire('Error', 'No se pudieron cargar las horas.', 'error');
+                }
+            });
+        }
+
+        // Evento para ver detalles de la escuela
+        $('#tabla-escuela tbody').on('click', '.btnVer', function () {
+            var id = $(this).data('id');
+            $.ajax({
+                url: '/obtener_escuela_por_id/' + id,
+                type: 'GET',
+                success: function (data) {
+                    $('#modalVerEscuela .modal-body').html(`
+                        <p><strong>ID:</strong> ${data.idEscuela}</p>
+                        <p><strong>Nombre:</strong> ${data.nombre}</p>
+                        <p><strong>Abreviatura:</strong> ${data.abreviatura}</p>
+                        <p><strong>Estado:</strong> ${data.estado === 'A' ? 'Activo' : 'Inactivo'}</p>
+                        <p><strong>Facultad:</strong> ${data.nombreFacultad}</p>
+                        <p><strong>Horas:</strong> ${data.nombreHoras}</p>
+                    `);
+                    $('#modalVerEscuela').modal('show');
+                },
+                error: function () {
+                    Swal.fire('Error', 'Hubo un error al obtener los detalles de la escuela.', 'error');
+                }
+            });
+        });
+
+        // Evento para mostrar el modal de modificar escuela
+        $('#tabla-escuela tbody').on('click', '.btnModificar', function () {
+            var id = $(this).data('id');
+            $.ajax({
+                url: '/ver_escuela/' + id,
+                type: 'GET',
+                success: function (data) {
+                    $('#idEscuelaMod').val(data.idEscuela);
+                    $('#nombreEscuelaMod').val(data.nombre);
+                    $('#abreviaturaEscuelaMod').val(data.abreviatura);
+                    $('#estadoEscuelaMod').val(data.estado);
+                    $('#idFacultadMod').val(data.nombreFacultad); // Prepara la facultad correspondiente
+                    $('#idHorasMod').val(data.idHoras); // Prepara las horas correspondientes
+                    $('#modalModificarEscuela').modal('show');
+                },
+                error: function () {
+                    Swal.fire('Error', 'Hubo un error al obtener los detalles de la escuela.', 'error');
+                }
+            });
+        });
+
+        // Evento para modificar la escuela
+        $('#formModificarEscuela').submit(function (e) {
+            e.preventDefault();
+            var data = {
+                id: $('#idEscuelaMod').val(),
+                nombre: $('#nombreEscuelaMod').val(),
+                abreviatura: $('#abreviaturaEscuelaMod').val(),
+                estado: $('#estadoEscuelaMod').val(),
+                idFacultad: $('#idFacultadMod').val(),
+                idHoras: $('#idHorasMod').val()
+            };
+
+            $.ajax({
+                url: '/modificar_escuela',
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (response) {
+                    Swal.fire('Éxito', response.mensaje, 'success');
+                    table.ajax.reload();
+                    $('#modalModificarEscuela').modal('hide');
+                },
+                error: function () {
+                    Swal.fire('Error', 'Hubo un error al modificar la escuela.', 'error');
+                }
+            });
+        });
+
+        // Evento para eliminar escuela
+        $('#tabla-supervision tbody').on('click', '.btnEliminar', function () {
+            var id = $(this).data('id');
+            var nombre = $(this).closest('tr').find('td:nth-child(2)').text();
+            $('#nombreEscuelaEliminar').text(nombre);
+            $('#idEscuelaEliminar').val(id);
+            $('#modalEliminarSupervision').modal('show');
+        });
+
+        $('#confirmarEliminarEscuela').click(function () {
+            var id = $('#idEscuelaEliminar').val();
+            $.ajax({
+                url: '/eliminar_escuela/' + id,
+                type: 'DELETE',
+                success: function (response) {
+                    Swal.fire('Éxito', response.mensaje, 'success');
+                    table.ajax.reload();
+                    $('#modalEliminarEscuela').modal('hide');
+                },
+                error: function () {
+                    Swal.fire('Error', 'Hubo un error al eliminar la escuela.', 'error');
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
+{% endblock %}

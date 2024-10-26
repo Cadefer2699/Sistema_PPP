@@ -115,7 +115,15 @@ def facultad():
 
 @router_main.route("/escuela")
 def escuela():
-    return render_template('/gestion_academica/escuela.html') 
+    return render_template('/gestion_academica/escuela.html')
+
+@router_main.route("/supervision") 
+def supervision(): 
+    return render_template('gestion_academica/supervision.html')
+
+@router_main.route("/tipopracticas")
+def tipopracticas(): 
+    return render_template('gestion_academica/tipoPracticas.html')
 
 @router_main.route("/InformeInicialEstudiante")
 def informeInicialEstudiante():
