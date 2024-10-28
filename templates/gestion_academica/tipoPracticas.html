@@ -180,20 +180,20 @@
 <script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.print.min.js"></script>
 
 <script>
-    // Inicialización de la tabla de tipos de prácticas
+
     $(document).ready(function () {
-        //Verificar que la tabla exista en el DOM
+
         if ($.fn.DataTable.isDataTable('#tabla-tipoPractica')) {
-            $('#tabla-tipoPractica').DataTable().destroy();
+            $('#tabla-tipoPractica').DataTable().destroy(); //destruye la instancia previa...
         }
+    
         var table = $('#tabla-tipoPractica').DataTable({
-            paging: true, // Activamos la paginación
-            pageLength: 10, // Número de filas por página (puedes cambiarlo según tus necesidades)
-            lengthMenu: [5, 10, 15, 20], // Opciones de filas por página
-            info: true, // Mostrar información sobre el total de filas y páginas
+            paging: false, // Activamos la paginación
+            info: false, // Mostrar información sobre el total de filas y páginas
             responsive: true,
             autoWidth: false,
             searching: true,
+            scrollY: "510px",
             order: [],
             dom: `
                 <"row mb-3"<"col-12 text-center"B>>
@@ -207,33 +207,33 @@
                     text: '<i class="fas fa-file-export"></i> Exportar/Imprimir',
                     className: 'btn btn-secondary mb-2',
                     buttons: [
-                        {
-                            extend: 'copy',
-                            text: '<i class="fas fa-copy"></i> Copiar',
-                            className: 'dropdown-item'
+                        { 
+                            extend: 'copy', 
+                            text: '<i class="fas fa-copy"></i> Copiar', 
+                            className: 'dropdown-item' 
                         },
-                        {
-                            extend: 'csv',
-                            text: '<i class="fas fa-file-csv"></i> CSV',
-                            className: 'dropdown-item'
+                        { 
+                            extend: 'csv', 
+                            text: '<i class="fas fa-file-csv"></i> CSV', 
+                            className: 'dropdown-item' 
                         },
-                        {
-                            extend: 'excel',
-                            text: '<i class="fas fa-file-excel"></i> Excel',
-                            className: 'dropdown-item'
+                        { 
+                            extend: 'excel', 
+                            text: '<i class="fas fa-file-excel"></i> Excel', 
+                            className: 'dropdown-item' 
                         },
-                        {
-                            extend: 'pdf',
-                            text: '<i class="fas fa-file-pdf"></i> PDF',
-                            className: 'dropdown-item'
+                        { 
+                            extend: 'pdf', 
+                            text: '<i class="fas fa-file-pdf"></i> PDF', 
+                            className: 'dropdown-item' 
                         },
-                        {
-                            extend: 'print',
-                            text: '<i class="fas fa-print"></i> Imprimir',
-                            className: 'dropdown-item'
+                        { 
+                            extend: 'print', 
+                            text: '<i class="fas fa-print"></i> Imprimir', 
+                            className: 'dropdown-item' 
                         }
                     ]
-                }, 
+                },
                 {
                     text: '<i class="fas fa-plus"></i> Agregar Nuevo Tipo Práctica',
                     className: 'btn_agregar_tipopractica btn btn-primary mb-2',
@@ -244,40 +244,52 @@
                     }
                 }
             ],
-
             ajax: {
                 url: '/datos_tipopracticas',
                 type: 'GET',
-                dataSrc: '', 
-                success: function(data){
-                    console.log(data); //verifica los datos si estan llegando....
-                }
+                dataSrc: ""
             },
+            processing: true,
+            serverSide: false,
             columns: [
                 { data: "idTipoPractica", className: 'text-center' },
-                { data: "nombre" },
+                { data: "nombre", className: 'text-center' },
                 { data: "abreviatura", className: 'text-center' },
-                { data: "estado", className: 'text-center', render: function (data) { return data === 'A' ? 'Activo' : 'Inactivo'; } },
-                
+                {
+                    data: "estado",
+                    className: 'text-center',
+                    render: function (data, type, row) {
+                        return data === 'A' ? 'Activo' : 'Inactivo';
+                    }
+                },
                 {
                     data: null,
                     className: 'text-center',
-                    render: function (data) {
+                    render: function (data, type, row) {
                         return `
-                            <button class="btn btn-primary btn-sm btnVer" data-id="${data.idTipoPractica}" title="Ver"><i class="fas fa-eye"></i></button>
-                            <button class="btn btn-warning btn-sm btnModificar" data-id="${data.idTipoPractica}" title="Modificar"><i class="fas fa-pencil-alt"></i></button>
-                            <button class="btn btn-danger btn-sm btnEliminar" data-id="${data.idTipoPractica}" title="Eliminar"><i class="fas fa-times"></i></button>
-                            <button class="btn btn-secondary btn-sm btnDarDeBaja" data-id="${data.idTipoPractica}" title="Dar de Baja"><i class="fas fa-arrow-down"></i></button>
-                            
+                            <button class="btn btn-primary btn-sm btnVer" data-id="${row.idTipoPractica}" title="Ver"><i class="fas fa-eye"></i></button>
+                            <button class="btn btn-warning btn-sm btnModificar" data-id="${row.idTipoPractica}" title="Modificar"><i class="fas fa-pencil-alt"></i></button>
+                            <button class="btn btn-danger btn-sm btnEliminar" data-id="${row.idTipoPractica}" data-nombre="${row.nombre}" title="Eliminar"><i class="fas fa-times"></i></button>
+                            <button class="btn btn-secondary btn-sm btnDarBaja" data-id="${row.idTipoPractica}" title="DarBaja"><i class="fas fa-arrow-down"></i></button>
                         `;
                     }
                 }
-            ],
-            language: {
-                url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+            ], 
+            "language": {
+                url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
             }
         });
 
+        //Función para mostrar alertas 
+        function mostrarAlerta(tipo, titulo, mensaje){
+            Swal.fire({
+                icon: tipo, 
+                title: titulo, 
+                html: mensaje, 
+                showConfirmButton: true, 
+                timer: 5000
+            })
+        }
 
         // Evento para agregar Tipo Practicas
         $('#formAgregarTipoPractica').submit(function (e) {

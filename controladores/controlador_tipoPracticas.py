@@ -55,7 +55,7 @@ def agregar_tipopractica(nombre, abreviatura, estado):
             cursor.execute("""
                 INSERT INTO tipo_practicas (nombre, abreviatura, estado)
                 VALUES (%s, %s, %s)
-            """), (nombre, abreviatura, estado)
+            """, (nombre, abreviatura, estado))
             conexion.commit()
             return {"mensaje": "Tipo de prácticas agregada correctamente"}
     except Exception as e: 
@@ -80,7 +80,7 @@ def modificar_tipopractica(idTipoPractica, nombre, abreviatura, estado):
                 UPDATE tipo_practicas
                 SET nombre = %s, abreviatura = %s, estado = %s
                 WHERE idTipoPractica = %s
-            """), (nombre, abreviatura, estado, idTipoPractica)
+            """, (nombre, abreviatura, estado, idTipoPractica))
             conexion.commit()
             return {"mensaje": "Tipo de prácticas modificada correctamente"}
     except Exception as e: 
@@ -98,7 +98,7 @@ def eliminar_tipopractica(idTipoPractica):
         return {"error": "No se pudo establecer conexión con la base de datos."}
     try: 
         with conexion.cursor() as cursor: 
-            cursor.execute("DELETE FROM tipo_practicas WHERE idTipoPractica = %s"), (idTipoPractica,)
+            cursor.execute("DELETE FROM tipo_practicas WHERE idTipoPractica = %s", (idTipoPractica,))
             conexion.commit()
             return {"mensaje": "Tipo de práctica eliminada correctamente."}
     except Exception as e: 
@@ -116,7 +116,7 @@ def dar_de_baja_tipopractica(idTipoPractica):
         return {"error": "No se pudo establecer conexión con la base de datos."}
     try: 
         with conexion.cursor() as cursor: 
-            cursor.execute("UPDATE tipo_practicas SET estado = 'I' WHERE idTipoPractica = %s"), (idTipoPractica,)
+            cursor.execute("UPDATE tipo_practicas SET estado = 'I' WHERE idTipoPractica = %s", (idTipoPractica,))
             conexion.commit()
             return {"mensaje": "Tipo de práctica dado de baja correctamente."}
     except Exception as e: 
