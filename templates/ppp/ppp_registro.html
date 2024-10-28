@@ -5,12 +5,12 @@
     <ol class="breadcrumb"  style="padding-bottom: 0px; margin-bottom: -10px;">
         <li class="breadcrumb-item"><a href="{{ url_for('router_main.index') }}">Inicio</a></li>
         <li class="breadcrumb-item"><a href="{{ url_for('router_main.practicas_pre_profesionales') }}">Módulo de Prácticas Pre Profesionales</a></li>
-        <li class="breadcrumb-item active"><a href="{{ url_for('router_main.informeFinalEstudiante') }}">Prácticas Pre Profesionales</a></li>
+        <li class="breadcrumb-item active"><a href="{{ url_for('router_main.ppp') }}">Prácticas Pre Profesionales</a></li>
     </ol>
 </nav>
 <style>
     body {
-        overflow: hidden;
+        overflow: auto;
     }
     .scrollable {
       height: 42%;
@@ -20,7 +20,7 @@
 <div class="container-fluid my-4">
     <div class="card w-100" style="height: 100%;">
         <div class="card-header bg-red-usat text-white">
-            Informe Final de Prácticas Pre Profesionales (Estudiante)
+            Prácticas Pre Profesionales
         </div>
         <div class="card-body scrollable">
             <form action="" method="POST">
