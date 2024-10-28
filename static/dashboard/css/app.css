@@ -380,7 +380,10 @@ th,
 thead,
 tr {
     border: 0 solid;
-    border-color: inherit
+    border-color: inherit;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 label {
@@ -2138,7 +2141,8 @@ progress {
     border-color: var(--bs-table-border-color);
     margin-bottom: 1rem;
     vertical-align: top;
-    width: 100%
+    width: 100%;
+    table-layout: fixed;
 }
 
 .table>:not(caption)>*>* {

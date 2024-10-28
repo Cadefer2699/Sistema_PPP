@@ -22,15 +22,11 @@
     color: #E33439
 }
 .table-responsive {
-    overflow-x: auto;
+    overflow-x: hidden;
 }
 
 .card-footer {
     text-align: center;
-}
-
-.table-responsive {
-    overflow-x: auto;
 }
 
 .card-footer {

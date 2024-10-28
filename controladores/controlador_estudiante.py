@@ -44,7 +44,7 @@ def obtener_estudiante_por_id(idEstudiante):
             cursor.execute("""
                 SELECT p.idPersona, p.numDoc, p.nombre, p.apellidos, p.codUniversitario, p.tel1, p.tel2, 
                        p.correoP, p.correoUSAT, p.estado, g.nombre as genero, td.nombre as tipoDocumento, 
-                       e.nombre as escuela, u.username as usuario
+                        e.nombre as escuela, u.username as usuario
                 FROM persona p
                 LEFT JOIN genero g ON p.idGenero = g.idGenero
                 LEFT JOIN tipo_documento td ON p.idTipoDoc = td.idTipoDoc
@@ -64,6 +64,35 @@ def obtener_estudiante_por_id(idEstudiante):
         return {"error": str(e)}
     finally:
         conexion.close()
+
+def obtener_estudiante_por_id_modificar(idEstudiante):
+    conexion = obtener_conexion()
+    if not conexion:
+        return {"error": "No se pudo establecer conexión con la base de datos."}
+
+    estudiante = None
+    try:
+        with conexion.cursor() as cursor:
+            cursor.execute("""
+                SELECT p.idPersona, p.numDoc, p.nombre, p.apellidos, p.codUniversitario, p.tel1, p.tel2, 
+                       p.correoP, p.correoUSAT, p.estado, p.idGenero, p.idTipoDoc, 
+                        p.idEscuela, p.idUsuario
+                FROM persona p
+                WHERE p.idPersona = %s
+            """, (idEstudiante,))
+            row = cursor.fetchone()
+
+            if row:
+                columnas = [desc[0] for desc in cursor.description]
+                estudiante_dict = dict(zip(columnas, row))
+                return estudiante_dict
+            else:
+                return {"error": "Estudiante no encontrado"}
+    except Exception as e:
+        return {"error": str(e)}
+    finally:
+        conexion.close()
+
 
 def agregar_estudiante(numDoc, nombre, apellidos, codUniversitario, tel1, tel2, correoP, correoUSAT, estado, idGenero, idTipoDoc, idUsuario, idEscuela):
     conexion = obtener_conexion()

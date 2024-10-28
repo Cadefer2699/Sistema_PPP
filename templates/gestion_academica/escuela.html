@@ -3,13 +3,13 @@
 {% block contenido %}
 
 <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb"  style="padding-bottom: 0px; margin-bottom: -10px;">
         <li class="breadcrumb-item"><a href="{{ url_for('router_main.index') }}">Inicio</a></li>
         <li class="breadcrumb-item"><a href="{{ url_for('router_main.gestion_academica') }}">Módulo de Gestión Académica</a></li>
         <li class="breadcrumb-item active" aria-current="page">Escuelas</li>
     </ol>
 </nav>
-
+    
 <div class="container-fluid my-4">
     <div class="card w-100">
         <div class="card-header bg-red-usat text-white" id="headingOne" data-bs-toggle="collapse"
@@ -26,7 +26,7 @@
                             <th class="text-center">Abreviatura</th>
                             <th class="text-center">Estado</th>
                             <th class="text-center">Facultad</th>
-                            <th class="text-center">Horas Requeridas</th>
+                            <th class="text-center">Horas para PPP</th>
                             <th class="text-center">Opciones</th>
                         </tr>
                     </thead>
@@ -49,6 +49,14 @@
             </div>
             <div class="modal-body">
                 <!-- LOS DATOS SE CARGAN DINAMICAMENTE -->
+                <table class="table table-striped table-bordered">
+                    <tr><th>ID</th><td id="detalleIdEscuela"></td></tr>
+                    <tr><th>Nombre</th><td id="detalleNombreEscuela"></td></tr>
+                    <tr><th>Abreviatura</th><td id="detalleAbreviaturaEscuela"></td></tr>
+                    <tr><th>Estado</th><td id="detalleEstadoEscuela"></td></tr>
+                    <tr><th>Facultad</th><td id="detalleFacultadEscuela"></td></tr>
+                    <tr><th>Horas para PPP</th><td id="detalleHorasEscuela"></td></tr>
+                </table>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
@@ -83,14 +91,14 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="estadoEscuela" class="form-label">Facultad:</label>
-                        <select class="form-control" id="estadoEscuela" name="estadoEscuela" required>
-                            <option value="A">Facultad de Derecho</option>
+                        <label for="facultadEscuela" class="form-label">Facultad:</label>
+                        <select class="form-control" id="facultadEscuela" name="facultadEscuela" required>
+                            <!-- Cargar facultades dinámicamente -->
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="abreviaturaEscuela" class="form-label">Horas Requeridas:</label>
-                        <input type="number" class="form-control" id="abreviaturaEscuela" name="abreviaturaEscuela" required>
+                        <label for="horasEscuela" class="form-label">Horas para PPP:</label>
+                        <input type="number" class="form-control" id="horasEscuela" name="horasEscuela" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Guardar</button>
                 </form>
@@ -111,29 +119,29 @@
                 <form id="formModificarEscuela">
                     <input type="hidden" id="idEscuelaMod" name="idEscuelaMod">
                     <div class="mb-3">
-                        <label for="nombreEscuela" class="form-label">Nombre:</label>
-                        <input type="text" class="form-control" id="nombreEscuela" name="nombreEscuela" required>
+                        <label for="nombreEscuelaMod" class="form-label">Nombre:</label>
+                        <input type="text" class="form-control" id="nombreEscuelaMod" name="nombreEscuelaMod" required>
                     </div>
                     <div class="mb-3">
-                        <label for="abreviaturaEscuela" class="form-label">Abreviatura:</label>
-                        <input type="text" class="form-control" id="abreviaturaEscuela" name="abreviaturaEscuela" required>
+                        <label for="abreviaturaEscuelaMod" class="form-label">Abreviatura:</label>
+                        <input type="text" class="form-control" id="abreviaturaEscuelaMod" name="abreviaturaEscuelaMod" required>
                     </div>
                     <div class="mb-3">
-                        <label for="estadoEscuela" class="form-label">Estado:</label>
-                        <select class="form-control" id="estadoEscuela" name="estadoEscuela" required>
+                        <label for="estadoEscuelaMod" class="form-label">Estado:</label>
+                        <select class="form-control" id="estadoEscuelaMod" name="estadoEscuelaMod" required>
                             <option value="A">Activo</option>
                             <option value="I">Inactivo</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="estadoEscuela" class="form-label">Facultad:</label>
-                        <select class="form-control" id="estadoEscuela" name="estadoEscuela" required>
-                            <option value="A">Facultad de Derecho</option>
+                        <label for="facultadEscuelaMod" class="form-label">Facultad:</label>
+                        <select class="form-control" id="facultadEscuelaMod" name="facultadEscuelaMod" required>
+                            <!-- Cargar facultades dinámicamente -->
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="abreviaturaEscuela" class="form-label">Horas Requeridas:</label>
-                        <input type="number" class="form-control" id="abreviaturaEscuela" name="abreviaturaEscuela" required>
+                        <label for="horasEscuelaMod" class="form-label">Horas para PPP:</label>
+                        <input type="number" class="form-control" id="horasEscuelaMod" name="horasEscuelaMod" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                 </form>
@@ -183,8 +191,9 @@
         </div>
     </div>
 </div>
+
 {% block scripts %}
-    <!-- Librerías específicas para los botones de DataTables -->
+<!-- Librerías específicas para los botones de DataTables -->
 <script src="https://cdn.datatables.net/buttons/2.3.4/js/dataTables.buttons.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
@@ -198,10 +207,10 @@
             $('#tabla-escuela').DataTable().destroy();
         }
         var table = $('#tabla-escuela').DataTable({
-            paging: true, // Activamos la paginación
-            pageLength: 10, // Número de filas por página (puedes cambiarlo según tus necesidades)
-            lengthMenu: [5, 10, 15, 20], // Opciones de filas por página
-            info: true, // Mostrar información sobre el total de filas y páginas
+            paging: true,
+            pageLength: 5,
+            lengthMenu: [5, 10, 15, 20],
+            info: true,
             responsive: true,
             autoWidth: false,
             searching: true,
@@ -265,8 +274,8 @@
                 { data: "nombre" },
                 { data: "abreviatura", className: 'text-center' },
                 { data: "estado", className: 'text-center', render: function (data) { return data === 'A' ? 'Activo' : 'Inactivo'; } },
-                { data: "facultad", className: 'text-center' }, // Asegúrate de que en tu API devuelvas el nombre de la facultad
-                { data: "hRequeridas", className: 'text-center' }, // Asegúrate de que en tu API devuelvas el nombre de las horas
+                { data: "facultad", className: 'text-center' },
+                { data: "hRequeridas", className: 'text-center' },
                 {
                     data: null,
                     className: 'text-center',
@@ -276,14 +285,35 @@
                             <button class="btn btn-warning btn-sm btnModificar" data-id="${data.idEscuela}" title="Modificar"><i class="fas fa-pencil-alt"></i></button>
                             <button class="btn btn-danger btn-sm btnEliminar" data-id="${data.idEscuela}" title="Eliminar"><i class="fas fa-times"></i></button>
                             <button class="btn btn-secondary btn-sm btnDarDeBaja" data-id="${data.idEscuela}" title="Dar de Baja"><i class="fas fa-arrow-down"></i></button>
-                            
                         `;
                     }
                 }
             ],
             language: {
-                url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+                url: "{{ url_for('static', filename='js/es-ES.json') }}"
             }
+        });
+
+        // Evento para ver detalles de una escuela
+        $('#tabla-escuela tbody').on('click', '.btnVer', function () {
+            var id = $(this).data('id');
+            $.ajax({
+                url: '/obtener_escuela_por_id/' + id,
+                type: 'GET',
+                success: function (data) {
+                    // Mostrar los datos en el modal de detalle
+                    $('#detalleIdEscuela').text(data.idEscuela);
+                    $('#detalleNombreEscuela').text(data.nombre);
+                    $('#detalleAbreviaturaEscuela').text(data.abreviatura);
+                    $('#detalleEstadoEscuela').text(data.estado === 'A' ? 'Activo' : 'Inactivo');
+                    $('#detalleFacultadEscuela').text(data.facultad);
+                    $('#detalleHorasEscuela').text(data.hRequeridas);
+                    $('#modalVerEscuela').modal('show');
+                },
+                error: function () {
+                    Swal.fire('Error', 'Hubo un error al obtener los detalles de la escuela.', 'error');
+                }
+            });
         });
 
         // Evento para agregar escuela
@@ -293,8 +323,8 @@
                 nombre: $('#nombreEscuela').val(),
                 abreviatura: $('#abreviaturaEscuela').val(),
                 estado: $('#estadoEscuela').val(),
-                idFacultad: $('#idFacultad').val(),
-                idHoras: $('#idHoras').val()
+                idFacultad: $('#facultadEscuela').val(),
+                idHoras: $('#horasEscuela').val()
             };
 
             $.ajax({
@@ -313,84 +343,19 @@
             });
         });
 
-        // Evento para mostrar el modal de agregar escuela
-        $('#btnAgregarEscuela').click(function () {
-            $('#formAgregarEscuela')[0].reset();
-            $('#modalAgregarEscuela').modal('show');
-            cargarFacultades(); // Cargar facultades en el modal
-            cargarHoras(); // Cargar horas en el modal
-        });
-
-        // Función para cargar facultades
-        function cargarFacultades() {
-            $.ajax({
-                url: '/facultades', // Asegúrate de que esta ruta exista y devuelva la lista de facultades
-                type: 'GET',
-                success: function (data) {
-                    $('#idFacultad').empty();
-                    $.each(data, function (index, facultad) {
-                        $('#idFacultad').append(`<option value="${facultad.idFacultad}">${facultad.nombre}</option>`);
-                    });
-                },
-                error: function () {
-                    Swal.fire('Error', 'No se pudieron cargar las facultades.', 'error');
-                }
-            });
-        }
-
-        // Función para cargar horas
-        function cargarHoras() {
-            $.ajax({
-                url: '/horas', // Asegúrate de que esta ruta exista y devuelva la lista de horas
-                type: 'GET',
-                success: function (data) {
-                    $('#idHoras').empty();
-                    $.each(data, function (index, horas) {
-                        $('#idHoras').append(`<option value="${horas.idHoras}">${horas.descripcion}</option>`);
-                    });
-                },
-                error: function () {
-                    Swal.fire('Error', 'No se pudieron cargar las horas.', 'error');
-                }
-            });
-        }
-
-        // Evento para ver detalles de la escuela
-        $('#tabla-escuela tbody').on('click', '.btnVer', function () {
-            var id = $(this).data('id');
-            $.ajax({
-                url: '/obtener_escuela_por_id/' + id,
-                type: 'GET',
-                success: function (data) {
-                    $('#modalVerEscuela .modal-body').html(`
-                        <p><strong>ID:</strong> ${data.idEscuela}</p>
-                        <p><strong>Nombre:</strong> ${data.nombre}</p>
-                        <p><strong>Abreviatura:</strong> ${data.abreviatura}</p>
-                        <p><strong>Estado:</strong> ${data.estado === 'A' ? 'Activo' : 'Inactivo'}</p>
-                        <p><strong>Facultad:</strong> ${data.nombreFacultad}</p>
-                        <p><strong>Horas:</strong> ${data.nombreHoras}</p>
-                    `);
-                    $('#modalVerEscuela').modal('show');
-                },
-                error: function () {
-                    Swal.fire('Error', 'Hubo un error al obtener los detalles de la escuela.', 'error');
-                }
-            });
-        });
-
-        // Evento para mostrar el modal de modificar escuela
+        // Evento para modificar escuela
         $('#tabla-escuela tbody').on('click', '.btnModificar', function () {
             var id = $(this).data('id');
             $.ajax({
-                url: '/ver_escuela/' + id,
+                url: '/obtener_escuela_por_id/' + id,
                 type: 'GET',
                 success: function (data) {
                     $('#idEscuelaMod').val(data.idEscuela);
                     $('#nombreEscuelaMod').val(data.nombre);
                     $('#abreviaturaEscuelaMod').val(data.abreviatura);
                     $('#estadoEscuelaMod').val(data.estado);
-                    $('#idFacultadMod').val(data.nombreFacultad); // Prepara la facultad correspondiente
-                    $('#idHorasMod').val(data.idHoras); // Prepara las horas correspondientes
+                    $('#facultadEscuelaMod').val(data.idFacultad);
+                    $('#horasEscuelaMod').val(data.idHoras);
                     $('#modalModificarEscuela').modal('show');
                 },
                 error: function () {
@@ -399,21 +364,21 @@
             });
         });
 
-        // Evento para modificar la escuela
+        // Guardar los cambios en la modificación
         $('#formModificarEscuela').submit(function (e) {
             e.preventDefault();
             var data = {
-                id: $('#idEscuelaMod').val(),
+                idEscuela: $('#idEscuelaMod').val(),
                 nombre: $('#nombreEscuelaMod').val(),
                 abreviatura: $('#abreviaturaEscuelaMod').val(),
                 estado: $('#estadoEscuelaMod').val(),
-                idFacultad: $('#idFacultadMod').val(),
-                idHoras: $('#idHorasMod').val()
+                idFacultad: $('#facultadEscuelaMod').val(),
+                idHoras: $('#horasEscuelaMod').val()
             };
 
             $.ajax({
                 url: '/modificar_escuela',
-                type: 'PUT',
+                type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(data),
                 success: function (response) {
@@ -448,6 +413,33 @@
                 },
                 error: function () {
                     Swal.fire('Error', 'Hubo un error al eliminar la escuela.', 'error');
+                }
+            });
+        });
+
+        // Evento para dar de baja escuela
+        $('#tabla-escuela tbody').on('click', '.btnDarDeBaja', function () {
+            var id = $(this).data('id');
+            var nombre = $(this).closest('tr').find('td:nth-child(2)').text();
+            $('#nombreEscuelaDarDeBaja').text(nombre);
+            $('#idEscuelaDarDeBaja').val(id);
+            $('#modalDarDeBajaEscuela').modal('show');
+        });
+
+        $('#confirmarDarDeBajaEscuela').click(function () {
+            var id = $('#idEscuelaDarDeBaja').val();
+            $.ajax({
+                url: '/dar_de_baja_escuela',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ idEscuela: id }),
+                success: function (response) {
+                    Swal.fire('Éxito', response.mensaje, 'success');
+                    table.ajax.reload();
+                    $('#modalDarDeBajaEscuela').modal('hide');
+                },
+                error: function () {
+                    Swal.fire('Error', 'Hubo un error al dar de baja la escuela.', 'error');
                 }
             });
         });

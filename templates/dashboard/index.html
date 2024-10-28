@@ -130,6 +130,16 @@
         .navbar-custom .nav-link:hover {
             color: #e0e0e0;
         }
+        .avatar {
+            width: 40px; /* Ajusta el tamaño de la imagen según sea necesario */
+            height: 40px; /* Ajusta el tamaño de la imagen según sea necesario */
+            border-radius: 50%; /* Hace la imagen circular */
+            border: 1px solid white; /* Aplica un borde blanco delgado */
+            object-fit: cover; /* Asegura que la imagen se ajuste al contenedor */
+            background-color: lightgray;
+            margin-top: -10px;
+            margin-bottom: -10px;
+        }
     </style>
 </head>
 
@@ -137,35 +147,25 @@
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container-fluid">
             <span class="navbar-text me-auto">
-                Bienvenido al sistema, <span id="nombreUsuario"></span>!
+                Bienvenido al sistema, <span id="nombreUsuario"></span> <span id="apellidoUsuario"></span>!
             </span>
             <ul class="navbar-nav navbar-align">
                 <li class="nav-item dropdown">
-                    <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#"
-                        data-bs-toggle="dropdown">
-                        <i class="align-middle" data-feather="settings"></i>
-                    </a>
-                    <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
-                        data-bs-toggle="dropdown">
-                        {% if foto_perfil %}
-                            <img id="github-profile-pic" src="{{ url_for('static', filename='img/' + foto_perfil) }}"
-                                class="avatar img-fluid rounded me-1" alt="foto_perfil" />
-                        {% endif %}
-                        <span id="usernamenav" class="text-dark">{{ usuario }}</span>
+                    <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+                        <img id="github-profile-pic" src="" alt="foto_perfil" class="avatar" />
+                        <span id="usernamenav" class="text-white"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end">
                         <a class="dropdown-item" href="{{ url_for('router_main.perfil') }}">
-                            <i class="align-middle me-1" data-feather="user"></i>
-                            Perfil
+                            <i class="align-middle me-1" data-feather="user"></i> Perfil
                         </a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" id="btnCerrarSesion" onclick="cerrarSesion()">Cerrar Sesión</a>
                     </div>
                 </li>
-            </ul>
+            </ul>            
         </div>
     </nav>
-
     <section class="main-content">
         <div class="container text-center">
             <h1 class="index-title">Sistema de Gestión de Prácticas Pre Profesionales - USAT</h1>
@@ -202,8 +202,20 @@
 
         document.addEventListener('DOMContentLoaded', function () {
             let nombreUsuario = localStorage.getItem('n') || sessionStorage.getItem('n');
+            let apellidoUsuario = localStorage.getItem('a') || sessionStorage.getItem('a');
+            var fotoBase64 = localStorage.getItem('f') || sessionStorage.getItem('f');
+            let usuario = localStorage.getItem('username') || sessionStorage.getItem('username');
             if (nombreUsuario) {
                 document.getElementById('nombreUsuario').textContent = nombreUsuario;
+            }
+            if (apellidoUsuario){
+                document.getElementById('apellidoUsuario').textContent = apellidoUsuario;                
+            }
+            if (fotoBase64) {
+                document.getElementById('github-profile-pic').src = 'data:image/jpeg;base64,' + fotoBase64;
+            }
+            if (usuario) {
+                document.getElementById('usernamenav').textContent = usuario;
             }
         });
     </script>
