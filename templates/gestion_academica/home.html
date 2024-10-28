@@ -33,7 +33,16 @@
     body{
         overflow: hidden;
     }
-    
+    .footer {
+        background-color: #cfcfcf;
+        text-align: center;
+        padding: 0px 0;
+        color: rgb(92, 92, 92);
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 7%;
+    }
 </style>
 
 <body>
@@ -60,13 +69,6 @@
                         <a class="sidebar-link" href="{{ url_for('router_main.estudiante') }}">
                             <i class="align-middle" data-feather="user"></i>
                             <span class="align-middle">Estudiante</span>
-                        </a>
-                    </li>
-
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ url_for('router_main.ppp') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">PPP</span>
                         </a>
                     </li>
 
@@ -143,29 +145,16 @@
             </footer>
         </div>
     </div>
-
-    <!-- Inclusión de Scripts -->
-
-    <!-- jQuery (Versión Completa) -->
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Popper.js (Necesario para Bootstrap) -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-zxRejdoFDcngA6sZ82AA4ZNZB8sEOB0lLw9/+8DkzjSmtLOqXiwj8ULjHzTp6NZO"
         crossorigin="anonymous"></script>
-
-    <!-- Bootstrap JS (Versión 5.3.3) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-
-    <!-- DataTables JS (Si estás usando DataTables) -->
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-
-    <!-- SweetAlert2 JS -->
     <script src="{{ url_for('static', filename='login/libs/sweetalert2/sweetalert2.js') }}"></script>
-
-    <!-- Feather Icons (Si los estás usando) -->
     <script src="https://unpkg.com/feather-icons"></script>
     <script>
         feather.replace()

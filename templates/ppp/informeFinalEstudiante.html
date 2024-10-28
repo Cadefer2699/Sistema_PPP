@@ -1,14 +1,23 @@
-{% extends "/ppp/index.html" %}
+{% extends "/ppp/home.html" %}
 {% block titulo %} Informe Final de Prácticas (Estudiante) {% endblock %}
 {% block contenido %}
 <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb"  style="padding-bottom: 0px; margin-bottom: -10px;">
         <li class="breadcrumb-item"><a href="{{ url_for('router_main.index') }}">Inicio</a></li>
-        <li class="breadcrumb-item active"><a href="{{ url_for('router_main.informeFinalEstudiante') }}">Informe de Prácticas (Estudiante)</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('router_main.practicas_pre_profesionales') }}">Módulo de Prácticas Pre Profesionales</a></li>
+        <li class="breadcrumb-item active">Informe de Prácticas (Estudiante)</a></li>
     </ol>
 </nav>
-
-<div class="container-fluid my-4">
+<style>
+    body {
+        overflow: hidden;
+    }
+    .scrollable {
+      height: 18%;
+      overflow-y: auto;
+    }
+</style>
+<div class="container-fluid my-4 scrollable">
     <div class="card w-100">
         <div class="card-header bg-red-usat text-white">
             Informe Final de Prácticas Pre Profesionales (Estudiante)
