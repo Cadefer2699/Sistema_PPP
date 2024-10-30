@@ -111,6 +111,10 @@ def perfil():
 def docente():
     return render_template('/gestion_academica/docente.html')  
 
+@router_main.route("/dap")
+def dap():
+    return render_template('/gestion_academica/dap.html')  
+
 @router_main.route("/facultad")
 def facultad():
     return render_template('gestion_academica/facultad.html') 
