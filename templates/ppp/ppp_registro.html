@@ -24,74 +24,81 @@
         </div>
         <div class="card-body scrollable">
             <form action="" method="POST">
-                <!-- Datos del Estudiante -->
+                <!-- Encabezado -->
                 <fieldset>
-                    <legend>Datos del Estudiante</legend>
                     <div class="mb-3">
-                        <label for="nombre_estudiante" class="form-label">Nombres y Apellidos del Estudiante:</label>
-                        <input type="text" class="form-control" id="nombre_estudiante" name="nombre_estudiante" required>
+                        <label for="id" class="form-label">ID:</label>
+                        <input type="text" class="form-control" id="id" name="id" required>
                     </div>
                     <div class="mb-3">
-                        <label for="nombre_institucion" class="form-label">Nombre de la Institución:</label>
-                        <input type="text" class="form-control" id="nombre_institucion" name="nombre_institucion" required>
+                        <label for="semestre" class="form-label">Semestre Académico:</label>
+                        <input type="text" class="form-control" id="semestre" name="semestre" required>
                     </div>
                     <div class="mb-3">
-                        <label for="fecha_entrega" class="form-label">Fecha de Entrega del Informe:</label>
-                        <input type="date" class="form-control" id="fecha_entrega" name="fecha_entrega" required>
+                        <label for="estudiante" class="form-label">Estudiante:</label>
+                        <input type="text" class="form-control" id="estudiante" name="estudiante" required>
                     </div>
                 </fieldset>
 
-                <!-- Introducción -->
+                <!-- Datos de la Práctica -->
                 <fieldset>
-                    <legend>Introducción</legend>
+                    <legend>Datos de la PPP</legend>
                     <div class="mb-3">
-                        <label for="introduccion" class="form-label">Introducción:</label>
-                        <textarea class="form-control" id="introduccion" name="introduccion" rows="4" required></textarea>
+                        <label for="fechainicial" class="form-label">Fecha Inicial:</label>
+                        <input type="date" class="form-control" id="fechainicial" name="fechainicial" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fechafinal" class="form-label">Fecha Final:</label>
+                        <input type="date" class="form-control" id="fechafinal" name="fechafinal" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="horario" class="form-label">Horario:</label>
+                        <input type="text" class="form-control" id="horario" name="horario" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="horasrequeridas" class="form-label">Horas Requeridas:</label>
+                        <input type="number" class="form-control" id="horasrequeridas" name="horasrequeridas" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="horaspractica" class="form-label">Horas de Práctica:</label>
+                        <input type="number" class="form-control" id="horaspractica" name="horaspractica" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="horaspendientes" class="form-label">Horas Pendientes:</label>
+                        <input type="number" class="form-control" id="horaspendientes" name="horaspendientes" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="requiere" class="form-label">Requiere nuevas PPP:</label>
+                        <input type="checkbox" class="form-control" id="requiere" name="requiere" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tipo" class="form-label">Tipo:</label>
+                        <input type="text" class="form-control" id="tipo" name="tipo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="modalidad" class="form-label">Modalidad:</label>
+                        <input type="text" class="form-control" id="modalidad" name="modalidad" required>
                     </div>
                 </fieldset>
 
-                <!-- Descripción de la Institución -->
+                <!-- Datos de la Institución -->
                 <fieldset>
-                    <legend>Descripción de la Institución</legend>
+                    <legend>Datos de la Institución</legend>
                     <div class="mb-3">
-                        <label for="razon_social" class="form-label">Razón Social de la Institución:</label>
-                        <input type="text" class="form-control" id="razon_social" name="razon_social" required>
+                        <label for="razonsocial" class="form-label">Razón Social de la Institución:</label>
+                        <input type="text" class="form-control" id="razonsocial" name="razonsocial" required>
                     </div>
                     <div class="mb-3">
-                        <label for="direccion" class="form-label">Dirección:</label>
-                        <input type="text" class="form-control" id="direccion" name="direccion" required>
+                        <label for="giroinstitucion" class="form-label">Giro de la Institución:</label>
+                        <input type="text" class="form-control" id="giroinstitucion" name="giroinstitucion" required>
                     </div>
                     <div class="mb-3">
-                        <label for="giro_institucion" class="form-label">Giro de la Institución:</label>
-                        <input type="text" class="form-control" id="giro_institucion" name="giro_institucion" required>
+                        <label for="lineadesarrollo" class="form-label">Línea de Desarrollo:</label>
+                        <input type="text" class="form-control" id="lineadesarrollo" name="lineadesarrollo" required>
                     </div>
                     <div class="mb-3">
-                        <label for="representante" class="form-label">Representante Legal de la Institución:</label>
-                        <input type="text" class="form-control" id="representante" name="representante" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="cantidad_trabajadores" class="form-label">Cantidad de Trabajadores:</label>
-                        <input type="number" class="form-control" id="cantidad_trabajadores" name="cantidad_trabajadores" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="vision" class="form-label">Visión de la Institución:</label>
-                        <textarea class="form-control" id="vision" name="vision" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="mision" class="form-label">Misión de la Institución:</label>
-                        <textarea class="form-control" id="mision" name="mision" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="infraestructura_fisica" class="form-label">Infraestructura Física:</label>
-                        <textarea class="form-control" id="infraestructura_fisica" name="infraestructura_fisica" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="infraestructura_tecnologica" class="form-label">Infraestructura Tecnológica:</label>
-                        <textarea class="form-control" id="infraestructura_tecnologica" name="infraestructura_tecnologica" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="organigrama" class="form-label">Organigrama:</label>
-                        <textarea class="form-control" id="organigrama" name="organigrama" rows="3" required></textarea>
+                        <label for="jefe" class="form-label">Jefe Inmediato:</label>
+                        <input type="text" class="form-control" id="jefe" name="jefe" required>
                     </div>
                 </fieldset>
 
