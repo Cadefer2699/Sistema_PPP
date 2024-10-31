@@ -51,24 +51,9 @@
         <div class="card-body scrollable">
             <form action="" method="POST">
                 <!-- Encabezado -->
-                <fieldset>
-                    <div class="row">
-                        <div class="col-2">
-                            <label for="semestre" class="form-label">Semestre Académico:</label>
-                            <input type="text" class="form-control" id="semestre" name="semestre" required>
-                        </div>
-                        <div class="col"></div>
-                        <div class="col-2">
-                            <label for="id" class="form-label">ID:</label>
-                            <input type="text" class="form-control" id="id" name="id" required>
-                        </div>
-                    </div>
-                </fieldset>
-
                 <div class="row">
                     <div class="col-md-6">
-                        <!-- Tab Datos del Estudiante -->
-                        <legend>Datos del Estudiante y Empresa</legend>
+                        <!-- Tab Datos del Estudiante y Empresa -->
                         <ul class="nav nav-tabs" id="datosTab" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link active" id="estudiante-tab" data-bs-toggle="tab" href="#estudiante" role="tab" aria-controls="estudiante" aria-selected="true">Datos del Estudiante</a>
@@ -82,7 +67,6 @@
                             <!-- Datos del Estudiante -->
                             <div class="tab-pane fade show active" id="estudiante" role="tabpanel" aria-labelledby="estudiante-tab">
                                 <fieldset>
-                                    <legend>Datos del Estudiante</legend>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <label for="nombre" class="form-label">Nombres:</label>
@@ -98,6 +82,10 @@
                                             <label for="codigo" class="form-label">Código del Estudiante:</label>
                                             <input type="text" class="form-control" id="codigo" name="codigo" required>
                                         </div>
+                                        <div class="col-md-6">
+                                            <label for="semestre" class="form-label">Semestre Académico:</label>
+                                            <input type="text" class="form-control" id="semestre" name="semestre" required>
+                                        </div>
                                     </div>
                                 </fieldset>
                             </div>
@@ -105,7 +93,6 @@
                             <!-- Datos de la Empresa -->
                             <div class="tab-pane fade" id="empresa" role="tabpanel" aria-labelledby="empresa-tab">
                                 <fieldset>
-                                    <legend>Datos de la Empresa</legend>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <label for="empresa" class="form-label">Nombre de la Empresa:</label>
@@ -133,7 +120,6 @@
 
                     <div class="col-md-6">
                         <!-- Tab Duración, Objetivos y Plan de Trabajo -->
-                        <legend>Duración de la Práctica, Objetivos y Plan de Trabajo</legend>
                         <ul class="nav nav-tabs" id="practicaTab" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link active" id="duracion-tab" data-bs-toggle="tab" href="#duracion" role="tab" aria-controls="duracion" aria-selected="true">Duración</a>
@@ -150,7 +136,6 @@
                             <!-- Duración de la Práctica -->
                             <div class="tab-pane fade show active" id="duracion" role="tabpanel" aria-labelledby="duracion-tab">
                                 <fieldset>
-                                    <legend>Duración de la Práctica</legend>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <label for="fecha_inicio" class="form-label">Fecha de Inicio:</label>
@@ -167,21 +152,23 @@
                             <!-- Objetivos de la Práctica -->
                             <div class="tab-pane fade" id="objetivos" role="tabpanel" aria-labelledby="objetivos-tab">
                                 <fieldset>
-                                    <legend>Objetivos de la Práctica</legend>
-                                    <button type="button" class="btn btn-primary btn-sm" id="agregarObjetivo" style="margin-left: 10px;">+</button>
+                                    <div class="d-flex mb-2">
+                                        <button type="button" class="btn btn-primary btn-sm" id="agregarObjetivo" ><i class="fas fa-plus"></i> Agregar Objetivo</button>
+                                        <button type="button" class="btn btn-danger btn-sm ms-2" id="eliminarObjetivo"><i class="fas fa-times"></i> Eliminar</button>
+                                    </div>
                                     <table class="table table-bordered" id="tabla-objetivos">
                                         <thead>
                                             <tr>
-                                                <th>Número</th>
+                                                <th style="width: 15%;" class="text-center">Nº</th>
                                                 <th>Objetivo</th>
-                                                <th>Opciones</th>
+                                                <th style="width: 10%;">Seleccionar</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
                                                 <td><input type="text" class="form-control" name="numero_objetivo[]" placeholder="1" required></td>
                                                 <td><input type="text" class="form-control" name="objetivo[]" placeholder="Descripción del objetivo" required></td>
-                                                <td><button class="btn btn-danger btn-sm" onclick="eliminarFilaObjetivo(this)">Eliminar</button></td>
+                                                <td class="text-center"><input type="checkbox" class="form-check-input seleccionar-objetivo"></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -191,16 +178,18 @@
                             <!-- Plan de Trabajo -->
                             <div class="tab-pane fade" id="plan" role="tabpanel" aria-labelledby="plan-tab">
                                 <fieldset>
-                                    <legend>Plan de Trabajo</legend>
-                                    <button type="button" class="btn btn-primary btn-sm" id="agregarPlanTrabajo" style="margin-left: 10px;">+</button>
+                                    <div class="d-flex mb-2">
+                                        <button type="button" class="btn btn-primary btn-sm" id="agregarPlanTrabajo"><i class="fas fa-plus"></i> Agregar Semana</button>
+                                        <button type="button" class="btn btn-danger btn-sm ms-2" id="eliminarPlanTrabajo"><i class="fas fa-times"></i> Eliminar</button>
+                                    </div>
                                     <table class="table table-bordered" id="tabla-plan-trabajo">
                                         <thead>
                                             <tr>
-                                                <th>Semana</th>
+                                                <th style="width: 10%;">Semana</th>
                                                 <th>Fechas</th>
                                                 <th>Actividades</th>
                                                 <th>Horas</th>
-                                                <th>Opciones</th>
+                                                <th style="width: 10%;">Seleccionar</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -212,7 +201,7 @@
                                                 </td>
                                                 <td><input type="text" class="form-control" name="actividad[]" placeholder="Descripción de la actividad" required></td>
                                                 <td><input type="number" class="form-control" name="horas[]" placeholder="Horas" required></td>
-                                                <td><button class="btn btn-danger btn-sm" onclick="eliminarFilaPlan(this)">Eliminar</button></td>
+                                                <td class="text-center"><input type="checkbox" class="form-check-input seleccionar-plan"></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -231,37 +220,46 @@
 </div>
 
 <script>
-    // Función para agregar una nueva fila de objetivo a la tabla
+    // Función para agregar una nueva fila de objetivo a la tabla de objetivos
     document.getElementById('agregarObjetivo').addEventListener('click', function() {
         var nuevaFila = `<tr>
-            <td><input type="text" class="form-control" name="numero_objetivo[]" placeholder="Número" required></td>
+            <td><input type="text" class="form-control" name="numero_objetivo[]" placeholder="#" required></td>
             <td><input type="text" class="form-control" name="objetivo[]" placeholder="Descripción del objetivo" required></td>
-            <td><button class="btn btn-danger btn-sm" onclick="eliminarFilaObjetivo(this)">Eliminar</button></td>
+            <td class="text-center"><input type="checkbox" class="form-check-input seleccionar-objetivo"></td>
         </tr>`;
         document.querySelector('#tabla-objetivos tbody').insertAdjacentHTML('beforeend', nuevaFila);
     });
 
-    function eliminarFilaObjetivo(btn) {
-        btn.closest('tr').remove();
-    }
+    // Función para eliminar filas seleccionadas de la tabla de objetivos
+    document.getElementById('eliminarObjetivo').addEventListener('click', function() {
+        const checkboxes = document.querySelectorAll('.seleccionar-objetivo:checked');
+        checkboxes.forEach(checkbox => {
+            checkbox.closest('tr').remove();
+        });
+    });
 
+    // Función para agregar una nueva fila de plan de trabajo a la tabla
     document.getElementById('agregarPlanTrabajo').addEventListener('click', function() {
         var nuevaFila = `<tr>
-            <td><input type="text" class="form-control" name="semana[]" placeholder="Número de Semana" required></td>
+            <td><input type="text" class="form-control" name="semana[]" placeholder="Semana" required></td>
             <td>
                 <input type="date" class="form-control" name="fecha_inicio[]" required>
                 <input type="date" class="form-control" name="fecha_fin[]" required>
             </td>
             <td><input type="text" class="form-control" name="actividad[]" placeholder="Descripción de la actividad" required></td>
             <td><input type="number" class="form-control" name="horas[]" placeholder="Horas" required></td>
-            <td><button class="btn btn-danger btn-sm" onclick="eliminarFilaPlan(this)">Eliminar</button></td>
+            <td class="text-center"><input type="checkbox" class="form-check-input seleccionar-plan"></td>
         </tr>`;
         document.querySelector('#tabla-plan-trabajo tbody').insertAdjacentHTML('beforeend', nuevaFila);
     });
 
-    function eliminarFilaPlan(btn) {
-        btn.closest('tr').remove();
-    }
+    // Función para eliminar filas seleccionadas de la tabla de plan de trabajo
+    document.getElementById('eliminarPlanTrabajo').addEventListener('click', function() {
+        const checkboxes = document.querySelectorAll('.seleccionar-plan:checked');
+        checkboxes.forEach(checkbox => {
+            checkbox.closest('tr').remove();
+        });
+    });
 </script>
 
 {% endblock %}
