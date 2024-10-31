@@ -14629,7 +14629,7 @@ screen and (-ms-high-contrast:active) {
 
 .sidebar {
     direction: ltr;
-    max-width: 160px;
+    max-width: 16.9%;
     min-width: 260px
 }
 

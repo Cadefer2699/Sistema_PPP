@@ -33,6 +33,13 @@
     body{
         overflow: hidden;
     }
+    html, body {
+        height: 100%; /* Asegura que todo el documento tenga un 100% de altura */
+    }
+    .wrapper {
+        display: flex; /* Usar flexbox para disposición de elementos */
+        height: 100%; /* Hacer que el wrapper ocupe toda la altura */
+    }
     .footer {
         background-color: #cfcfcf;
         text-align: center;
@@ -42,6 +49,62 @@
         bottom: 0;
         width: 100%;
         height: 7%;
+    }
+    .content {
+        height: 100%;
+        margin-top: 5%; /* Deja espacio debajo del navbar */
+        margin-bottom: 2%; /* Deja espacio arriba del footer */
+        overflow-y: auto; /* Agregar scroll vertical si el contenido supera la altura */
+        flex: 1; /* Permitir que el contenido ocupe el espacio restante */
+    }
+    .sidebar {
+        position: fixed; /* Mantiene el sidebar fijo */
+        top: 0; /* Alinea el sidebar en la parte superior */
+        left: 0; /* Alinea el sidebar a la izquierda */
+        height: 100%; /* Hace que el sidebar ocupe toda la altura */
+        width: 81.9%;  /* Ancho fijo para el sidebar */
+        overflow-y: auto; /* Permitir scroll si el contenido del sidebar es mayor */
+    }
+    .main {
+        margin-left: 16.9%; /* Deja espacio para el sidebar */
+        display: flex;
+        flex-direction: column;
+        height: 100%; /* Hacer que el contenedor principal ocupe toda la altura */
+    }
+    .navbar {
+        position: fixed; /* Mantiene el navbar fijo */
+        top: 0; /* Alinea el navbar en la parte superior */
+        width: 83%;
+        right: 0; /* Alinea el navbar al borde derecho */
+        z-index: 1000; /* Asegura que el navbar esté por encima del contenido */
+    }
+    @media (max-width: 768px) {
+        .sidebar {
+            width: 200px; /* Reducir el ancho en pantallas más pequeñas */
+        }
+        
+        .main {
+            margin-left: 200px; /* Ajustar margen del main */
+        }
+
+        .navbar {
+            left: 200px; /* Ajustar posición del navbar */
+        }
+    }
+
+    @media (max-width: 576px) {
+        .sidebar {
+            display: none; /* Ocultar el sidebar en pantallas muy pequeñas */
+        }
+        
+        .main {
+            margin-left: 0; /* Ajustar margen del main */
+        }
+
+        .navbar {
+            left: 0; /* Ajustar posición del navbar */
+            width: 100%; /* Hacer que el navbar ocupe todo el ancho */
+        }
     }
 </style>
 
