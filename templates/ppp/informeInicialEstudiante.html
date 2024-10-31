@@ -8,293 +8,264 @@
         <li class="breadcrumb-item active">Informe Inicial (Estudiante)</li>
     </ol>
 </nav>
+
 <style>
     body {
-        overflow: hidden;
+        overflow: auto;
     }
-    /* Ajuste personalizado de las columnas */
-    .col-semana {
-        width: 10%;
+    .scrollable {
+        height: 42%;
+        overflow-y: auto;
     }
-
-    .col-fechas {
-        width: 20%;
-    }
-
-    .col-actividad {
-        width: 40%;
-    }
-
-    .input-group .form-control {
-        width: 50%;
-    }
-
-    .btn-group-opciones {
-        display: flex;
-        gap: 10px;
-    }
-
-    /* Separación adicional entre secciones y campos */
     fieldset {
         margin-bottom: 20px;
-        padding: 15px;
+        padding-bottom: 15px;
     }
-
-    legend {
-        font-size: 1.2rem;
-        font-weight: bold;
-        padding-bottom: 10px;
-    }
-
     .form-label {
         margin-bottom: 5px;
     }
-
-    .row > div {
-        margin-bottom: 15px;
+    .nav-tabs .nav-link {
+        color: black;
+        background-color: #f1f1f1;
+        border: 1px solid #dee2e6;
+        border-radius: 5px 5px 0 0;
     }
-
-    .card-body {
-        padding: 20px;
+    .nav-tabs .nav-link.active {
+        color: black;
+        background-color: white;
+        border-bottom-color: transparent;
     }
-
-    table {
-        margin-top: 10px;
-    }
-
-    /* Estilos para alinear Objetivos y Duración de la Práctica */
-    .flex-row {
-        display: flex;
-        gap: 20px;
-    }
-
-    .objetivos-col {
-        flex: 2;
-    }
-
-    .duracion-col {
-        flex: 1;
-    }
-
-    .flex-column {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .fecha-group {
-        width: 100%;
-    }
-
-    .fecha-group label {
-        margin-top: 10px;
-    }
-
-    /* Ajuste de anchos de columnas en la tabla de Objetivos */
-    .col-numero {
-        width: 10%;
-    }
-
-    .col-objetivo {
-        width: 70%;
-    }
-
-    .col-opciones {
-        width: 20%;
+    .tab-pane {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 15px;
+        margin-top: 15px;
     }
 </style>
-<div class="container-fluid my-4 scrollable">
-    <div class="card w-100 ">
+
+<div class="container-fluid my-4">
+    <div class="card w-100" style="height: 100%;">
         <div class="card-header bg-red-usat text-white">
             Informe Inicial de Prácticas Pre Profesionales (Estudiante)
         </div>
-        <div class="card-body">
+        <div class="card-body scrollable">
             <form action="" method="POST">
-                <!-- Datos del Estudiante -->
+                <!-- Encabezado -->
                 <fieldset>
-                    <legend>Datos del Estudiante</legend>
                     <div class="row">
-                        <div class="col-md-3">
-                            <label for="nombre" class="form-label">Nombres:</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre" required>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="apellidos" class="form-label">Apellidos:</label>
-                            <input type="text" class="form-control" id="apellidos" name="apellidos" required>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="codigo" class="form-label">Código del Estudiante:</label>
-                            <input type="text" class="form-control" id="codigo" name="codigo" required>
-                        </div>
-                        <div class="col-md-3">
+                        <div class="col-2">
                             <label for="semestre" class="form-label">Semestre Académico:</label>
                             <input type="text" class="form-control" id="semestre" name="semestre" required>
                         </div>
-                    </div>
-                </fieldset>
-
-                <!-- Datos de la Empresa/Institución -->
-                <fieldset>
-                    <legend>Datos de la Empresa/Institución</legend>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <label for="empresa" class="form-label">Nombre de la Empresa:</label>
-                            <input type="text" class="form-control" id="empresa" name="empresa" required>
+                        <div class="col-5">
+                            <label for="estudiante" class="form-label">Estudiante:</label>
+                            <input type="text" class="form-control" id="estudiante" name="estudiante" required>
                         </div>
-                        <div class="col-md-3">
-                            <label for="nombre_responsable" class="form-label">Nombre del Responsable:</label>
-                            <input type="text" class="form-control" id="nombre_responsable" name="nombre_responsable" required>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="apellido_responsable" class="form-label">Apellido del Responsable:</label>
-                            <input type="text" class="form-control" id="apellido_responsable" name="apellido_responsable" required>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="cargo_responsable" class="form-label">Cargo:</label>
-                            <input type="text" class="form-control" id="cargo_responsable" name="cargo_responsable" required>
+                        <div class="col"></div>
+                        <div class="col-2">
+                            <label for="id" class="form-label">ID:</label>
+                            <input type="text" class="form-control" id="id" name="id" required>
                         </div>
                     </div>
                 </fieldset>
 
-                <!-- Duración de la Práctica y Objetivos en la misma fila (cambiado de orden) -->
-                <div class="flex-row">
-                    <!-- Duración de la Práctica -->
-                    <div class="duracion-col">
-                        <fieldset>
-                            <legend>Duración de la Práctica</legend>
-                            <div class="flex-column">
-                                <div class="fecha-group">
-                                    <label for="fecha_inicio" class="form-label">Fecha de Inicio:</label>
-                                    <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" required>
-                                </div>
-                                <div class="fecha-group">
-                                    <label for="fecha_fin" class="form-label">Fecha de Término:</label>
-                                    <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" required>
-                                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Tab Datos del Estudiante -->
+                        <legend>Datos del Estudiante y Empresa</legend>
+                        <ul class="nav nav-tabs" id="datosTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" id="estudiante-tab" data-bs-toggle="tab" href="#estudiante" role="tab" aria-controls="estudiante" aria-selected="true">Datos del Estudiante</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="empresa-tab" data-bs-toggle="tab" href="#empresa" role="tab" aria-controls="empresa" aria-selected="false">Datos de la Empresa</a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content" id="datosTabContent">
+                            <!-- Datos del Estudiante -->
+                            <div class="tab-pane fade show active" id="estudiante" role="tabpanel" aria-labelledby="estudiante-tab">
+                                <fieldset>
+                                    <legend>Datos del Estudiante</legend>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="nombre" class="form-label">Nombres:</label>
+                                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="apellidos" class="form-label">Apellidos:</label>
+                                            <input type="text" class="form-control" id="apellidos" name="apellidos" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-6">
+                                            <label for="codigo" class="form-label">Código del Estudiante:</label>
+                                            <input type="text" class="form-control" id="codigo" name="codigo" required>
+                                        </div>
+                                    </div>
+                                </fieldset>
                             </div>
-                        </fieldset>
+
+                            <!-- Datos de la Empresa -->
+                            <div class="tab-pane fade" id="empresa" role="tabpanel" aria-labelledby="empresa-tab">
+                                <fieldset>
+                                    <legend>Datos de la Empresa</legend>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="empresa" class="form-label">Nombre de la Empresa:</label>
+                                            <input type="text" class="form-control" id="empresa" name="empresa" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="nombre_responsable" class="form-label">Nombre del Responsable:</label>
+                                            <input type="text" class="form-control" id="nombre_responsable" name="nombre_responsable" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-6">
+                                            <label for="apellido_responsable" class="form-label">Apellido del Responsable:</label>
+                                            <input type="text" class="form-control" id="apellido_responsable" name="apellido_responsable" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="cargo_responsable" class="form-label">Cargo:</label>
+                                            <input type="text" class="form-control" id="cargo_responsable" name="cargo_responsable" required>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Objetivos de la Práctica -->
-                    <div class="objetivos-col">
-                        <fieldset>
-                            <legend>
-                                Objetivos de la Práctica
-                                <button type="button" class="btn btn-primary btn-sm" id="agregarObjetivo" style="margin-left: 10px; font-size: 1.2rem; font-weight: bold;">+</button>
-                            </legend>
-                            <table class="table table-bordered" id="tabla-objetivos">
-                                <thead>
-                                    <tr>
-                                        <th class="col-numero" style="text-align:center">Número</th>
-                                        <th class="col-objetivo" style="text-align:center">Objetivo</th>
-                                        <th class="col-opciones" style="text-align:center">Opciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><input type="text" class="form-control" name="numero_objetivo[]" placeholder="1" required></td>
-                                        <td><input type="text" class="form-control" name="objetivo[]" placeholder="Descripción del objetivo" required></td>
-                                        <td style="text-align:center">
-                                            <button class="btn btn-danger btn-sm" onclick="eliminarFilaObjetivo(this)">Eliminar</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </fieldset>
+                    <div class="col-md-6">
+                        <!-- Tab Duración, Objetivos y Plan de Trabajo -->
+                        <legend>Duración de la Práctica, Objetivos y Plan de Trabajo</legend>
+                        <ul class="nav nav-tabs" id="practicaTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" id="duracion-tab" data-bs-toggle="tab" href="#duracion" role="tab" aria-controls="duracion" aria-selected="true">Duración</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="objetivos-tab" data-bs-toggle="tab" href="#objetivos" role="tab" aria-controls="objetivos" aria-selected="false">Objetivos</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="plan-tab" data-bs-toggle="tab" href="#plan" role="tab" aria-controls="plan" aria-selected="false">Plan de Trabajo</a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content" id="practicaTabContent">
+                            <!-- Duración de la Práctica -->
+                            <div class="tab-pane fade show active" id="duracion" role="tabpanel" aria-labelledby="duracion-tab">
+                                <fieldset>
+                                    <legend>Duración de la Práctica</legend>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="fecha_inicio" class="form-label">Fecha de Inicio:</label>
+                                            <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="fecha_fin" class="form-label">Fecha de Término:</label>
+                                            <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" required>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                            <!-- Objetivos de la Práctica -->
+                            <div class="tab-pane fade" id="objetivos" role="tabpanel" aria-labelledby="objetivos-tab">
+                                <fieldset>
+                                    <legend>Objetivos de la Práctica</legend>
+                                    <button type="button" class="btn btn-primary btn-sm" id="agregarObjetivo" style="margin-left: 10px;">+</button>
+                                    <table class="table table-bordered" id="tabla-objetivos">
+                                        <thead>
+                                            <tr>
+                                                <th>Número</th>
+                                                <th>Objetivo</th>
+                                                <th>Opciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><input type="text" class="form-control" name="numero_objetivo[]" placeholder="1" required></td>
+                                                <td><input type="text" class="form-control" name="objetivo[]" placeholder="Descripción del objetivo" required></td>
+                                                <td><button class="btn btn-danger btn-sm" onclick="eliminarFilaObjetivo(this)">Eliminar</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </fieldset>
+                            </div>
+
+                            <!-- Plan de Trabajo -->
+                            <div class="tab-pane fade" id="plan" role="tabpanel" aria-labelledby="plan-tab">
+                                <fieldset>
+                                    <legend>Plan de Trabajo</legend>
+                                    <button type="button" class="btn btn-primary btn-sm" id="agregarPlanTrabajo" style="margin-left: 10px;">+</button>
+                                    <table class="table table-bordered" id="tabla-plan-trabajo">
+                                        <thead>
+                                            <tr>
+                                                <th>Semana</th>
+                                                <th>Fechas</th>
+                                                <th>Actividades</th>
+                                                <th>Horas</th>
+                                                <th>Opciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><input type="text" class="form-control" name="semana[]" placeholder="1" required></td>
+                                                <td>
+                                                    <input type="date" class="form-control" name="fecha_inicio[]" required>
+                                                    <input type="date" class="form-control" name="fecha_fin[]" required>
+                                                </td>
+                                                <td><input type="text" class="form-control" name="actividad[]" placeholder="Descripción de la actividad" required></td>
+                                                <td><input type="number" class="form-control" name="horas[]" placeholder="Horas" required></td>
+                                                <td><button class="btn btn-danger btn-sm" onclick="eliminarFilaPlan(this)">Eliminar</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </fieldset>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Plan de Trabajo -->
-                <fieldset>
-                    <legend>
-                        Plan de Trabajo
-                        <button type="button" class="btn btn-primary btn-sm" id="agregarPlanTrabajo" style="margin-left: 10px; font-size: 1.2rem; font-weight: bold;">+</button>
-                    </legend>
-                    <table class="table table-bordered" id="tabla-plan-trabajo">
-                        <thead>
-                            <tr>
-                                <th class="col-semana" style="text-align:center">N° de Semana</th>
-                                <th class="col-fechas" style="text-align:center">Fechas</th>
-                                <th class="col-actividad" style="text-align:center">Actividades a realizar</th>
-                                <th style="text-align:center">N° de horas</th>
-                                <th style="text-align:center">Opciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="text" class="form-control" name="semana[]" placeholder="1" required></td>
-                                <td>
-                                    <div class="input-group">
-                                        <input type="date" class="form-control" name="fecha_inicio[]" required>
-                                        <input type="date" class="form-control" name="fecha_fin[]" required>
-                                    </div>
-                                </td>
-                                <td><input type="text" class="form-control" name="actividad[]" placeholder="Descripción de la actividad" required></td>
-                                <td><input type="number" class="form-control" name="horas[]" placeholder="Horas" required></td>
-                                <td style="text-align:center">
-                                    <button class="btn btn-danger btn-sm" onclick="eliminarFilaPlan(this)">Eliminar</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </fieldset>
-
-                <button type="submit" class="btn btn-primary">Guardar Informe</button>
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary mt-3">Guardar Informe</button>
+                </div>
             </form>
         </div>
     </div>
 </div>
 
-<!-- Scripts de Bootstrap y JQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Script para manejar el agregado dinámico de objetivos y plan de trabajo -->
 <script>
     // Función para agregar una nueva fila de objetivo a la tabla
     document.getElementById('agregarObjetivo').addEventListener('click', function() {
-        var nuevaFila = `
-            <tr>
-                <td><input type="text" class="form-control" name="numero_objetivo[]" placeholder="Número" required></td>
-                <td><input type="text" class="form-control" name="objetivo[]" placeholder="Descripción del objetivo" required></td>
-                <td style="text-align:center">
-                    <button class="btn btn-danger btn-sm" onclick="eliminarFilaObjetivo(this)">Eliminar</button>
-                </td>
-            </tr>
-        `;
+        var nuevaFila = `<tr>
+            <td><input type="text" class="form-control" name="numero_objetivo[]" placeholder="Número" required></td>
+            <td><input type="text" class="form-control" name="objetivo[]" placeholder="Descripción del objetivo" required></td>
+            <td><button class="btn btn-danger btn-sm" onclick="eliminarFilaObjetivo(this)">Eliminar</button></td>
+        </tr>`;
         document.querySelector('#tabla-objetivos tbody').insertAdjacentHTML('beforeend', nuevaFila);
     });
 
-    // Función para eliminar una fila de objetivo
     function eliminarFilaObjetivo(btn) {
-        var fila = btn.closest('tr');
-        fila.remove();
+        btn.closest('tr').remove();
     }
 
-    // Función para agregar una nueva fila de plan de trabajo a la tabla
     document.getElementById('agregarPlanTrabajo').addEventListener('click', function() {
-        var nuevaFila = `
-            <tr>
-                <td><input type="text" class="form-control" name="semana[]" placeholder="Número de Semana" required></td>
-                <td>
-                    <div class="input-group">
-                        <input type="date" class="form-control" name="fecha_inicio[]" required>
-                        <input type="date" class="form-control" name="fecha_fin[]" required>
-                    </div>
-                </td>
-                <td><input type="text" class="form-control" name="actividad[]" placeholder="Descripción de la actividad" required></td>
-                <td><input type="number" class="form-control" name="horas[]" placeholder="Horas" required></td>
-                <td style="text-align:center">
-                    <button class="btn btn-danger btn-sm" onclick="eliminarFilaPlan(this)">Eliminar</button>
-                </td>
-            </tr>
-        `;
+        var nuevaFila = `<tr>
+            <td><input type="text" class="form-control" name="semana[]" placeholder="Número de Semana" required></td>
+            <td>
+                <input type="date" class="form-control" name="fecha_inicio[]" required>
+                <input type="date" class="form-control" name="fecha_fin[]" required>
+            </td>
+            <td><input type="text" class="form-control" name="actividad[]" placeholder="Descripción de la actividad" required></td>
+            <td><input type="number" class="form-control" name="horas[]" placeholder="Horas" required></td>
+            <td><button class="btn btn-danger btn-sm" onclick="eliminarFilaPlan(this)">Eliminar</button></td>
+        </tr>`;
         document.querySelector('#tabla-plan-trabajo tbody').insertAdjacentHTML('beforeend', nuevaFila);
     });
 
-    // Función para eliminar una fila de plan de trabajo
     function eliminarFilaPlan(btn) {
-        var fila = btn.closest('tr');
-        fila.remove();
+        btn.closest('tr').remove();
     }
 </script>
+
 {% endblock %}
