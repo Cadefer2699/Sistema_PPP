@@ -11,6 +11,7 @@ from routers.router_tipo_practicas import router_tipo_practicas
 from routers.router_horas_ppp import router_horas_ppp
 from routers.router_linea_desarrollo import router_linea_desarrollo
 from routers.router_institucion import router_institucion
+from routers.router_estado import router_estado
 from routers.router_tipoDocumento import router_tipoDocumento
 from routers.router_usuario import router_usuario
 
@@ -32,6 +33,7 @@ app.register_blueprint(router_tipo_practicas)
 app.register_blueprint(router_horas_ppp)
 app.register_blueprint(router_linea_desarrollo)
 app.register_blueprint(router_institucion)
+app.register_blueprint(router_estado)
 app.register_blueprint(router_tipoDocumento)
 app.register_blueprint(router_usuario)
 

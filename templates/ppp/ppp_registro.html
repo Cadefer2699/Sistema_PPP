@@ -42,6 +42,45 @@
         padding: 15px;
         margin-top: 15px;
     }
+    .custom-combo {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    }
+
+    .custom-combo input {
+        width: 100%;
+        border-radius: 0.25rem;
+        padding-right: 1.5rem;
+    }
+
+    #dropdown-estudiantes {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        max-height: 200px;
+        overflow-y: auto;
+        border: 1px solid #ccc;
+        border-top: none;
+        background-color: white;
+        display: none; /* Solo se muestra cuando hay opciones */
+        z-index: 1000;
+    }
+
+    #dropdown-estudiantes.show {
+        display: block;
+    }
+
+    #dropdown-estudiantes li {
+        padding: 8px 12px;
+        cursor: pointer;
+    }
+
+    #dropdown-estudiantes li:hover {
+        background-color: #f0f0f0;
+    }
+
 </style>
 <div class="container-fluid my-4">
     <div class="card w-100" style="height: 100%;">
@@ -61,10 +100,11 @@
                         </div>
                         <div class="col-5">
                             <label for="estudiante" class="form-label">Estudiante:</label>
-                            <select class="form-select" id="estudiante" name="estudiante" required>
-                                <option value="" disabled selected>Seleccionar estudiante</option>
-                            </select>
-                        </div>
+                            <div class="custom-combo">
+                                <input type="text" id="estudiante" class="form-control" placeholder="Seleccionar estudiante" autocomplete="off">
+                                <ul id="dropdown-estudiantes" class="dropdown-menu"></ul>
+                            </div>
+                        </div>                        
                         <div class="col">
                         </div>
                         <div class="col-2">
@@ -97,13 +137,26 @@
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="ppp" role="tabpanel" aria-labelledby="ppp-tab">
                                 <div class="row mb-3">
-                                    <div class="col-md-6">
+                                    <div class="col-md-5">
                                         <label for="fechainicial" class="form-label">Fecha Inicial:</label>
                                         <input type="date" class="form-control" id="fechainicial" name="fechainicial" required>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-5">
                                         <label for="fechafinal" class="form-label">Fecha Final:</label>
                                         <input type="date" class="form-control" id="fechafinal" name="fechafinal" required>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="form-label">Modalidad:</label>
+                                        <div class="col-md-6 d-flex align-items-center">
+                                            <div class="form-check me-3">
+                                                <input type="radio" class="form-check-input" id="modalidadP" name="modalidad" value="P" required checked>
+                                                <label class="form-check-label" for="modalidadP">P</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="radio" class="form-check-input" id="modalidadV" name="modalidad" value="V" required>
+                                                <label class="form-check-label" for="modalidadV">V</label>
+                                            </div>                                           
+                                        </div>
                                     </div>
                                 </div>                         
                                 <div class="row mb-3">
@@ -143,17 +196,8 @@
                                         </select>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label">Modalidad:</label>
-                                        <div class="col-md-6 d-flex align-items-center">
-                                            <div class="form-check me-3">
-                                                <input type="radio" class="form-check-input" id="modalidadP" name="modalidad" value="P" required checked>
-                                                <label class="form-check-label" for="modalidadP">P</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input type="radio" class="form-check-input" id="modalidadV" name="modalidad" value="V" required>
-                                                <label class="form-check-label" for="modalidadV">V</label>
-                                            </div>                                           
-                                        </div>
+                                        <label for="area" class="form-label">Área:</label>
+                                        <input type="text" class="form-control" id="area" name="area" required>
                                     </div>
                                 </div>
                             </div>
@@ -204,7 +248,9 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="semestrefinal" class="form-label">Semestre Finalización:</label>
-                                        <input type="text" class="form-control" id="semestrefinal" name="semestrefinal" required>
+                                        <select class="form-select" id="semestrefinal" name="semestrefinal" required>
+                                            <option value="" disabled selected>Seleccionar semestre</option>
+                                        </select>
                                     </div>
                                 </div> 
                             </div>
@@ -335,7 +381,22 @@
                 data.forEach(semestre => {
                     const option = document.createElement('option');
                     option.value = semestre.id;
-                    option.textContent = semestre.nombre;
+                    option.textContent = semestre.nombre;   
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/datos_semestres')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('semestrefinal');
+                data.forEach(semestre => {
+                    const option = document.createElement('option');
+                    option.value = semestre.id;
+                    option.textContent = semestre.nombre;   
                     select.appendChild(option);
                 });
             })
@@ -441,7 +502,7 @@
         jefeInput.value = '';
 
         if (this.value) {
-            fetch(`/jefe_institucion?ruc=${this.value}`) // Cambia esta URL si es necesario
+            fetch(`/jefe_institucion?ruc=${this.value}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Error en la solicitud');
@@ -450,9 +511,7 @@
                 })
                 .then(data => {
                     if (data && data.length > 0) {
-                        // Asumiendo que la respuesta es un arreglo con un objeto que contiene los datos del jefe
-                        jefeInput.value = `${data[0].apellidos} ${data[0].nombre}`; // Asegúrate de que los nombres de las propiedades sean correctos
-                    } else {
+                        jefeInput.value = `${data[0].apellidos} ${data[0].nombre}`;
                         jefeInput.value = 'No se encontró jefe';
                     }
                 })
@@ -461,6 +520,60 @@
                 });
         }
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/datos_estados')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('estadopractica');
+                data.forEach(estado => {
+                    const option = document.createElement('option');
+                    option.value = estado.idEstado;
+                    option.textContent = estado.nombre;
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+    const inputEstudiante = document.getElementById('estudiante');
+    const dropdownEstudiantes = document.getElementById('dropdown-estudiantes');
+
+    inputEstudiante.addEventListener('input', function() {
+        const searchText = this.value.toLowerCase();
+        fetch('/datos_estudiantes')
+            .then(response => response.json())
+            .then(data => {
+                dropdownEstudiantes.innerHTML = '';
+                const resultados = data.filter(estudiante => 
+                    `${estudiante.apellidos} ${estudiante.nombre}`.toLowerCase().includes(searchText)
+                );
+
+                if (resultados.length > 0) {
+                    resultados.forEach(estudiante => {
+                        const li = document.createElement('li');
+                        li.textContent = `${estudiante.apellidos} ${estudiante.nombre}`;
+                        li.dataset.id = estudiante.id;
+                        li.addEventListener('click', () => {
+                            inputEstudiante.value = li.textContent;
+                            dropdownEstudiantes.classList.remove('show');
+                        });
+                        dropdownEstudiantes.appendChild(li);
+                    });
+                    dropdownEstudiantes.classList.add('show');
+                } else {
+                    dropdownEstudiantes.classList.remove('show');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+    document.addEventListener('click', function(event) {
+        if (!inputEstudiante.contains(event.target) && !dropdownEstudiantes.contains(event.target)) {
+            dropdownEstudiantes.classList.remove('show');
+        }
+    });
+
 
 </script>
 
