@@ -146,12 +146,12 @@
                             <input type="text" class="form-control" id="empresa" name="empresa" required>
                         </div>
                         <div class="col-md-3">
-                            <label for="razon_social" class="form-label">Razón Social:</label>
-                            <input type="text" class="form-control" id="razon_social" name="razon_social" required>
+                            <label for="nombre_responsable" class="form-label">Nombre del Responsable:</label>
+                            <input type="text" class="form-control" id="nombre_responsable" name="nombre_responsable" required>
                         </div>
                         <div class="col-md-3">
-                            <label for="responsable" class="form-label">Responsable de Institución:</label>
-                            <input type="text" class="form-control" id="responsable" name="responsable" placeholder="Nombres y Apellidos" required>
+                            <label for="apellido_responsable" class="form-label">Apellido del Responsable:</label>
+                            <input type="text" class="form-control" id="apellido_responsable" name="apellido_responsable" required>
                         </div>
                         <div class="col-md-3">
                             <label for="cargo_responsable" class="form-label">Cargo:</label>
@@ -160,8 +160,25 @@
                     </div>
                 </fieldset>
 
-                <!-- Objetivos y Duración de la Práctica en la misma fila -->
+                <!-- Duración de la Práctica y Objetivos en la misma fila (cambiado de orden) -->
                 <div class="flex-row">
+                    <!-- Duración de la Práctica -->
+                    <div class="duracion-col">
+                        <fieldset>
+                            <legend>Duración de la Práctica</legend>
+                            <div class="flex-column">
+                                <div class="fecha-group">
+                                    <label for="fecha_inicio" class="form-label">Fecha de Inicio:</label>
+                                    <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" required>
+                                </div>
+                                <div class="fecha-group">
+                                    <label for="fecha_fin" class="form-label">Fecha de Término:</label>
+                                    <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" required>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
                     <!-- Objetivos de la Práctica -->
                     <div class="objetivos-col">
                         <fieldset>
@@ -187,23 +204,6 @@
                                     </tr>
                                 </tbody>
                             </table>
-                        </fieldset>
-                    </div>
-
-                    <!-- Duración de la Práctica -->
-                    <div class="duracion-col">
-                        <fieldset>
-                            <legend>Duración de la Práctica</legend>
-                            <div class="flex-column">
-                                <div class="fecha-group">
-                                    <label for="fecha_inicio" class="form-label">Fecha de Inicio:</label>
-                                    <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" required>
-                                </div>
-                                <div class="fecha-group">
-                                    <label for="fecha_fin" class="form-label">Fecha de Término:</label>
-                                    <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" required>
-                                </div>
-                            </div>
                         </fieldset>
                     </div>
                 </div>
