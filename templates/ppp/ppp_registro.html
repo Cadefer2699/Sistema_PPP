@@ -16,6 +16,71 @@
       height: 42%;
       overflow-y: auto;
     }
+    fieldset {
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+    }
+    .form-label {
+        margin-bottom: 5px;
+        
+    }
+    .nav-tabs .nav-link {
+        color: black;
+        background-color: #f1f1f1;
+        border: 1px solid #dee2e6;
+        border-radius: 5px 5px 0 0;
+    }
+
+    .nav-tabs .nav-link.active {
+        color: black;
+        background-color: white;
+        border-bottom-color: transparent;
+    }
+    .tab-pane {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 15px;
+        margin-top: 15px;
+    }
+    .custom-combo {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    }
+
+    .custom-combo input {
+        width: 100%;
+        border-radius: 0.25rem;
+        padding-right: 1.5rem;
+    }
+
+    #dropdown-estudiantes {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        max-height: 200px;
+        overflow-y: auto;
+        border: 1px solid #ccc;
+        border-top: none;
+        background-color: white;
+        display: none; /* Solo se muestra cuando hay opciones */
+        z-index: 1000;
+    }
+
+    #dropdown-estudiantes.show {
+        display: block;
+    }
+
+    #dropdown-estudiantes li {
+        padding: 8px 12px;
+        cursor: pointer;
+    }
+
+    #dropdown-estudiantes li:hover {
+        background-color: #f0f0f0;
+    }
+
 </style>
 <div class="container-fluid my-4">
     <div class="card w-100" style="height: 100%;">
@@ -24,146 +89,492 @@
         </div>
         <div class="card-body scrollable">
             <form action="" method="POST">
-                <!-- Datos del Estudiante -->
-                <fieldset>
-                    <legend>Datos del Estudiante</legend>
-                    <div class="mb-3">
-                        <label for="nombre_estudiante" class="form-label">Nombres y Apellidos del Estudiante:</label>
-                        <input type="text" class="form-control" id="nombre_estudiante" name="nombre_estudiante" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="nombre_institucion" class="form-label">Nombre de la Institución:</label>
-                        <input type="text" class="form-control" id="nombre_institucion" name="nombre_institucion" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="fecha_entrega" class="form-label">Fecha de Entrega del Informe:</label>
-                        <input type="date" class="form-control" id="fecha_entrega" name="fecha_entrega" required>
-                    </div>
+                <!-- Encabezado -->
+                <fieldset>   
+                    <div class="row">
+                        <div class="col-2">
+                            <label for="semestrea" class="form-label">Semestre Académico:</label>
+                            <select class="form-select" id="semestrea" name="semestrea" required>
+                                <option value="" disabled selected>Seleccionar semestre</option>
+                            </select>
+                        </div>
+                        <div class="col-5">
+                            <label for="estudiante" class="form-label">Estudiante:</label>
+                            <div class="custom-combo">
+                                <input type="text" id="estudiante" class="form-control" placeholder="Seleccionar estudiante" autocomplete="off">
+                                <ul id="dropdown-estudiantes" class="dropdown-menu"></ul>
+                            </div>
+                        </div>                        
+                        <div class="col">
+                        </div>
+                        <div class="col-2">
+                            <label for="id" class="form-label">ID:</label>
+                            <input type="text" class="form-control" id="id" name="id" required>
+                        </div>
+                    </div>   
                 </fieldset>
 
-                <!-- Introducción -->
-                <fieldset>
-                    <legend>Introducción</legend>
-                    <div class="mb-3">
-                        <label for="introduccion" class="form-label">Introducción:</label>
-                        <textarea class="form-control" id="introduccion" name="introduccion" rows="4" required></textarea>
-                    </div>
-                </fieldset>
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Tab Datos de la Práctica -->
+                        <legend>Datos de la Práctica Pre Profesional</legend>
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" id="ppp-tab" data-bs-toggle="tab" href="#ppp" role="tab" aria-controls="ppp" aria-selected="true">Datos de la PPP</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="institucion-tab" data-bs-toggle="tab" href="#institucion" role="tab" aria-controls="institucion" aria-selected="false">Datos de la Institución</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="estado-tab" data-bs-toggle="tab" href="#estado" role="tab" aria-controls="estado" aria-selected="false">Estado</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="supervision-tab" data-bs-toggle="tab" href="#supervision" role="tab" aria-controls="supervision" aria-selected="false">Supervisión</a>
+                            </li>
+                        </ul>
 
-                <!-- Descripción de la Institución -->
-                <fieldset>
-                    <legend>Descripción de la Institución</legend>
-                    <div class="mb-3">
-                        <label for="razon_social" class="form-label">Razón Social de la Institución:</label>
-                        <input type="text" class="form-control" id="razon_social" name="razon_social" required>
+                        <!-- Contenido de cada Tab -->
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="ppp" role="tabpanel" aria-labelledby="ppp-tab">
+                                <div class="row mb-3">
+                                    <div class="col-md-5">
+                                        <label for="fechainicial" class="form-label">Fecha Inicial:</label>
+                                        <input type="date" class="form-control" id="fechainicial" name="fechainicial" required>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <label for="fechafinal" class="form-label">Fecha Final:</label>
+                                        <input type="date" class="form-control" id="fechafinal" name="fechafinal" required>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="form-label">Modalidad:</label>
+                                        <div class="col-md-6 d-flex align-items-center">
+                                            <div class="form-check me-3">
+                                                <input type="radio" class="form-check-input" id="modalidadP" name="modalidad" value="P" required checked>
+                                                <label class="form-check-label" for="modalidadP">P</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="radio" class="form-check-input" id="modalidadV" name="modalidad" value="V" required>
+                                                <label class="form-check-label" for="modalidadV">V</label>
+                                            </div>                                           
+                                        </div>
+                                    </div>
+                                </div>                         
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <label for="horario" class="form-label">Horario:</label>
+                                        <input type="text" class="form-control" id="horario" name="horario" required>
+                                    </div>
+                                </div>                           
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="horasrequeridas" class="form-label">Horas Requeridas:</label>
+                                        <input type="number" class="form-control" id="horasrequeridas" name="horasrequeridas" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="horaspendientes" class="form-label">Horas Pendientes:</label>
+                                        <input type="number" class="form-control" id="horaspendientes" name="horaspendientes" required>
+                                    </div>
+                                </div>                           
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="horaspractica" class="form-label">Horas de Práctica:</label>
+                                        <input type="number" class="form-control" id="horaspractica" name="horaspractica" value="0" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="requiere" class="form-label">Requiere nuevas PPP</label>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="requiere" name="requiere" disabled>
+                                            <label for="requiere" class="form-check-label ms-2"></label>
+                                        </div>
+                                    </div>                                    
+                                </div>                           
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="tipo_practica" class="form-label">Tipo:</label>
+                                        <select class="form-select" id="tipo_practica" name="tipo_practica" required>
+                                            <option value="" disabled selected>Seleccionar tipo de práctica</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="area" class="form-label">Área:</label>
+                                        <input type="text" class="form-control" id="area" name="area" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="institucion" role="tabpanel" aria-labelledby="institucion-tab">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="razonsocial" class="form-label">Razón Social:</label>
+                                        <select class="form-select" id="razonsocial" name="razonsocial" required>
+                                            <option value="" disabled selected>Seleccionar razón social</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="giroinstitucion" class="form-label">Giro:</label>
+                                        <input type="text" class="form-control" id="giroinstitucion" name="giroinstitucion" required>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="lineadesarrollo" class="form-label">Línea de Desarrollo:</label>
+                                        <select class="form-select" id="lineadesarrollo" name="lineadesarrollo" required>
+                                            <option value="" disabled selected>Seleccionar línea de desarrollo</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="jefe" class="form-label">Jefe Inmediato:</label>
+                                        <input type="text" class="form-control" id="jefe" name="jefe" required disabled>
+                                    </div>
+                                </div>  
+                            </div>
+                            <div class="tab-pane fade" id="estado" role="tabpanel" aria-labelledby="estado-tab">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="estadopractica" class="form-label">Estado de la Práctica:</label>
+                                        <select class="form-select" id="estadopractica" name="estadopractica" required>
+                                            <option value="" disabled selected>Seleccionar estado</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="estadovigencia" class="form-label">Estado de Vigencia:</label>
+                                        <select class="form-select" id="estadovigencia" name="estadovigencia" required>
+                                            <option value="" disabled selected>Seleccionar estado</option>
+                                            <option value="P">En Proceso</option>
+                                            <option value="F">Finalizada</option>
+                                            <option value="C">Cancelada</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="semestrefinal" class="form-label">Semestre Finalización:</label>
+                                        <select class="form-select" id="semestrefinal" name="semestrefinal" required>
+                                            <option value="" disabled selected>Seleccionar semestre</option>
+                                        </select>
+                                    </div>
+                                </div> 
+                            </div>
+                            <div class="tab-pane fade" id="supervision" role="tabpanel" aria-labelledby="supervision-tab">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="fechasupervision" class="form-label">Fecha:</label>
+                                        <input type="date" class="form-control" id="fechasupervision" name="fechasupervision" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="estadosupervision" class="form-label">Estado:</label>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="estadosupervision" name="estadosupervision">
+                                            <label for="estadosupervision" class="form-check-label ms-2"></label>
+                                        </div>
+                                    </div>  
+                                </div>
+                                <div class="mb-3">
+                                    <label for="funciones" class="form-label">Funciones:</label>
+                                    <textarea class="form-control" id="funciones" name="funciones" rows="3" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="observacion" class="form-label">Observación:</label>
+                                    <textarea class="form-control" id="observacion" name="observacion" rows="3" required></textarea>
+                                </div>  
+                            </div>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="direccion" class="form-label">Dirección:</label>
-                        <input type="text" class="form-control" id="direccion" name="direccion" required>
+                    <div class="col-md-6">
+                        <!-- Tab Cumplimiento de los Informes -->
+                        <legend>Cumplimiento de los Informes</legend>
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" id="iiniciales-tab" data-bs-toggle="tab" href="#iiniciales" role="tab" aria-controls="iiniciales" aria-selected="true">Informes Iniciales</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="ifinales-tab" data-bs-toggle="tab" href="#ifinales" role="tab" aria-controls="ifinales" aria-selected="false">Informes Finales</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="constancia-tab" data-bs-toggle="tab" href="#constancia" role="tab" aria-controls="constancia" aria-selected="false">Ficha de Evaluación - Constancia de PPP</a>
+                            </li>
+                        </ul>
+                        <!-- Contenido de cada Tab -->
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="iiniciales" role="tabpanel" aria-labelledby="iiniciales-tab">
+                                <div class="row mb-3">                     
+                                    <div class="col-md-6">     
+                                        <div class="form-check">
+                                            <label for="inicialestudiante" class="form-label">Informe Inicial (Estudiante):</label>
+                                            <input type="checkbox" class="form-check-input" id="inicialestudiante" name="inicialestudiante">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">                                        
+                                        <div class="form-check">
+                                            <label for="inicialinstitucion" class="form-label">Informe Inicial (Institución):</label>
+                                            <input type="checkbox" class="form-check-input" id="inicialinstitucion" name="inicialinstitucion">
+                                        </div>
+                                    </div>                      
+                                </div>
+                                <div class="row mb-3">                     
+                                    <div class="col-md-6">
+                                        <label for="fechainicialestudiante" class="form-label">Fecha Subido:</label>
+                                        <input type="date" class="form-control" id="fechainicialestudiante" name="fechainicialestudiante" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="fechainicialinstitucion" class="form-label">Fecha Subido:</label>
+                                        <input type="date" class="form-control" id="fechainicialinstitucion" name="fechainicialinstitucion" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="ifinales" role="tabpanel" aria-labelledby="ifinales-tab">
+                                <div class="row mb-3">                     
+                                    <div class="col-md-6">                                       
+                                        <div class="form-check">
+                                            <label for="finalestudiante" class="form-label">Informe Final (Estudiante):</label>
+                                            <input type="checkbox" class="form-check-input" id="finalestudiante" name="finalestudiante">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">                                    
+                                        <div class="form-check">
+                                            <label for="finalinstitucion" class="form-label">Informe Final (Institución):</label>
+                                            <input type="checkbox" class="form-check-input" id="finalinstitucion" name="finalinstitucion">
+                                        </div>
+                                    </div>                      
+                                </div>
+                                <div class="row mb-3">                     
+                                    <div class="col-md-6">
+                                        <label for="fechafinalestudiante" class="form-label">Fecha Subido:</label>
+                                        <input type="date" class="form-control" id="fechafinalestudiante" name="fechafinalestudiante" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="fechafinalinstitucion" class="form-label">Fecha Subido:</label>
+                                        <input type="date" class="form-control" id="fechafinalinstitucion" name="fechafinalinstitucion" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="constancia" role="tabpanel" aria-labelledby="constancia-tab">
+                                <div class="row mb-3">                     
+                                    <div class="col-md-6">
+                                        <div class="form-check">
+                                            <label for="constancia" class="form-check-label ms-2">Constancia de PPP:</label>
+                                            <input type="checkbox" class="form-check-input" id="constancia" name="constancia">                      
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="fechaconstancia" class="form-label">Fecha Subido:</label>
+                                        <input type="date" class="form-control" id="fechaconstancia" name="fechaconstancia" required>
+                                    </div>                    
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary" style="margin-top: 15px;">Guardar</button>
+                            </div>
+                        </div> 
                     </div>
-                    <div class="mb-3">
-                        <label for="giro_institucion" class="form-label">Giro de la Institución:</label>
-                        <input type="text" class="form-control" id="giro_institucion" name="giro_institucion" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="representante" class="form-label">Representante Legal de la Institución:</label>
-                        <input type="text" class="form-control" id="representante" name="representante" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="cantidad_trabajadores" class="form-label">Cantidad de Trabajadores:</label>
-                        <input type="number" class="form-control" id="cantidad_trabajadores" name="cantidad_trabajadores" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="vision" class="form-label">Visión de la Institución:</label>
-                        <textarea class="form-control" id="vision" name="vision" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="mision" class="form-label">Misión de la Institución:</label>
-                        <textarea class="form-control" id="mision" name="mision" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="infraestructura_fisica" class="form-label">Infraestructura Física:</label>
-                        <textarea class="form-control" id="infraestructura_fisica" name="infraestructura_fisica" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="infraestructura_tecnologica" class="form-label">Infraestructura Tecnológica:</label>
-                        <textarea class="form-control" id="infraestructura_tecnologica" name="infraestructura_tecnologica" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="organigrama" class="form-label">Organigrama:</label>
-                        <textarea class="form-control" id="organigrama" name="organigrama" rows="3" required></textarea>
-                    </div>
-                </fieldset>
-
-                <!-- Labores Desarrolladas por el Estudiante -->
-                <fieldset>
-                    <legend>Labores Desarrolladas por el Estudiante</legend>
-                    <div class="mb-3">
-                        <label for="area_trabajo" class="form-label">Descripción del Área de Trabajo y Relaciones Laborales:</label>
-                        <textarea class="form-control" id="area_trabajo" name="area_trabajo" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="labores_realizadas" class="form-label">Descripción de las Labores Realizadas:</label>
-                        <textarea class="form-control" id="labores_realizadas" name="labores_realizadas" rows="3" required></textarea>
-                    </div>
-                </fieldset>
-
-                <!-- Conclusiones -->
-                <fieldset>
-                    <legend>Conclusiones</legend>
-                    <div class="mb-3">
-                        <label for="conclusion1" class="form-label">Conclusión 1:</label>
-                        <textarea class="form-control" id="conclusion1" name="conclusion1" rows="2" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="conclusion2" class="form-label">Conclusión 2:</label>
-                        <textarea class="form-control" id="conclusion2" name="conclusion2" rows="2"></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="conclusion3" class="form-label">Conclusión 3:</label>
-                        <textarea class="form-control" id="conclusion3" name="conclusion3" rows="2"></textarea>
-                    </div>
-                </fieldset>
-
-                <!-- Recomendaciones -->
-                <fieldset>
-                    <legend>Recomendaciones</legend>
-                    <div class="mb-3">
-                        <label for="recomendacion1" class="form-label">Recomendación 1:</label>
-                        <textarea class="form-control" id="recomendacion1" name="recomendacion1" rows="2" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="recomendacion2" class="form-label">Recomendación 2:</label>
-                        <textarea class="form-control" id="recomendacion2" name="recomendacion2" rows="2"></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="recomendacion3" class="form-label">Recomendación 3:</label>
-                        <textarea class="form-control" id="recomendacion3" name="recomendacion3" rows="2"></textarea>
-                    </div>
-                </fieldset>
-
-                <!-- Bibliografía -->
-                <fieldset>
-                    <legend>Bibliografía</legend>
-                    <div class="mb-3">
-                        <label for="bibliografia" class="form-label">Bibliografía (Estilo IEEE):</label>
-                        <textarea class="form-control" id="bibliografia" name="bibliografia" rows="3" required></textarea>
-                    </div>
-                </fieldset>
-
-                <!-- Anexos -->
-                <fieldset>
-                    <legend>Anexos</legend>
-                    <div class="mb-3">
-                        <label for="anexos" class="form-label">Anexos:</label>
-                        <textarea class="form-control" id="anexos" name="anexos" rows="3"></textarea>
-                    </div>
-                </fieldset>
-
-                <button type="submit" class="btn btn-primary">Guardar Informe</button>
+                </div>       
             </form>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/datos_semestres')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('semestrea');
+                data.forEach(semestre => {
+                    const option = document.createElement('option');
+                    option.value = semestre.id;
+                    option.textContent = semestre.nombre;   
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/datos_semestres')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('semestrefinal');
+                data.forEach(semestre => {
+                    const option = document.createElement('option');
+                    option.value = semestre.id;
+                    option.textContent = semestre.nombre;   
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/datos_estudiantes')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('estudiante');
+                data.forEach(estudiante => {
+                    const option = document.createElement('option');
+                    option.value = estudiante.idPersona;
+                    option.textContent = `${estudiante.apellidos} ${estudiante.nombre}`;
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/datos_tipo_practicas')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('tipo_practica');
+                data.forEach(tipo_practica => {
+                    const option = document.createElement('option');
+                    option.value = tipo_practica.id;
+                    option.textContent = tipo_practica.nombre;
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+    document.getElementById('estudiante').addEventListener('change', function() {
+        fetch(`/datos_horas_ppp?id=${this.value}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la solicitud');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.length > 0) {
+                    document.getElementById('horasrequeridas').value = data[0].hRequeridas;                
+                } else {
+                    console.log('No se encontraron datos para el estudiante.');
+                    document.getElementById('horasrequeridas').value = '';
+                }
+            })
+            .catch(error => {
+                console.error('Error al obtener las horas requeridas:', error);
+            });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('horaspractica').value = 0;
+        function calcularHorasPendientes() {
+            const requeridas = parseFloat(document.getElementById('horasrequeridas').value) || 0;
+            const practica = parseFloat(document.getElementById('horaspractica').value) || 0;
+            const pendientes = requeridas - practica;
+            document.getElementById('horaspendientes').value = pendientes;
+            document.getElementById('requiere').checked = (pendientes > 0);
+        }
+        document.getElementById('horasrequeridas').addEventListener('input', calcularHorasPendientes);
+        document.getElementById('horaspractica').addEventListener('input', calcularHorasPendientes);
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/datos_lineas_desarrollo')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('lineadesarrollo');
+                data.forEach(linea_desarrollo => {
+                    const option = document.createElement('option');
+                    option.value = linea_desarrollo.id;
+                    option.textContent = linea_desarrollo.nombre;
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/datos_instituciones')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('razonsocial');
+                data.forEach(institucion => {
+                    const option = document.createElement('option');
+                    option.value = institucion.numDoc;
+                    option.textContent = institucion.razonSocial;
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+    document.getElementById('razonsocial').addEventListener('change', function() {
+        const jefeInput = document.getElementById('jefe');
+        jefeInput.value = '';
+
+        if (this.value) {
+            fetch(`/jefe_institucion?ruc=${this.value}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error en la solicitud');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data && data.length > 0) {
+                        jefeInput.value = `${data[0].apellidos} ${data[0].nombre}`;
+                        jefeInput.value = 'No se encontró jefe';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al obtener el jefe inmediato:', error);
+                });
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/datos_estados')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('estadopractica');
+                data.forEach(estado => {
+                    const option = document.createElement('option');
+                    option.value = estado.idEstado;
+                    option.textContent = estado.nombre;
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+    const inputEstudiante = document.getElementById('estudiante');
+    const dropdownEstudiantes = document.getElementById('dropdown-estudiantes');
+
+    inputEstudiante.addEventListener('input', function() {
+        const searchText = this.value.toLowerCase();
+        fetch('/datos_estudiantes')
+            .then(response => response.json())
+            .then(data => {
+                dropdownEstudiantes.innerHTML = '';
+                const resultados = data.filter(estudiante => 
+                    `${estudiante.apellidos} ${estudiante.nombre}`.toLowerCase().includes(searchText)
+                );
+
+                if (resultados.length > 0) {
+                    resultados.forEach(estudiante => {
+                        const li = document.createElement('li');
+                        li.textContent = `${estudiante.apellidos} ${estudiante.nombre}`;
+                        li.dataset.id = estudiante.id;
+                        li.addEventListener('click', () => {
+                            inputEstudiante.value = li.textContent;
+                            dropdownEstudiantes.classList.remove('show');
+                        });
+                        dropdownEstudiantes.appendChild(li);
+                    });
+                    dropdownEstudiantes.classList.add('show');
+                } else {
+                    dropdownEstudiantes.classList.remove('show');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+    document.addEventListener('click', function(event) {
+        if (!inputEstudiante.contains(event.target) && !dropdownEstudiantes.contains(event.target)) {
+            dropdownEstudiantes.classList.remove('show');
+        }
+    });
+
+
+</script>
 
 {% endblock %}
