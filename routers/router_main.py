@@ -44,11 +44,9 @@ def procesar_login():
         password = request.json.get('password')
         usuario = controlador_usuario.obtener_usuario_con_tipopersona_por_username(username)
 
-        # Inicializar el diccionario de intentos para el usuario si no existe
         if username not in login_attempts:
             login_attempts[username] = {'attempts': 0, 'last_attempt_time': 0}
 
-        # Verificar si el usuario está bloqueado (desbloquear después de 5 minutos)
         if login_attempts[username]['attempts'] >= 3 and (time.time() - login_attempts[username]['last_attempt_time']) < 300:
             return jsonify({'mensaje': 'Cuenta bloqueada. Intente de nuevo más tarde.', 'logeo': False})
         
@@ -64,19 +62,13 @@ def procesar_login():
             encpassword = h.hexdigest()
 
             if encpassword == usuario[3]:
-                # Resetear los intentos de login fallidos tras un login exitoso
                 login_attempts[username] = {'attempts': 0, 'last_attempt_time': 0}
-
-                # Obtener datos del usuario para almacenar en la sesión
                 persona = controlador_usuario.obtener_datos_usuario(usuario[0])
                 nombre = persona[0].split()[0]
                 apellido = persona[1].split()[0]
                 foto = persona[2]
-
-                # Almacenar el ID del usuario en la sesión
                 session['user_id'] = usuario[0]
 
-                # Retornar los datos de sesión y confirmar el login exitoso
                 return jsonify({
                     'logeo': True,
                     'nombre': nombre,
@@ -84,7 +76,6 @@ def procesar_login():
                     'foto': foto
                 })
             else:
-                # Aumentar el número de intentos fallidos
                 login_attempts[username]['attempts'] += 1
                 login_attempts[username]['last_attempt_time'] = time.time()
                 return jsonify({'mensaje': 'La contraseña es incorrecta', 'logeo': False})

@@ -399,6 +399,29 @@
 </div>
 
 <script>
+    function limpiarControles() {
+        document.getElementById('fechaInicio').value = '';
+        document.getElementById('horario').value = '';
+        document.getElementById('area').value = '';
+        document.getElementById('horasrequeridas').value = '';
+        document.getElementById('horaspendientes').value = '';
+        document.getElementById('horaspractica').value = '';
+        document.getElementById('giroinstitucion').value = '';
+        document.getElementById('jefe').value = '';
+        document.getElementById('estudiante').value = '';
+        document.getElementById('id').value = '';
+        document.getElementById('id').disabled = false;
+        document.getElementById('semestrea').selectedIndex = 0;
+        document.getElementById('lineadesarrollo').selectedIndex = 0;
+        document.getElementById('razonsocial').selectedIndex = 0;
+        document.getElementById('tipo_practica').selectedIndex = 0;
+        const modalidadRadios = document.querySelectorAll('input[name="modalidad"]');
+        modalidadRadios.forEach(radio => {
+            radio.checked = false;
+        });
+    }
+
+    
     function disableTabs() {
         const tabs = document.querySelectorAll('.nav-link');
         const tabContents = document.querySelectorAll('.tab-pane');
@@ -533,12 +556,12 @@
                 })
                 .then(data => {
                     if (data && data.length > 0) {
-                        jefeInput.value = `${data[0].apellidos} ${data[0].nombre}`;
-                        jefeInput.value = 'No se encontró jefe';
+                        jefeInput.value = `${data[0].apellidos} ${data[0].nombre}`;                       
                     }
                 })
                 .catch(error => {
                     console.error('Error al obtener el jefe inmediato:', error);
+                    jefeInput.value = 'No se encontró jefe.';
                 });
         }
     });
@@ -647,18 +670,6 @@
         const idLinea = document.getElementById('lineadesarrollo').value;
         const numDocInstitucion = document.getElementById('razonsocial').value;
         const idTipoPractica = document.getElementById('tipo_practica').value;
-        console.log(fechaInicio);
-        console.log(modalidad);
-        console.log(horario);
-        console.log(area);
-        console.log(numeroHorasPPP);
-        console.log(numeroHorasPendientes);
-        console.log(numeroHorasRealizadas);
-        console.log(idSemestre);
-        console.log(idLinea);
-        console.log(numDocInstitucion);
-        console.log(idTipoPractica);
-        console.log(idPersona);
         if (!fechaInicio || !modalidad || !horario || !area || !numeroHorasPPP || !numeroHorasPendientes || !numeroHorasRealizadas || !idSemestre || !idLinea || !numDocInstitucion || !idTipoPractica || !idPersona) {
             alert("Todos los campos son requeridos.");
             return;
@@ -691,6 +702,8 @@
             } else {
                 console.log("Práctica agregada correctamente:", data.mensaje);
                 alert("Práctica agregada correctamente");
+                limpiarControles();
+                disableTabs();
             }
         })
         .catch(error => {

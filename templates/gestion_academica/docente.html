@@ -21,10 +21,11 @@
                     <thead>
                         <tr>
                             <th class="text-center">ID</th>
-                            <th class="text-center">Nombre</th>
+                            <th class="text-center">N° Doc</th>
                             <th class="text-center">Apellidos</th>
+                            <th class="text-center">Nombre</th>                        
                             <th class="text-center">Cargo</th>
-                            <th class="text-center">Correo</th>
+                            <th class="text-center">Escuela</th>
                             <th class="text-center">Estado</th>
                             <th class="text-center">Opciones</th>
                         </tr>
@@ -96,38 +97,83 @@
     </div>
 </div>
 
-<!-- MODAL MODIFICAR DOCENTE -->
-<div class="modal fade" id="modalModificarDocente" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modalDocente" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modificar Docente</h5>
+                <h5 class="modal-title">Agregar Estudiante</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form id="formModificarDocente">
-                    <input type="hidden" id="idDocenteMod" name="idDocenteMod">
-                    <div class="mb-3">
-                        <label for="nombreDocenteMod" class="form-label">Nombre:</label>
-                        <input type="text" class="form-control" id="nombreDocenteMod" name="nombreDocenteMod" required>
+                <form id="formModificarEstudiante">
+                    <input type="hidden" id="idEstudianteMod" name="idEstudianteMod">
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="numDocMod" class="form-label">N° Documento:</label>
+                            <input type="text" class="form-control" id="numDocMod" name="numDocMod" maxlength="12" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="apellidosDocenteMod" class="form-label">Apellidos:</label>
+                            <input type="text" class="form-control" id="apellidosDocenteMod" name="apellidosDocenteMod" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="nombreDocenteMod" class="form-label">Nombre:</label>
+                            <input type="text" class="form-control" id="nombreDocenteMod" name="nombreDocenteMod" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="tel1Mod" class="form-label">Teléfono 1:</label>
+                            <input type="text" class="form-control" id="tel1Mod" name="tel1Mod" maxlength="9" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="tel2Mod" class="form-label">Teléfono 2 (opcional):</label>
+                            <input type="text" class="form-control" id="tel2Mod" name="tel2Mod" maxlength="9">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="correoPMod" class="form-label">Correo Personal:</label>
+                            <input type="email" class="form-control" id="correoPMod" name="correoPMod" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="correoUSATMod" class="form-label">Correo USAT:</label>
+                            <input type="email" class="form-control" id="correoUSATMod" name="correoUSATMod" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="estadoDocenteMod" class="form-label">Estado:</label>
+                            <select class="form-control" id="estadoDocenteMod" name="estadoDocenteMod" required>
+                                <option value="A">Activo</option>
+                                <option value="I">Inactivo</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="generoMod" class="form-label">Género:</label>
+                            <select class="form-control" id="generoMod" name="idGeneroMod" required>
+                                <!-- Los valores de género se cargarán dinámicamente -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="usuarioMod" class="form-label">Usuario:</label>
+                            <select class="form-control" id="usuarioMod" name="idUsuarioMod" required>
+                                <!-- Los valores de usuario se cargarán dinámicamente -->
+                            </select>
+                        </div>
                     </div>
                     <div class="mb-3">
-                        <label for="apellidosDocenteMod" class="form-label">Apellidos:</label>
-                        <input type="text" class="form-control" id="apellidosDocenteMod" name="apellidosDocenteMod" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="cargoDocenteMod" class="form-label">Cargo:</label>
-                        <input type="text" class="form-control" id="cargoDocenteMod" name="cargoDocenteMod" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="correoDocenteMod" class="form-label">Correo:</label>
-                        <input type="email" class="form-control" id="correoDocenteMod" name="correoDocenteMod" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="estadoDocenteMod" class="form-label">Estado:</label>
-                        <select class="form-control" id="estadoDocenteMod" name="estadoDocenteMod" required>
-                            <option value="A">Activo</option>
-                            <option value="I">Inactivo</option>
+                        <label for="escuelaMod" class="form-label">Escuela:</label>
+                        <select class="form-control" id="escuelaMod" name="idEscuelaMod" required>
+                            <!-- Los valores de escuela se cargarán dinámicamente -->
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
@@ -137,8 +183,7 @@
     </div>
 </div>
 
-<!-- Modal para confirmar eliminación -->
-<div class="modal fade" id="modalEliminarDocente" tabindex="-1" aria-labelledby="modalEliminarDocenteLabel"
+<div class="modal fade" id="modalConfirmar" tabindex="-1" aria-labelledby="modalConfirmarLabel"
     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -157,33 +202,365 @@
         </div>
     </div>
 </div>
-
-<!-- Modal para confirmar baja -->
-<div class="modal fade" id="modalDarDeBajaDocente" tabindex="-1" aria-labelledby="modalDarDeBajaDocenteLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-center fw-bold">Dar de Baja Docente</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body text-center">
-                <p>¿Estás seguro de que deseas dar de baja al docente <strong id="nombreDocenteDarDeBaja"></strong>?</p>
-                <input type="hidden" id="idDocenteDarDeBaja" name="idDocenteDarDeBaja">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-success" id="confirmarDarDeBajaDocente">Dar de Baja</button>
-            </div>
-        </div>
-    </div>
-</div>
-
+{% block scripts %}
 <!-- Incluye las librerías necesarias -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="{{ url_for('static', filename='js/docente.js') }}"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.4/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.print.min.js"></script>    
 
+<script>
+    $(document).ready(function () {
+        if ($.fn.DataTable.isDataTable('#tabla-docente')) {
+            $('#tabla-docente').DataTable().clear().destroy();  // Destruye la instancia previa
+        }
+        var table = $('#tabla-docente').DataTable({
+            paging: true,
+            info: false,
+            responsive: true,
+            autoWidth: true,
+            searching: true,
+            scrollY: "510px",
+            order: [], 
+            dom: `
+                <'row mb-3'<'col-12 text-center'B>>
+                <'row mb-3'<'col-12'f>>
+                <'row'<'col-12'rt>>
+                <'row'<'col-12'ip>>
+            `,
+            buttons: [
+                {
+                    extend: 'collection',
+                    text: '<i class="fas fa-file-export"></i> Exportar/Imprimir',
+                    className: 'btn btn-secondary mb-2',
+                    buttons: [
+                        { extend: 'copy', text: '<i class="fas fa-copy"></i> Copiar', className: 'dropdown-item' },
+                        { extend: 'csv', text: '<i class="fas fa-file-csv"></i> CSV', className: 'dropdown-item' },
+                        { extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel', className: 'dropdown-item' },
+                        { extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> PDF', className: 'dropdown-item' },
+                        { extend: 'print', text: '<i class="fas fa-print"></i> Imprimir', className: 'dropdown-item' }
+                    ]
+                }, 
+                {
+                    text: '<i class="fas fa-plus"></i> Agregar Nuevo Estudiante',
+                    className: 'btn_agregar_docente btn btn-primary mb-2',
+                    action: function (e, dt, node, config) {
+                        e.preventDefault();
+                        $('#formAgregarDocente')[0].reset();
+                        $('#modalDocente').modal('show');
+                    }
+                }
+            ],
+            ajax: {
+                url: "/datos_docentes",
+                type: "GET",
+                dataSrc: ""
+            },
+            processing: true,
+            serverSide: false,
+            columns: [
+                { data: "numDoc", className: 'text-center' },
+                { data: "apellidos"},
+                { data: "nombre" }, 
+                { data: "cargo" },
+                { data: "escuela" },
+                {
+                    data: null,
+                    className: 'text-center',
+                    render: function (data, type, row) {
+                        return `
+                            <button class="btn btn-primary btn-sm btnVer" data-id="${row.idPersona}" title="Ver"><i class="fas fa-eye"></i></button>
+                            <button class="btn btn-warning btn-sm btnModificar" data-id="${row.idPersona}" title="Modificar"><i class="fas fa-pencil-alt"></i></button>
+                            <button class="btn btn-danger btn-sm btnEliminar" data-id="${row.idPersona}" title="Eliminar"><i class="fas fa-times"></i></button>
+                        `;
+                    }
+                }
+            ],
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+            }
+        });
+
+        function mostrarAlerta(tipo, titulo, mensaje) {
+            Swal.fire({
+                icon: tipo,
+                title: titulo,
+                html: mensaje,
+                showConfirmButton: true,
+                timer: 5000
+            });
+        }
+
+        // Evento para Ver Estudiante
+        $('#tabla-docente tbody').on('click', '.btnVer', function () {
+            var id = $(this).data('id');
+            $.ajax({
+                url: '/obtener_estudiante_por_id/' + id,
+                type: 'GET',
+                contentType: 'application/json',
+                success: function (response) {  
+                    if (response.error) {
+                        mostrarAlerta("error", "Error", response.error);
+                    } else {
+                        var estado = response.estado === 'A' ? 'Activo' : 'Inactivo';
+                        $('#modalVerEstudiante .modal-body').html(`
+                            <table class="table table-striped table-bordered">
+                                <tr><th>ID</th><td>${response.idPersona}</td></tr>
+                                <tr><th>Número Documento</th><td>${response.numDoc}</td></tr>
+                                <tr><th>Nombre</th><td>${response.nombre}</td></tr>
+                                <tr><th>Apellidos</th><td>${response.apellidos}</td></tr>
+                                <tr><th>Código Universitario</th><td>${response.codUniversitario}</td></tr>
+                                <tr><th>Correo Personal</th><td>${response.correoP}</td></tr>
+                                <tr><th>Correo USAT</th><td>${response.correoUSAT}</td></tr>
+                                <tr><th>teléfono</th><td>${response.tel1}</td></tr>
+                                <tr><th>Estado</th><td>${estado}</td></tr>
+                            </table>
+                        `);
+                        $('#modalVerEstudiante').modal('show');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    mostrarAlerta("error", "Error", "Hubo un error al obtener el estudiante.");
+                }
+            });
+        });
+
+        // Evento para Agregar Estudiante
+        $('#formAgregarEstudiante').submit(function (e) {
+            e.preventDefault();
+            var data = {
+                numDoc: $('#numDoc').val(),
+                nombre: $('#nombreEstudiante').val(),
+                apellidos: $('#apellidosEstudiante').val(),
+                codUniversitario: $('#codUniversitario').val(),
+                tel1: $('#tel1').val(),
+                tel2: $('#tel2').val(),
+                correoP: $('#correoP').val(),
+                correoUSAT: $('#correoUSAT').val(),
+                estado: $('#estadoEstudiante').val(),
+                idGenero: $('#genero').val(),
+                idTipoDoc: $('#tipoDoc').val(),
+                idUsuario: $('#usuario').val(),
+                idEscuela: $('#escuela').val()
+            };
+
+            $.ajax({
+                url: '/agregar_estudiante',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (response) {
+                    if (response.error) {
+                        mostrarAlerta("error", "Error", response.error);
+                    } else {
+                        mostrarAlerta("success", "Éxito", response.mensaje);
+                        table.ajax.reload();
+                        $('#modalAgregarEstudiante').modal('hide');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    mostrarAlerta("error", "Error", "Hubo un error al agregar el estudiante.");
+                }
+            });
+        });
+
+        // Función para cargar los géneros dinámicamente
+        function cargarGeneros(selectedGeneroId) {
+            $.ajax({
+                url: '/datos_generos',  // Asegúrate de que esta ruta esté configurada en tu backend
+                type: 'GET',
+                contentType: 'application/json',
+                success: function (response) {
+                    var generoSelect = $('#generoMod');
+                    generoSelect.empty();  // Limpiar el contenido anterior
+
+                    // Agregar opciones de géneros
+                    response.forEach(function (genero) {
+                        // Seleccionar el género actual del estudiante
+                        var selected = parseInt(genero.idGenero) === parseInt(selectedGeneroId) ? 'selected' : '';  
+                        generoSelect.append(`<option value="${genero.idGenero}" ${selected}>${genero.nombre}</option>`);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    mostrarAlerta("error", "Error", "Hubo un error al cargar los géneros.");
+                }
+            });
+        }
+
+        // Función para cargar los tipoDocumentos dinámicamente
+        function cargarTipoDocumentos(selectedTipoDocId) {
+            $.ajax({
+                url: '/datos_tipoDocumentos',
+                type: 'GET',
+                contentType: 'application/json',
+                success: function (response) {
+                    var tipoDocSelect = $('#tipoDocMod');
+                    tipoDocSelect.empty();
+
+                    // Agregar opciones de tipo de documentos
+                    response.forEach(function (tipoDoc) {
+                        var selected = tipoDoc.idTipoDoc == selectedTipoDocId ? 'selected' : '';
+                        tipoDocSelect.append(`<option value="${tipoDoc.idTipoDoc}" ${selected}>${tipoDoc.nombre}</option>`);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    mostrarAlerta("error", "Error", "Hubo un error al cargar los tipos de documentos.");
+                }
+            });
+        }
+
+        // Función para cargar las escuelas dinámicamente
+        function cargarEscuelas(selectedEscuelaId) {
+            $.ajax({
+                url: '/datos_escuelas',
+                type: 'GET',
+                contentType: 'application/json',
+                success: function (response) {
+                    var escuelaSelect = $('#escuelaMod');
+                    escuelaSelect.empty();
+
+                    // Agregar opciones de tipo de documentos
+                    response.forEach(function (escuela) {
+                        var selected = escuela.idEscuela == selectedEscuelaId ? 'selected' : '';
+                        escuelaSelect.append(`<option value="${escuela.idEscuela}" ${selected}>${escuela.nombre}</option>`);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    mostrarAlerta("error", "Error", "Hubo un error al cargar los tipos de documentos.");
+                }
+            });
+        }
+
+        // Función para cargar los usuarios dinámicamente
+        function cargarUsuarios(selectedUsuarioId) {
+            $.ajax({
+                url: '/datos_usuarios',
+                type: 'GET',
+                contentType: 'application/json',
+                success: function (response) {
+                    var usuarioSelect = $('#usuarioMod');
+                    usuarioSelect.empty();
+
+                    // Agregar opciones de tipo de usuarios
+                    response.forEach(function (usuario) {
+                        var selected = usuario.idUsuario == selectedUsuarioId ? 'selected' : '';
+                        usuarioSelect.append(`<option value="${usuario.idUsuario}" ${selected}>${usuario.username}</option>`);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    mostrarAlerta("error", "Error", "Hubo un error al cargar los tipos de documentos.");
+                }
+            });
+        }
+
+        // Evento para Modificar Estudiante
+        $('#tabla-docente tbody').on('click', '.btnModificar', function () {
+            var id = $(this).data('id');
+            $.ajax({
+                url: '/obtener_estudiante_por_id_modificar/' + id,
+                type: 'GET',
+                contentType: 'application/json',
+                success: function (response) {
+                    if (response.error) {
+                        mostrarAlerta("error", "Error", response.error);
+                    } else {
+                        $('#formModificarEstudiante')[0].reset();
+                        $('#idEstudianteMod').val(response.idPersona);
+                        $('#numDocMod').val(response.numDoc);
+                        $('#nombreEstudianteMod').val(response.nombre);
+                        $('#apellidosEstudianteMod').val(response.apellidos);
+                        $('#codUniversitarioMod').val(response.codUniversitario);
+                        $('#tel1Mod').val(response.tel1);
+                        $('#tel2Mod').val(response.tel2 ? response.tel2 : '');
+                        $('#correoPMod').val(response.correoP);
+                        $('#correoUSATMod').val(response.correoUSAT);
+                        $('#estadoEstudianteMod').val(response.estado);
+                        cargarGeneros(response.idGenero);
+                        cargarTipoDocumentos(response.idTipoDoc);
+                        cargarUsuarios(response.idUsuario);
+                        cargarEscuelas(response.idEscuela);
+                        $('#modalModificarEstudiante').modal('show');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    mostrarAlerta("error", "Error", "Hubo un error al obtener el estudiante.");
+                }
+            });
+        });
+
+        $('#formModificarEstudiante').submit(function (e) {
+            e.preventDefault();
+            var data = {
+                idPersona: $('#idEstudianteMod').val(),
+                numDoc: $('#numDocMod').val(),
+                nombre: $('#nombreEstudianteMod').val(),
+                apellidos: $('#apellidosEstudianteMod').val(),
+                codUniversitario: $('#codUniversitarioMod').val(),
+                tel1: $('#tel1Mod').val(),
+                tel2: $('#tel2Mod').val(),
+                correoP: $('#correoPMod').val(),
+                correoUSAT: $('#correoUSATMod').val(),
+                estado: $('#estadoEstudianteMod').val(),
+                idGenero: $('#generoMod').val(),
+                idTipoDoc: $('#tipoDocMod').val(),
+                idUsuario: $('#usuarioMod').val(),
+                idEscuela: $('#escuelaMod').val()
+            };
+
+            $.ajax({
+                url: '/modificar_estudiante',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (response) {
+                    if (response.error) {
+                        mostrarAlerta("error", "Error", response.error);
+                    } else {
+                        mostrarAlerta("success", "Éxito", response.mensaje);
+                        table.ajax.reload();
+                        $('#modalModificarEstudiante').modal('hide');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    mostrarAlerta("error", "Error", "Hubo un error al modificar el estudiante.");
+                }
+            });
+        });
+
+        // Evento para Eliminar Estudiante
+        $('#tabla-docente tbody').on('click', '.btnEliminar', function () {
+            var id = $(this).data('id');
+            var nombre = $(this).data('nombre');
+            $('#nombreEstudianteEliminar').text(nombre);
+            $('#idEstudianteEliminar').val(id);
+            $('#modalEliminarEstudiante').modal('show');
+        });
+
+        $('#confirmarEliminarEstudiante').click(function () {
+            var id = $('#idEstudianteEliminar').val();
+            $.ajax({
+                url: '/eliminar_estudiante',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ idEstudiante: id }),
+                success: function (response) {
+                    if (response.error) {
+                        mostrarAlerta("error", "Error", response.error);
+                    } else {
+                        mostrarAlerta("success", "Éxito", response.mensaje);
+                        table.ajax.reload();
+                        $('#modalEliminarEstudiante').modal('hide');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    mostrarAlerta("error", "Error", "Hubo un error al eliminar el estudiante.");
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}
 {% endblock %}

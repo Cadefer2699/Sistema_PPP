@@ -8,7 +8,6 @@ router_docente = Blueprint('router_docente', __name__)
 def docente():
     return render_template('dashboard/docente.html')
 
-# Ruta para obtener todos los docentes
 @router_docente.route("/datos_docentes", methods=["GET"])
 def datos_docentes():
     docentes = controlador_docente.obtener_docentes()

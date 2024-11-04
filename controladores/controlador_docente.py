@@ -10,7 +10,18 @@ def obtener_docentes():
     docentes = []
     try:
         with conexion.cursor() as cursor:
-            cursor.execute("SELECT * FROM docente")
+            cursor.execute("""
+                SELECT 
+                p.idPersona, p.numDoc, p.nombre, p.apellidos, t.tipo as cargo, p.tel1, p.tel2, p.correoP, p.correoUSAT, p.estado, 
+                g.nombre as genero, td.nombre as tipoDocumento, u.username as usuario, e.nombre as escuela
+                FROM persona p
+                LEFT JOIN genero g ON p.idGenero = g.idGenero
+                LEFT JOIN tipo_documento td ON p.idTipoDoc = td.idTipoDoc
+                LEFT JOIN escuela e ON p.idEscuela = e.idEscuela
+                LEFT JOIN usuario u ON p.idUsuario = u.idUsuario
+                LEFT JOIN tipo_usuario t ON u.idTipoUsuario = t.idTipoUsuario
+                WHERE u.idTipoUsuario IN (1, 2)
+            """)
             column_names = [desc[0] for desc in cursor.description]
             rows = cursor.fetchall()
 
@@ -23,6 +34,38 @@ def obtener_docentes():
         conexion.close()
     
     return docentes
+
+def obtener_docente_por_id(idDocente):
+    conexion = obtener_conexion()
+    if not conexion:
+        return {"error": "No se pudo establecer conexión con la base de datos."}
+
+    docente = None
+    try:
+        with conexion.cursor() as cursor:
+            cursor.execute("""
+                SELECT 
+                p.idPersona, p.numDoc, p.nombre, p.apellidos, p.tel1, p.tel2, p.correoP, p.correoUSAT, p.estado, 
+                g.nombre as genero, td.nombre as tipoDocumento, u.username as usuario, e.nombre as escuela
+                FROM persona p
+                LEFT JOIN genero g ON p.idGenero = g.idGenero
+                LEFT JOIN tipo_documento td ON p.idTipoDoc = td.idTipoDoc
+                LEFT JOIN escuela e ON p.idEscuela = e.idEscuela
+                LEFT JOIN usuario u ON p.idUsuario = u.idUsuario
+                WHERE p.idPersona = %
+            """, (idDocente,))
+            row = cursor.fetchone()
+
+            if row:
+                columnas = [desc[0] for desc in cursor.description]
+                docente_dict = dict(zip(columnas, row))
+                return docente_dict
+            else:
+                return {"error": "Docente no encontrado"}
+    except Exception as e:
+        return {"error": str(e)}
+    finally:
+        conexion.close()
 
 def obtener_docente_por_nombre_apellido(nombre, apellidos):
     conexion = obtener_conexion()
@@ -49,9 +92,9 @@ def obtener_docente_por_nombre_apellido(nombre, apellidos):
     finally:
         conexion.close()
 
-def agregar_docente(numDoc, nombre, apellidos, cargo, correo, idTipoDoc, idUsuario):
+def agregar_docente(numDoc, nombre, apellidos, tel1, tel2, correoP, correoUSAT, estado, idGenero, idUsuario, idEscuela):
     # Validaciones
-    if not numDoc or not nombre or not apellidos or not cargo or not correo or not idTipoDoc or not idUsuario:
+    if not numDoc or not nombre or not apellidos or not tel1 or not correoP or not estado or not idGenero or not idUsuario or not idEscuela:
         return {"error": "Todos los campos son requeridos."}
 
     conexion = obtener_conexion()
@@ -61,9 +104,9 @@ def agregar_docente(numDoc, nombre, apellidos, cargo, correo, idTipoDoc, idUsuar
     try:
         with conexion.cursor() as cursor:
             cursor.execute("""
-                INSERT INTO docente (numDoc, nombre, apellidos, cargo, correo, idTipoDoc, idUsuario) 
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
-            """, (numDoc, nombre, apellidos, cargo, correo, idTipoDoc, idUsuario))
+                INSERT INTO docente (numDoc, nombre, apellidos, tel1, tel2, correoP, correoUSAT, estado, idGenero, idTipoDoc, idUsuario, idEscuela) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (numDoc, nombre, apellidos, tel1, tel2, correoP, correoUSAT, estado, idGenero, 1, idUsuario, idEscuela))
             conexion.commit()
             return {"mensaje": "Docente agregado correctamente"}
     except Exception as e:
@@ -72,9 +115,9 @@ def agregar_docente(numDoc, nombre, apellidos, cargo, correo, idTipoDoc, idUsuar
     finally:
         conexion.close()
 
-def modificar_docente(numDoc, nombre, apellidos, cargo, correo, idTipoDoc, idUsuario):
+def modificar_docente(idDocente, numDoc, nombre, apellidos, tel1, tel2, correoP, correoUSAT, estado, idGenero, idUsuario, idEscuela):
     # Validaciones
-    if not numDoc or not nombre or not apellidos or not cargo or not correo or not idTipoDoc or not idUsuario:
+    if not idDocente or not numDoc or not nombre or not apellidos or not tel1 or not correoP or not estado or not idGenero or not idUsuario or not idEscuela:
         return {"error": "Todos los campos son requeridos."}
 
     conexion = obtener_conexion()
@@ -84,10 +127,10 @@ def modificar_docente(numDoc, nombre, apellidos, cargo, correo, idTipoDoc, idUsu
     try:
         with conexion.cursor() as cursor:
             cursor.execute("""
-                UPDATE docente 
-                SET nombre = %s, apellidos = %s, cargo = %s, correo = %s, idTipoDoc = %s, idUsuario = %s
-                WHERE numDoc = %s
-            """, (nombre, apellidos, cargo, correo, idTipoDoc, idUsuario, numDoc))
+                UPDATE persona 
+                SET numDoc = %s, nombre = %s, apellidos = %s, tel1 = %s, tel2 = %s, correoP = %s, correoUSAT = %s, estado = %s, idGenero = %s, idTipoDoc = %s, idUsuario = %s, idEscuela = %s
+                WHERE idPersona = %s
+            """, (numDoc, nombre, apellidos, tel1, tel2, correoP, correoUSAT, estado, idGenero, idUsuario, idEscuela, idDocente))
             conexion.commit()
             return {"mensaje": "Docente modificado correctamente"}
     except Exception as e:
@@ -96,10 +139,10 @@ def modificar_docente(numDoc, nombre, apellidos, cargo, correo, idTipoDoc, idUsu
     finally:
         conexion.close()
 
-def eliminar_docente(numDoc):
+def eliminar_docente(idDocente):
     # Validaciones
-    if not numDoc:
-        return {"error": "El número de documento del docente es requerido."}
+    if not idDocente:
+        return {"error": "El id del docente es requerido."}
 
     conexion = obtener_conexion()
     if not conexion:
@@ -107,7 +150,7 @@ def eliminar_docente(numDoc):
 
     try:
         with conexion.cursor() as cursor:
-            cursor.execute("DELETE FROM docente WHERE numDoc = %s", (numDoc,))
+            cursor.execute("DELETE FROM persona WHERE idPersona = %s", (idDocente,))
             conexion.commit()
             return {"mensaje": "Docente eliminado correctamente"}
     except Exception as e:
