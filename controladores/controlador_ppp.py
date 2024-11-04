@@ -63,11 +63,10 @@ def obtener_practica_por_id(idPractica):
     finally:
         conexion.close()
 
-def agregar_practica(fechaInicio, fechaFin, modalidad, area, numeroHorasPPP, numDocEstudiante, idSemestre, idLinea, numDocInstitucion, idEstado, idTipoPractica):
+def agregar_practica(fechaInicio, horario, modalidad, area, numeroHorasPPP, numeroHorasPendientes, numeroHorasRealizadas, idSemestre, idLinea, numDocInstitucion, idTipoPractica, idPersona):
     # Validaciones
-    if not fechaInicio or not fechaFin or not modalidad or not area or not numeroHorasPPP or not numDocEstudiante or not idSemestre or not idLinea or not numDocInstitucion or not idEstado or not idTipoPractica:
+    if not fechaInicio or not horario or not modalidad or not area or not numeroHorasPPP or not numeroHorasPendientes or not numeroHorasRealizadas or not idSemestre or not idLinea or not numDocInstitucion or not idTipoPractica or not idPersona:
         return {"error": "Todos los campos son requeridos."}
-
     conexion = obtener_conexion()
     if not conexion:
         return {"error": "No se pudo establecer conexión con la base de datos."}
@@ -76,9 +75,9 @@ def agregar_practica(fechaInicio, fechaFin, modalidad, area, numeroHorasPPP, num
         with conexion.cursor() as cursor:
             # Insertar la práctica preprofesional
             cursor.execute("""
-                INSERT INTO practicas_preprofesionales (fechaInicio, fechaFin, modalidad, area, numeroHorasPPP, numeroHorasPendientes, numeroHorasRealizadas, numDocEstudiante, idSemestre, idLinea, numDocInstitucion, idEstado, idTipoPractica)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-            """, (fechaInicio, fechaFin, modalidad, area, numeroHorasPPP, numeroHorasPPP, 0, numDocEstudiante, idSemestre, idLinea, numDocInstitucion, idEstado, idTipoPractica))
+                INSERT INTO practicas_preprofesionales (fechaInicio, horario, modalidad, area, numeroHorasPPP, numeroHorasPendientes, numeroHorasRealizadas, estadoVigencia, idSemestre, idLinea, numDocInstitucion, idEstado, idTipoPractica, idPersona)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) 
+            """, (fechaInicio, horario, modalidad, area, numeroHorasPPP, numeroHorasPendientes, numeroHorasRealizadas, 'P', idSemestre, idLinea, numDocInstitucion, 1, idTipoPractica, idPersona))
             conexion.commit()
             return {"mensaje": "Práctica agregada correctamente"}
     except Exception as e:
@@ -209,4 +208,30 @@ def obtener_practicas_con_estado():
     finally:
         conexion.close()
 
+    return practicas
+
+def obtener_ultimo_id():
+    conexion = obtener_conexion()
+    if not conexion:
+        return {"error": "No se pudo establecer conexión con la base de datos."}
+    
+    practicas = []
+    try:
+        with conexion.cursor() as cursor:
+            query = """
+                SELECT COALESCE(MAX(idPractica), 0) + 1 AS ultimoID
+                FROM practicas_preprofesionales;
+            """
+            cursor.execute(query)
+            column_names = [desc[0] for desc in cursor.description]
+            rows = cursor.fetchall()
+
+            for row in rows:
+                practica_dict = dict(zip(column_names, row))
+                practicas.append(practica_dict)
+    except Exception as e:
+        return {"error": str(e)}
+    finally:
+        conexion.close()
+    
     return practicas
