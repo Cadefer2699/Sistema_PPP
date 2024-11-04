@@ -4,7 +4,7 @@ from routers.router_facultad import router_facultad
 from routers.router_estudiante import router_estudiante
 from routers.router_docente import router_docente
 from routers.router_escuela import router_escuela
-from routers.router_ppp import router_practicas
+from routers.router_ppp import router_ppp
 from routers.router_genero import router_genero
 from routers.router_semestre import router_semestre
 from routers.router_tipo_practicas import router_tipo_practicas
@@ -29,7 +29,7 @@ app.register_blueprint(router_facultad)
 app.register_blueprint(router_estudiante)
 app.register_blueprint(router_docente)
 app.register_blueprint(router_escuela)
-app.register_blueprint(router_practicas)
+app.register_blueprint(router_ppp)
 app.register_blueprint(router_genero)
 app.register_blueprint(router_semestre)
 app.register_blueprint(router_tipo_practicas)
