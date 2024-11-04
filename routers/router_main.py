@@ -1,13 +1,10 @@
 from flask import Blueprint, render_template, request, redirect, jsonify, make_response, session
-
 import hashlib
 import random
 import os
 from werkzeug.utils import secure_filename
 from bd import obtener_conexion
-from bd import obtener_conexion
 import controladores.controlador_usuario as controlador_usuario
-
 import time
 
 login_attempts = {}
@@ -63,10 +60,12 @@ def procesar_login():
 
             if encpassword == usuario[3]:
                 login_attempts[username] = {'attempts': 0, 'last_attempt_time': 0}
+
                 persona = controlador_usuario.obtener_datos_usuario(usuario[0])
                 nombre = persona[0].split()[0]
                 apellido = persona[1].split()[0]
                 foto = persona[2]
+
                 session['user_id'] = usuario[0]
 
                 return jsonify({
@@ -106,6 +105,10 @@ def docente():
 def dap():
     return render_template('/gestion_academica/dap.html')  
 
+@router_main.route("/infoPPP")
+def infoPPP():
+    return render_template('/gestion_academica/infoPPP.html')
+
 @router_main.route("/facultad")
 def facultad():
     return render_template('gestion_academica/facultad.html') 
@@ -138,7 +141,6 @@ def informeFinalEstudiante():
 def informeFinalEmpresa():
     return render_template('ppp/informeFinalEmpresa.html')
 
-@router_main.route("/practicas")
-def ppp():
+@router_main.route("/registro_practicas")
+def registro_practicas():
     return render_template('ppp/ppp_registro.html')
-
