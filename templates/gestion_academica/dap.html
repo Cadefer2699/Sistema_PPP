@@ -23,6 +23,7 @@
                             <th style="text-align:center">Número Documento</th>
                             <th style="text-align:center">Nombre</th>
                             <th style="text-align:center">Apellidos</th>
+                            <th style="text-align:center">Estado</th>
                             <th style="text-align:center">Opciones</th>
                         </tr>
                     </thead>
@@ -40,7 +41,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Detalle Estudiante</h5>
+                <h5 class="modal-title">Detalle DAP</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -59,7 +60,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Agregar Estudiante</h5>
+                <h5 class="modal-title">Agregar DAP</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -76,55 +77,11 @@
                         <label for="apellidosEstudiante" class="form-label">Apellidos:</label>
                         <input type="text" class="form-control" id="apellidosEstudiante" name="apellidos" required>
                     </div>
-                    <div class="mb-3">
-                        <label for="codUniversitario" class="form-label">Código Universitario:</label>
-                        <input type="text" class="form-control" id="codUniversitario" name="codUniversitario" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="tel1" class="form-label">Teléfono 1:</label>
-                        <input type="text" class="form-control" id="tel1" name="tel1" maxlength="9" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="tel2" class="form-label">Teléfono 2 (opcional):</label>
-                        <input type="text" class="form-control" id="tel2" name="tel2" maxlength="9">
-                    </div>
-                    <div class="mb-3">
-                        <label for="correoP" class="form-label">Correo Personal:</label>
-                        <input type="email" class="form-control" id="correoP" name="correoP" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="correoUSAT" class="form-label">Correo USAT:</label>
-                        <input type="email" class="form-control" id="correoUSAT" name="correoUSAT" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="estadoEstudiante" class="form-label">Estado:</label>
-                        <select class="form-control" id="estadoEstudiante" name="estado" required>
+                    <div class="col-md-6 mb-3">
+                        <label for="estadoEstudianteMod" class="form-label">Estado:</label>
+                        <select class="form-control" id="estadoEstudianteMod" name="estadoEstudianteMod" required>
                             <option value="A">Activo</option>
                             <option value="I">Inactivo</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="genero" class="form-label">Género:</label>
-                        <select class="form-control" id="genero" name="idGenero" required>
-                            <!-- Los valores se cargarán dinámicamente -->
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="tipoDoc" class="form-label">Tipo de Documento:</label>
-                        <select class="form-control" id="tipoDoc" name="idTipoDoc" required>
-                            <!-- Los valores se cargarán dinámicamente -->
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="usuario" class="form-label">Usuario:</label>
-                        <select class="form-control" id="usuario" name="idUsuario" required>
-                            <!-- Los valores se cargarán dinámicamente -->
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="escuela" class="form-label">Escuela:</label>
-                        <select class="form-control" id="escuela" name="idEscuela" required>
-                            <!-- Los valores se cargarán dinámicamente -->
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Guardar</button>
@@ -139,7 +96,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modificar Estudiante</h5>
+                <h5 class="modal-title">Modificar DAP</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -150,10 +107,6 @@
                         <div class="col-md-6 mb-3">
                             <label for="numDocMod" class="form-label">N° Documento:</label>
                             <input type="text" class="form-control" id="numDocMod" name="numDocMod" maxlength="12" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="codUniversitarioMod" class="form-label">Código Universitario:</label>
-                            <input type="text" class="form-control" id="codUniversitarioMod" name="codUniversitarioMod" required>
                         </div>
                     </div>
 
@@ -168,28 +121,6 @@
                             <input type="text" class="form-control" id="nombreEstudianteMod" name="nombreEstudianteMod" required>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="correoPMod" class="form-label">Correo Personal:</label>
-                            <input type="email" class="form-control" id="correoPMod" name="correoPMod" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="correoUSATMod" class="form-label">Correo USAT:</label>
-                            <input type="email" class="form-control" id="correoUSATMod" name="correoUSATMod" required>
-                        </div>
-                    </div>
-
-                    <!-- Teléfono 1 y Teléfono 2 -->
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="tel1Mod" class="form-label">Teléfono 1:</label>
-                            <input type="text" class="form-control" id="tel1Mod" name="tel1Mod" maxlength="9" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="tel2Mod" class="form-label">Teléfono 2 (opcional):</label>
-                            <input type="text" class="form-control" id="tel2Mod" name="tel2Mod" maxlength="9">
-                        </div>
-                    </div>
 
                     <!-- Estado y Género -->
                     <div class="row">
@@ -200,36 +131,6 @@
                                 <option value="I">Inactivo</option>
                             </select>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="generoMod" class="form-label">Género:</label>
-                            <select class="form-control" id="generoMod" name="idGeneroMod" required>
-                                <!-- Los valores de género se cargarán dinámicamente -->
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Tipo de Documento y Usuario -->
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="tipoDocMod" class="form-label">Tipo de Documento:</label>
-                            <select class="form-control" id="tipoDocMod" name="idTipoDocMod" required>
-                                <!-- Los valores del tipo de documento se cargarán dinámicamente -->
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="usuarioMod" class="form-label">Usuario:</label>
-                            <select class="form-control" id="usuarioMod" name="idUsuarioMod" required>
-                                <!-- Los valores de usuario se cargarán dinámicamente -->
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Escuela (en una sola fila) -->
-                    <div class="mb-3">
-                        <label for="escuelaMod" class="form-label">Escuela:</label>
-                        <select class="form-control" id="escuelaMod" name="idEscuelaMod" required>
-                            <!-- Los valores de escuela se cargarán dinámicamente -->
-                        </select>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
@@ -246,11 +147,11 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title text-center fw-bold">Eliminar Estudiante</h5>
+                <h5 class="modal-title text-center fw-bold">Eliminar DAP</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body text-center">
-                <p>¿Estás seguro de que deseas eliminar el estudiante <strong id="nombreEstudianteEliminar"></strong>?</p>
+                <p>¿Estás seguro de que deseas eliminar el DAP <strong id="nombreEstudianteEliminar"></strong>?</p>
                 <input type="hidden" id="idEstudianteEliminar" name="idEstudianteEliminar">
             </div>
             <div class="modal-footer">

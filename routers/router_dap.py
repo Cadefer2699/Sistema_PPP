@@ -1,29 +1,29 @@
 from flask import Blueprint, jsonify, request, render_template
-import controladores.controlador_estudiante as controlador_estudiante
+import controladores.controlador_dap as controlador_dap
 
-router_estudiante = Blueprint('router_estudiante', __name__)
+router_dap = Blueprint('router_dap', __name__)
 
-@router_estudiante.route("/estudiante")
+@router_dap.route("/dap")
 def estudiante():
     return render_template('gestion_academica/estudiante.html')
 
-@router_estudiante.route("/datos_estudiantes", methods=["GET"])
-def datos_estudiantes():
-    estudiantes = controlador_estudiante.obtener_estudiantes()
+@router_dap.route("/datos_dap", methods=["GET"])
+def datos_dap():
+    estudiantes = controlador_dap.obtener_dap()
     return jsonify(estudiantes)
 
-@router_estudiante.route("/obtener_estudiante_por_id/<int:idEstudiante>", methods=["GET"])
-def obtener_estudiante_por_id(idEstudiante):
-    estudiante = controlador_estudiante.obtener_estudiante_por_id(idEstudiante)
+@router_dap.route("/obtener_dap_por_id/<int:idEstudiante>", methods=["GET"])
+def obtener_dap_por_id(idEstudiante):
+    estudiante = controlador_dap.obtener_dap_por_id(idEstudiante)
     return jsonify(estudiante)
 
-@router_estudiante.route("/obtener_estudiante_por_id_modificar/<int:idEstudiante>", methods=["GET"])
-def obtener_estudiante_por_id_modificar(idEstudiante):
-    estudiante = controlador_estudiante.obtener_estudiante_por_id_modificar(idEstudiante)
+@router_dap.route("/obtener_dap_por_id_modificar/<int:idEstudiante>", methods=["GET"])
+def obtener_dap_por_id_modificar(idEstudiante):
+    estudiante = controlador_dap.obtener_dap_por_id_modificar(idEstudiante)
     return jsonify(estudiante)
 
-@router_estudiante.route("/agregar_estudiante", methods=["POST"])
-def agregar_estudiante():
+@router_dap.route("/agregar_dap", methods=["POST"])
+def agregar_dap():
     data = request.json
     numDoc = data.get('numDoc')
     nombre = data.get('nombre')
@@ -39,11 +39,11 @@ def agregar_estudiante():
     idUsuario = data.get('idUsuario')
     idEscuela = data.get('idEscuela')
 
-    resultado = controlador_estudiante.agregar_estudiante(numDoc, nombre, apellidos, codUniversitario, tel1, tel2, correoP, correoUSAT, estado, idGenero, idTipoDoc, idUsuario, idEscuela)
+    resultado = controlador_dap.agregar_dap(numDoc, nombre, apellidos, codUniversitario, tel1, tel2, correoP, correoUSAT, estado, idGenero, idTipoDoc, idUsuario, idEscuela)
     return jsonify(resultado)
 
-@router_estudiante.route("/modificar_estudiante", methods=["POST"])
-def modificar_estudiante():
+@router_dap.route("/modificar_dap", methods=["POST"])
+def modificar_dap():
     data = request.json
     idEstudiante = data.get('idPersona')
     numDoc = data.get('numDoc')
@@ -60,17 +60,17 @@ def modificar_estudiante():
     idUsuario = data.get('idUsuario')
     idEscuela = data.get('idEscuela')
 
-    resultado = controlador_estudiante.modificar_estudiante(idEstudiante, numDoc, nombre, apellidos, codUniversitario, tel1, tel2, correoP, correoUSAT, estado, idGenero, idTipoDoc, idUsuario, idEscuela)
+    resultado = controlador_dap.modificar_dap(idEstudiante, numDoc, nombre, apellidos, codUniversitario, tel1, tel2, correoP, correoUSAT, estado, idGenero, idTipoDoc, idUsuario, idEscuela)
     return jsonify(resultado)
 
-@router_estudiante.route("/dar_de_baja_estudiante", methods=["POST"])
-def dar_de_baja_estudiante():
+@router_dap.route("/dar_de_baja_dap", methods=["POST"])
+def dar_de_baja_dap():
     idEstudiante = request.json.get('idEstudiante')
-    resultado = controlador_estudiante.modificar_estudiante(idEstudiante, None, None, None, None, None, None, None, 'I', None, None, None, None)
+    resultado = controlador_dap.modificar_dap(idEstudiante, None, None, None, None, None, None, None, 'I', None, None, None, None)
     return jsonify(resultado)
 
-@router_estudiante.route("/eliminar_estudiante", methods=["POST"])
-def eliminar_estudiante():
+@router_dap.route("/eliminar_dap", methods=["POST"])
+def eliminar_dap():
     idEstudiante = request.json.get('idEstudiante')
-    resultado = controlador_estudiante.eliminar_estudiante(idEstudiante)
+    resultado = controlador_dap.eliminar_dap(idEstudiante)
     return jsonify(resultado)
