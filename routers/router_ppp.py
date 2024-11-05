@@ -1,28 +1,28 @@
 from flask import Blueprint, jsonify, request, render_template
 import controladores.controlador_ppp as controlador_practicas
 
-router_ppp = Blueprint('router_ppp', __name__)
+router_practicas = Blueprint('router_practicas', __name__)
 
-@router_ppp.route("/practicas")
+@router_practicas.route("/practicas")
 def practicas():
     return render_template('ppp/ppp_registro.html')
 
-@router_ppp.route("/datos_ppp", methods=["GET"])
-def datos_ppp():
+@router_practicas.route("/datos_practicas", methods=["GET"])
+def datos_practicas():
     practicas = controlador_practicas.obtener_practicas()
     return jsonify(practicas)
 
-@router_ppp.route("/obtener_ultimo_id", methods=["GET"])
+@router_practicas.route("/obtener_ultimo_id", methods=["GET"])
 def obtener_ultimo_id():
     practicas = controlador_practicas.obtener_ultimo_id()
     return jsonify(practicas)
 
-@router_ppp.route("/obtener_practica_por_id/<int:idPractica>", methods=["GET"])
+@router_practicas.route("/obtener_practica_por_id/<int:idPractica>", methods=["GET"])
 def obtener_practica_por_id(idPractica):
     practica = controlador_practicas.obtener_practica_por_id(idPractica)
     return jsonify(practica)
 
-@router_ppp.route("/agregar_practica", methods=["POST"])
+@router_practicas.route("/agregar_practica", methods=["POST"])
 def agregar_practica():
     data = request.json
     fechaInicio = data.get('fechaInicio')
@@ -41,7 +41,7 @@ def agregar_practica():
     resultado = controlador_practicas.agregar_practica(fechaInicio, horario, modalidad, area, numeroHorasPPP, numeroHorasPendientes, numeroHorasRealizadas, idSemestre, idLinea, numDocInstitucion, idTipoPractica, idPersona)
     return jsonify(resultado)
 
-@router_ppp.route("/modificar_practica", methods=["POST"])
+@router_practicas.route("/modificar_practica", methods=["POST"])
 def modificar_practica():
     data = request.json
     idPractica = data.get('idPractica')
@@ -60,25 +60,25 @@ def modificar_practica():
     resultado = controlador_practicas.modificar_practica(idPractica, fechaInicio, fechaFin, modalidad, area, numeroHorasPPP, numDocEstudiante, idSemestre, idLinea, numDocInstitucion, idEstado, idTipoPractica)
     return jsonify(resultado)
 
-@router_ppp.route("/eliminar_practica", methods=["POST"])
+@router_practicas.route("/eliminar_practica", methods=["POST"])
 def eliminar_practica():
     idPractica = request.json.get('idPractica')
     resultado = controlador_practicas.eliminar_practica(idPractica)
     return jsonify(resultado)
 
-@router_ppp.route("/cambiar_estado_practica", methods=["POST"])
+@router_practicas.route("/cambiar_estado_practica", methods=["POST"])
 def cambiar_estado_practica():
     idPractica = request.json.get('idPractica')
     nuevo_estado = request.json.get('nuevo_estado')
     resultado = controlador_practicas.cambiar_estado_practica(idPractica, nuevo_estado)
     return jsonify(resultado)
 
-@router_ppp.route("/practicas_activas", methods=["GET"])
+@router_practicas.route("/practicas_activas", methods=["GET"])
 def practicas_activas():
     resultado = controlador_practicas.obtener_practicas_activas()
     return jsonify(resultado)
 
-@router_ppp.route("/practicas_con_estado", methods=["GET"])
+@router_practicas.route("/practicas_con_estado", methods=["GET"])
 def practicas_con_estado():
     resultado = controlador_practicas.obtener_practicas_con_estado()
     return jsonify(resultado)
