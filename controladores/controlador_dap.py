@@ -2,68 +2,81 @@ from bd import obtener_conexion
 
 # OPERACIONES CRUD
 
-def obtener_dap():
+def obtener_estudiantes():
     conexion = obtener_conexion()
     if not conexion:
         return {"error": "No se pudo establecer conexión con la base de datos."}
 
-    DAP = []
+    estudiantes = []
     try:
         with conexion.cursor() as cursor:
             cursor.execute("""
-                SELECT p.idPersona, p.nombre, p.apellidos, p.numDoc, p.estado
+                SELECT p.idPersona, p.numDoc, p.nombre, p.apellidos, p.codUniversitario, p.tel1, p.tel2, 
+                       p.correoP, p.correoUSAT, p.estado, g.nombre as genero, td.nombre as tipoDocumento, 
+                       e.nombre as escuela, u.username as usuario
                 FROM persona p
-                WHERE p.idPersona = %s
+                LEFT JOIN genero g ON p.idGenero = g.idGenero
+                LEFT JOIN tipo_documento td ON p.idTipoDoc = td.idTipoDoc
+                LEFT JOIN escuela e ON p.idEscuela = e.idEscuela
+                LEFT JOIN usuario u ON p.idUsuario = u.idUsuario
             """)
             column_names = [desc[0] for desc in cursor.description]
             rows = cursor.fetchall()
 
             for row in rows:
-                dap_dict = dict(zip(column_names, row))
-                DAP.append(dap_dict)
+                estudiante_dict = dict(zip(column_names, row))
+                estudiantes.append(estudiante_dict)
     except Exception as e:
         return {"error": str(e)}
     finally:
         conexion.close()
 
-    return DAP
+    return estudiantes
 
-def obtener_dap_por_id(idEstudiante):
+def obtener_estudiante_por_id(idEstudiante):
     conexion = obtener_conexion()
     if not conexion:
         return {"error": "No se pudo establecer conexión con la base de datos."}
 
-    DAP = None
+    estudiante = None
     try:
         with conexion.cursor() as cursor:
             cursor.execute("""
-                SELECT p.idPersona, p.nombre, p.apellidos, p.numDoc, p.estado
+                SELECT p.idPersona, p.numDoc, p.nombre, p.apellidos, p.codUniversitario, p.tel1, p.tel2, 
+                       p.correoP, p.correoUSAT, p.estado, g.nombre as genero, td.nombre as tipoDocumento, 
+                        e.nombre as escuela, u.username as usuario
                 FROM persona p
+                LEFT JOIN genero g ON p.idGenero = g.idGenero
+                LEFT JOIN tipo_documento td ON p.idTipoDoc = td.idTipoDoc
+                LEFT JOIN escuela e ON p.idEscuela = e.idEscuela
+                LEFT JOIN usuario u ON p.idUsuario = u.idUsuario
                 WHERE p.idPersona = %s
             """, (idEstudiante,))
             row = cursor.fetchone()
 
             if row:
                 columnas = [desc[0] for desc in cursor.description]
-                dap_dict = dict(zip(columnas, row))
-                return dap_dict
+                estudiante_dict = dict(zip(columnas, row))
+                return estudiante_dict
             else:
-                return {"error": "DAP no encontrado"}
+                return {"error": "Estudiante no encontrado"}
     except Exception as e:
         return {"error": str(e)}
     finally:
         conexion.close()
 
-def obtener_dap_por_id_modificar(idEstudiante):
+def obtener_estudiante_por_id_modificar(idEstudiante):
     conexion = obtener_conexion()
     if not conexion:
         return {"error": "No se pudo establecer conexión con la base de datos."}
 
-    DAP = None
+    estudiante = None
     try:
         with conexion.cursor() as cursor:
             cursor.execute("""
-                SELECT p.idPersona, p.nombre, p.apellidos, p.numDoc, p.estado
+                SELECT p.idPersona, p.numDoc, p.nombre, p.apellidos, p.codUniversitario, p.tel1, p.tel2, 
+                       p.correoP, p.correoUSAT, p.estado, p.idGenero, p.idTipoDoc, 
+                        p.idEscuela, p.idUsuario
                 FROM persona p
                 WHERE p.idPersona = %s
             """, (idEstudiante,))
@@ -71,8 +84,8 @@ def obtener_dap_por_id_modificar(idEstudiante):
 
             if row:
                 columnas = [desc[0] for desc in cursor.description]
-                dap_dict = dict(zip(columnas, row))
-                return dap_dict
+                estudiante_dict = dict(zip(columnas, row))
+                return estudiante_dict
             else:
                 return {"error": "Estudiante no encontrado"}
     except Exception as e:
@@ -81,7 +94,7 @@ def obtener_dap_por_id_modificar(idEstudiante):
         conexion.close()
 
 
-def agregar_dap(numDoc, nombre, apellidos, codUniversitario, tel1, tel2, correoP, correoUSAT, estado, idGenero, idTipoDoc, idUsuario, idEscuela):
+def agregar_estudiante(numDoc, nombre, apellidos, codUniversitario, tel1, tel2, correoP, correoUSAT, estado, idGenero, idTipoDoc, idUsuario, idEscuela):
     conexion = obtener_conexion()
     if not conexion:
         return {"error": "No se pudo establecer conexión con la base de datos."}
@@ -101,7 +114,7 @@ def agregar_dap(numDoc, nombre, apellidos, codUniversitario, tel1, tel2, correoP
     finally:
         conexion.close()
 
-def modificar_dap(idEstudiante, numDoc, nombre, apellidos, codUniversitario, tel1, tel2, correoP, correoUSAT, estado, idGenero, idTipoDoc, idUsuario, idEscuela):
+def modificar_estudiante(idEstudiante, numDoc, nombre, apellidos, codUniversitario, tel1, tel2, correoP, correoUSAT, estado, idGenero, idTipoDoc, idUsuario, idEscuela):
     if not tel2:
         tel2 = None
     conexion = obtener_conexion()
@@ -126,7 +139,7 @@ def modificar_dap(idEstudiante, numDoc, nombre, apellidos, codUniversitario, tel
     finally:
         conexion.close()
 
-def eliminar_dap(idEstudiante):
+def eliminar_estudiante(idEstudiante):
     conexion = obtener_conexion()
     if not conexion:
         return {"error": "No se pudo establecer conexión con la base de datos."}
@@ -143,7 +156,7 @@ def eliminar_dap(idEstudiante):
     finally:
         conexion.close()
 
-def dar_de_baja_dap(idEstudiante):
+def dar_de_baja_estudiante(idEstudiante):
     # Validaciones
     if not idEstudiante:
         return {"error": "El ID de la estudiante es requerido."}
@@ -163,7 +176,7 @@ def dar_de_baja_dap(idEstudiante):
     finally:
         conexion.close()
 
-def cambiar_estado_dap(idEstudiante, nuevo_estado):
+def cambiar_estado_estudiante(idEstudiante, nuevo_estado):
     # Validaciones
     if not idEstudiante or not nuevo_estado:
         return {"error": "El ID y el nuevo estado son requeridos."}
@@ -188,7 +201,7 @@ def cambiar_estado_dap(idEstudiante, nuevo_estado):
 
 # OTRAS OPERACIONES
 
-def obtener_dap_activas():
+def obtener_estudiantes_activas():
     conexion = obtener_conexion()
     if not conexion:
         return {"error": "No se pudo establecer conexión con la base de datos."}
@@ -205,7 +218,7 @@ def obtener_dap_activas():
     finally:
         conexion.close()
 
-def obtener_dap_con_estado():
+def obtener_estudiantes_con_estado():
     conexion = obtener_conexion()
     if not conexion:
         return {"error": "No se pudo establecer conexión con la base de datos."}

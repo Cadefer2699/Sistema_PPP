@@ -12,11 +12,9 @@ from routers.router_horas_ppp import router_horas_ppp
 from routers.router_linea_desarrollo import router_linea_desarrollo
 from routers.router_institucion import router_institucion
 from routers.router_estado import router_estado
-from routers.router_dap import router_dap
 from routers.router_tipoDocumento import router_tipoDocumento
 from routers.router_usuario import router_usuario
 from routers.router_tipoPracticas import router_tipoPracticas
-from routers.router_infoPPP import router_ppp
 
 
 app = Flask(__name__)
@@ -37,11 +35,9 @@ app.register_blueprint(router_horas_ppp)
 app.register_blueprint(router_linea_desarrollo)
 app.register_blueprint(router_institucion)
 app.register_blueprint(router_estado)
-app.register_blueprint(router_dap)
 app.register_blueprint(router_tipoDocumento)
 app.register_blueprint(router_usuario)
 app.register_blueprint(router_tipoPracticas)
-app.register_blueprint(router_ppp)
 
 
 if __name__ == "__main__":
