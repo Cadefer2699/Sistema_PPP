@@ -15,6 +15,7 @@ from routers.router_estado import router_estado
 from routers.router_tipoDocumento import router_tipoDocumento
 from routers.router_usuario import router_usuario
 from routers.router_tipoPracticas import router_tipoPracticas
+from routers.router_informeAlumno import router_informeAlumno
 
 
 app = Flask(__name__)
@@ -38,6 +39,7 @@ app.register_blueprint(router_estado)
 app.register_blueprint(router_tipoDocumento)
 app.register_blueprint(router_usuario)
 app.register_blueprint(router_tipoPracticas)
+app.register_blueprint(router_informeAlumno)
 
 
 if __name__ == "__main__":

@@ -148,3 +148,8 @@ def informeFinalEmpresa():
 def ppp():
     return render_template('ppp/ppp_registro.html')
 
+@router_main.route("/InformesPorAlumno")
+def InformesAlumno():
+    return render_template('ppp/InformesAlumno.html')
+
+
