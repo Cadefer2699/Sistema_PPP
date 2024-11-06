@@ -66,7 +66,7 @@ def modificar_estudiante():
 @router_estudiante.route("/dar_de_baja_estudiante", methods=["POST"])
 def dar_de_baja_estudiante():
     idEstudiante = request.json.get('idEstudiante')
-    resultado = controlador_estudiante.modificar_estudiante(idEstudiante, None, None, None, None, None, None, None, 'I', None, None, None, None)
+    resultado = controlador_estudiante.dar_de_baja_estudiante(idEstudiante)
     return jsonify(resultado)
 
 @router_estudiante.route("/eliminar_estudiante", methods=["POST"])

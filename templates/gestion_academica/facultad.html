@@ -174,7 +174,7 @@
 <script>
     $(document).ready(function () {
         if ($.fn.DataTable.isDataTable('#tabla-facultad')) {
-            $('#tabla-facultad').DataTable().clear().destroy();  // Destruye la instancia previa
+            $('#tabla-facultad').DataTable().clear().destroy();
         }
         var table = $('#tabla-facultad').DataTable({
             paging: false,
@@ -317,7 +317,6 @@
                 abreviatura: $('#abreviaturaFacultad').val(),
                 estado: $('#estadoFacultad').val()
             };
-
             $.ajax({
                 url: '/agregar_facultad',
                 type: 'POST',
@@ -361,7 +360,6 @@
                 }
             });
         });
-
         $('#formModificarFacultad').submit(function (e) {
             e.preventDefault();
             var data = {
@@ -370,7 +368,6 @@
                 abreviatura: $('#abreviaturaFacultadMod').val(),
                 estado: $('#estadoFacultadMod').val()
             };
-
             $.ajax({
                 url: '/modificar_facultad',
                 type: 'POST',
@@ -399,7 +396,6 @@
             $('#idFacultadEliminar').val(id);
             $('#modalEliminarFacultad').modal('show');
         });
-
         $('#confirmarEliminarFacultad').click(function () {
             var id = $('#idFacultadEliminar').val();
             $.ajax({
@@ -430,7 +426,6 @@
             $('#idFacultadDarDeBaja').val(id);
             $('#modalDarDeBajaFacultad').modal('show');
         });
-
         $('#confirmarDarDeBajaFacultad').click(function () {
             var id = $('#idFacultadDarDeBaja').val();
             $.ajax({

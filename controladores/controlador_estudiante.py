@@ -20,6 +20,7 @@ def obtener_estudiantes():
                 LEFT JOIN escuela e ON p.idEscuela = e.idEscuela
                 LEFT JOIN usuario u ON p.idUsuario = u.idUsuario
                 WHERE u.idTipoUsuario = 3
+                ORDER BY p.apellidos ASC, p.nombre ASC 
             """)
             column_names = [desc[0] for desc in cursor.description]
             rows = cursor.fetchall()
@@ -44,13 +45,9 @@ def obtener_estudiante_por_id(idEstudiante):
         with conexion.cursor() as cursor:
             cursor.execute("""
                 SELECT p.idPersona, p.numDoc, p.nombre, p.apellidos, p.codUniversitario, p.tel1, p.tel2, 
-                       p.correoP, p.correoUSAT, p.estado, g.nombre as genero, td.nombre as tipoDocumento, 
-                        e.nombre as escuela, u.username as usuario
+                       p.correoP, p.correoUSAT, p.estado, p.idGenero, p.idTipoDoc, 
+                        p.idEscuela, p.idUsuario
                 FROM persona p
-                LEFT JOIN genero g ON p.idGenero = g.idGenero
-                LEFT JOIN tipo_documento td ON p.idTipoDoc = td.idTipoDoc
-                LEFT JOIN escuela e ON p.idEscuela = e.idEscuela
-                LEFT JOIN usuario u ON p.idUsuario = u.idUsuario
                 WHERE p.idPersona = %s
             """, (idEstudiante,))
             row = cursor.fetchone()
@@ -96,6 +93,8 @@ def obtener_estudiante_por_id_modificar(idEstudiante):
 
 
 def agregar_estudiante(numDoc, nombre, apellidos, codUniversitario, tel1, tel2, correoP, correoUSAT, estado, idGenero, idTipoDoc, idUsuario, idEscuela):
+    if not tel2:
+        tel2 = None
     conexion = obtener_conexion()
     if not conexion:
         return {"error": "No se pudo establecer conexión con la base de datos."}
@@ -160,7 +159,7 @@ def eliminar_estudiante(idEstudiante):
 def dar_de_baja_estudiante(idEstudiante):
     # Validaciones
     if not idEstudiante:
-        return {"error": "El ID de la estudiante es requerido."}
+        return {"error": "El ID del estudiante es requerido."}
 
     conexion = obtener_conexion()
     if not conexion:
@@ -168,9 +167,9 @@ def dar_de_baja_estudiante(idEstudiante):
 
     try:
         with conexion.cursor() as cursor:
-            cursor.callproc('GestionEstudiante', [4, idEstudiante, None, None])
+            cursor.execute("UPDATE persona SET estado = 'I' WHERE idPersona = %s", (idEstudiante,))
             conexion.commit()
-            return {"mensaje": "Estudiante dada de baja correctamente"}
+            return {"mensaje": "Estudiante dado de baja correctamente"}
     except Exception as e:
         conexion.rollback()
         return {"error": str(e)}
