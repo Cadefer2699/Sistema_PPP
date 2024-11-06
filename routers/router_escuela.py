@@ -19,13 +19,14 @@ def obtener_escuela_por_id(idEscuela):
 
 @router_escuela.route("/agregar_escuela", methods=["POST"])
 def agregar_escuela():
-    nombre = request.json.get('nombre')
-    abreviatura = request.json.get('abreviatura')
-    estado = request.json.get('estado')
-    idFacultad = request.json.get('idFacultad')
-    idHoras = request.json.get('idHoras')
-    
-    resultado = controlador_escuela.agregar_escuela(nombre, abreviatura, estado, idFacultad, idHoras)
+    data = request.json
+    nombre = data.get('nombre')
+    abreviatura = data.get('abreviatura')
+    estado = data.get('estado')
+    idFacultad = data.get('idFacultad')
+    hRequeridas = data.get('idHoras')
+
+    resultado = controlador_escuela.agregar_escuela(nombre, abreviatura, estado, idFacultad, hRequeridas)
     return jsonify(resultado)
 
 @router_escuela.route("/modificar_escuela", methods=["POST"])

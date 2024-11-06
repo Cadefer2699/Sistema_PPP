@@ -71,12 +71,7 @@ def obtener_escuela_por_id_modificar(idEscuela):
         conexion.close()
 
 # Agregar una nueva escuela
-def agregar_escuela(nombre, abreviatura, estado, idFacultad, idHoras):
-    if not nombre or not abreviatura or not estado or not idFacultad or not idHoras:
-        return {"error": "Todos los campos son requeridos."}
-    if estado not in ['A', 'I']:
-        return {"error": "El estado debe ser 'A' (Activo) o 'I' (Inactivo)."}
-
+def agregar_escuela(nombre, abreviatura, estado, idFacultad, hRequeridas):
     conexion = obtener_conexion()
     if not conexion:
         return {"error": "No se pudo establecer conexión con la base de datos."}
@@ -84,9 +79,9 @@ def agregar_escuela(nombre, abreviatura, estado, idFacultad, idHoras):
     try:
         with conexion.cursor() as cursor:
             cursor.execute("""
-                INSERT INTO escuela (nombre, abreviatura, estado, idFacultad, idHoras) 
+                INSERT INTO escuela (nombre, abreviatura, estado, idFacultad, hRequeridas)
                 VALUES (%s, %s, %s, %s, %s)
-            """, (nombre, abreviatura, estado, idFacultad, idHoras))
+            """, (nombre, abreviatura, estado, idFacultad, hRequeridas))
             conexion.commit()
             return {"mensaje": "Escuela agregada correctamente"}
     except Exception as e:
