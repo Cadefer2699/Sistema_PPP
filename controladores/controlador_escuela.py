@@ -105,27 +105,39 @@ def obtener_escuela_por_id_modificar(idEscuela):
 
 # Agregar una nueva escuela
 def agregar_escuela(nombre, abreviatura, estado, idFacultad, hRequeridas):
-    # Validaciones
-    if not nombre or not estado:
-        return {"error": "El nombre y el estado son requeridos."}
-    if estado not in ['A', 'I']:
-        return {"error": "El estado debe ser 'A' (Activo) o 'I' (Inactivo)."}
-    
+    # Validar que hRequeridas es un número válido
+    try:
+        hRequeridas = int(hRequeridas)  # Intentamos convertir hRequeridas a un entero
+    except ValueError:
+        return {"error": "El valor de las horas requeridas debe ser un número válido."}
+
+    # Validar que hRequeridas sea mayor que cero
+    if hRequeridas <= 0:
+        return {"error": "Las horas requeridas deben ser un número mayor a cero."}
+
+    # Validar que idFacultad existe en la base de datos
     conexion = obtener_conexion()
     if not conexion:
         return {"error": "No se pudo establecer conexión con la base de datos."}
 
     try:
         with conexion.cursor() as cursor:
+            # Validar que idFacultad existe en la tabla facultad
+            cursor.execute("SELECT COUNT(*) FROM facultad WHERE idFacultad = %s", (idFacultad,))
+            if cursor.fetchone()[0] == 0:
+                return {"error": f"No existe una facultad con id {idFacultad}."}
+
+            # Insertar la nueva escuela
             cursor.execute("""
                 INSERT INTO escuela (nombre, abreviatura, estado, idFacultad, hRequeridas)
                 VALUES (%s, %s, %s, %s, %s)
             """, (nombre, abreviatura, estado, idFacultad, hRequeridas))
+
             conexion.commit()
             return {"mensaje": "Escuela agregada correctamente"}
     except Exception as e:
         conexion.rollback()
-        return {"error": str(e)}
+        return {"error": f"Error en la base de datos: {str(e)}"}  # Mostrar el error exacto de la base de datos
     finally:
         conexion.close()
 

@@ -28,8 +28,8 @@ def agregar_escuela():
     nombre = data.get('nombre')
     abreviatura = data.get('abreviatura')
     estado = data.get('estado')
-    idFacultad = data.get('idFacultad')
-    hRequeridas = data.get('idHoras')
+    idFacultad = data.get('facultad')  # 'facultad' no 'idFacultad'
+    hRequeridas = data.get('hRequeridas')  # Corregido aquí
 
     resultado = controlador_escuela.agregar_escuela(nombre, abreviatura, estado, idFacultad, hRequeridas)
     return jsonify(resultado)
