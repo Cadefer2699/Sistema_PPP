@@ -10,14 +10,19 @@ def obtener_semestres():
             cursor.execute("SELECT * FROM semestre_academico ORDER BY nombre DESC")
             column_names = [desc[0] for desc in cursor.description]
             rows = cursor.fetchall()
-
             for row in rows:
                 semestre_dict = dict(zip(column_names, row))
+                if 'fechaInicio' in semestre_dict and semestre_dict['fechaInicio']:
+                    semestre_dict['fechaInicio'] = semestre_dict['fechaInicio'].strftime('%d/%m/%Y')
+                if 'fechaFin' in semestre_dict and semestre_dict['fechaFin']:
+                    semestre_dict['fechaFin'] = semestre_dict['fechaFin'].strftime('%d/%m/%Y')
+                
                 semestres.append(semestre_dict)
     except Exception as e:
         return {"error": str(e)}
     finally:
-        conexion.close()   
+        conexion.close()
+    
     return semestres
 
 def obtener_semestre_por_id(idSemestre):
@@ -33,7 +38,7 @@ def obtener_semestre_por_id(idSemestre):
                 semestre_dict = dict(zip(columnas, row))
                 return semestre_dict
             else:
-                return {"error": "Semestre no encontradO"}
+                return {"error": "Semestre no encontrado"}
     except Exception as e:
         return {"error": str(e)}
     finally:

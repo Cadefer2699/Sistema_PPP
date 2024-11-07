@@ -254,4 +254,11 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-}    
+} 
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+color: #6c757d;
+opacity: 1;
+filter: brightness(0.5);
+}
+  
