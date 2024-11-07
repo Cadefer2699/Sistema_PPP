@@ -41,12 +41,9 @@
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 <script>
     $(document).ready(function () {
-        // Verifica si la tabla ya está inicializada y destruye la instancia anterior
         if ($.fn.DataTable.isDataTable('#tabla-informes-estudiantes')) {
             $('#tabla-informes-estudiantes').DataTable().clear().destroy();
         }
-
-        // Inicializa la tabla con DataTables y datos AJAX
         $('#tabla-informes-estudiantes').DataTable({
             paging: true,
             info: false,
@@ -55,9 +52,9 @@
             searching: true,
             order: [],
             ajax: {
-                url: "/datos_informesAlumnos", // Endpoint que devuelve los datos
+                url: "/datos_informesAlumnos",
                 type: "GET",
-                dataSrc: "" // Usar el array directamente
+                dataSrc: ""
             },
             columns: [
                 { data: "Nombre_Alumno", className: 'text-center' },
@@ -68,14 +65,26 @@
                     data: "Informe_Inicial",
                     className: 'text-center',
                     render: function (data, type, row) {
-                        return data === "Por subir" ? '<span class="text-danger">Por subir</span>' : data;
+                        if (data === "Por subir" || data === null) {
+                            return '<button class="btn btn-secondary" disabled><i class="fas fa-eye"></i></button> ' +
+                                   '<button class="btn btn-secondary" disabled><i class="fas fa-download"></i></button>';
+                        } else {
+                            return '<button class="btn btn-primary"><i class="fas fa-eye"></i></button> ' +
+                                   '<button class="btn btn-primary"><i class="fas fa-download"></i></button>';
+                        }
                     }
                 },
                 {
                     data: "Informe_Final",
                     className: 'text-center',
                     render: function (data, type, row) {
-                        return data === "Por subir" ? '<span class="text-danger">Por subir</span>' : data;
+                        if (data === "Por subir" || data === null) {
+                            return '<button class="btn btn-secondary" disabled><i class="fas fa-eye"></i></button> ' +
+                                   '<button class="btn btn-secondary" disabled><i class="fas fa-download"></i></button>';
+                        } else {
+                            return '<button class="btn btn-primary"><i class="fas fa-eye"></i></button> ' +
+                                   '<button class="btn btn-primary"><i class="fas fa-download"></i></button>';
+                        }
                     }
                 }
             ],

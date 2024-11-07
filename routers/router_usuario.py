@@ -17,3 +17,8 @@ def datos_usuarios_estudiantes():
 def datos_usuarios_docentes():
     usuarios = controlador_usuario.obtener_usuarios_docentes()
     return jsonify(usuarios)
+
+@router_usuario.route("/datos_usuario_informe", methods=["GET"])
+def obtener_datos_usuario_informe():
+    usuario_informe = controlador_usuario.obtener_datos_usuario_informe()
+    return jsonify(usuario_informe)

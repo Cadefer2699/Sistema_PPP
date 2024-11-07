@@ -122,3 +122,22 @@ def actualizar_datos_usuario(id, nombres, apellidos, n_documento, correo, telefo
         return {"error": str(e)}
     finally:
         conexion.close()
+
+#funciona para recibir datos del estudiante y cargarlo a informe desde el usuario
+
+def obtener_datos_usuario_informe():
+    conexion = obtener_conexion()
+    usuario_informe = []
+    try:
+        with conexion.cursor() as cursor:
+            cursor.execute("select p.nombre, p.apellidos, p.codUniversitario  from persona p inner join usuario u on p.idUsuario = u.idUsuario where u.idTipoUsuario=3")
+            column_names = [desc[0] for desc in cursor.description]
+            rows = cursor.fetchall()
+
+            for row in rows:
+                usuario_informe_dict = dict(zip(column_names, row))
+                usuario_informe.append(usuario_informe_dict)
+    except Exception as e:
+        return {"error": str(e)}
+    finally:
+        conexion.close()
