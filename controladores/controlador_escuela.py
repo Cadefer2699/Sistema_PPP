@@ -72,6 +72,12 @@ def obtener_escuela_por_id_modificar(idEscuela):
 
 # Agregar una nueva escuela
 def agregar_escuela(nombre, abreviatura, estado, idFacultad, hRequeridas):
+    # Validaciones
+    if not nombre or not estado:
+        return {"error": "El nombre y el estado son requeridos."}
+    if estado not in ['A', 'I']:
+        return {"error": "El estado debe ser 'A' (Activo) o 'I' (Inactivo)."}
+    
     conexion = obtener_conexion()
     if not conexion:
         return {"error": "No se pudo establecer conexión con la base de datos."}
