@@ -15,6 +15,7 @@ def obtener_escuelas():
                 FROM escuela e 
                 INNER JOIN facultad f ON e.idFacultad = f.idFacultad 
                 INNER JOIN horas_ppp h ON e.idHoras = h.idHoras
+                ORDER BY e.nombre
             """)
             column_names = [desc[0] for desc in cursor.description]
             rows = cursor.fetchall()

@@ -1,12 +1,12 @@
 {% extends "/gestion_academica/index.html" %}
-{% block titulo %} Facultad {% endblock %}
+{% block titulo %} Semestre {% endblock %}
 {% block contenido %}
 
 <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url_for('router_main.index') }}">Inicio</a></li>
         <li class="breadcrumb-item"><a href="{{ url_for('router_main.gestion_academica') }}">Módulo de Gestión Académica</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Facultades</li>
+        <li class="breadcrumb-item active" aria-current="page">Semestres</li>
     </ol>
 </nav>
 
@@ -14,16 +14,17 @@
     <div class="card w-100">
         <div class="card-header bg-red-usat text-white" id="headingOne" data-bs-toggle="collapse"
         data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-            Facultades
+            Semestres
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table id="tabla-facultad" class="table table-striped tabla-facultades" style="width:100%">
+                <table id="tabla-semestre" class="table table-striped tabla-semestres" style="width:100%">
                     <thead>
                         <tr>
                             <th class="text-center">ID</th>
                             <th class="text-center">Nombre</th>
-                            <th class="text-center">Abreviatura</th>
+                            <th class="text-center">Fecha Inicio</th>
+                            <th class="text-center">Fecha Fin</th>
                             <th class="text-center">Estado</th>
                             <th class="text-center">Opciones</th>
                         </tr>
@@ -38,7 +39,7 @@
 </div>
 
 <!-- MODAL FACULTAD -->
-<div class="modal fade" id="modalFacultad" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modalSemestre" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -46,15 +47,19 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form id="formFacultad">
-                    <input type="hidden" id="idFacultadMod" name="idFacultadMod">
+                <form id="formSemestre">
+                    <input type="hidden" id="idSemestreMod" name="idSemestreMod">
                     <div class="mb-3">
-                        <label for="nombreFacultadMod" class="form-label">Nombre:</label>
-                        <input type="text" class="form-control" id="nombreFacultadMod" name="nombreFacultadMod" required>
+                        <label for="nombreSemestreMod" class="form-label">Nombre:</label>
+                        <input type="text" class="form-control" id="nombreSemestreMod" name="nombreSemestreMod" required>
                     </div>
                     <div class="mb-3">
-                        <label for="abreviaturaFacultadMod" class="form-label">Abreviatura:</label>
-                        <input type="text" class="form-control" id="abreviaturaFacultadMod" name="abreviaturaFacultadMod" required>
+                        <label for="fechaInicioMod" class="form-label">Fecha Inicio:</label>
+                        <input type="date" class="form-control" id="fechaInicioMod" name="fechaInicioMod" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fechaFinMod" class="form-label">Fecha Fin:</label>
+                        <input type="date" class="form-control" id="fechaFinMod" name="fechaFinMod" required>
                     </div>
                     <div class="mb-3">
                         <label for="estadoMod" class="form-label">Estado:</label>
@@ -84,12 +89,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body text-center">
-                <p><span id="texto-confirmar"></span><strong id="nombreFacultadConfirmar"></strong>?</p>
-                <input type="hidden" id="idFacultadConfirmar" name="idFacultadConfirmar">
+                <p><span id="texto-confirmar"></span><strong id="nombreSemestreConfirmar"></strong>?</p>
+                <input type="hidden" id="idSemestreConfirmar" name="idSemestreConfirmar">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-success" id="confirmarFacultad">Aceptar</button>
+                <button type="button" class="btn btn-success" id="confirmarSemestre">Aceptar</button>
             </div>
         </div>
     </div>
@@ -108,10 +113,10 @@
 
 <script>
     $(document).ready(function () {
-        if ($.fn.DataTable.isDataTable('#tabla-facultad')) {
-            $('#tabla-facultad').DataTable().clear().destroy();
+        if ($.fn.DataTable.isDataTable('#tabla-semestre')) {
+            $('#tabla-semestre').DataTable().clear().destroy();
         }
-        var table = $('#tabla-facultad').DataTable({
+        var table = $('#tabla-semestre').DataTable({
             paging: true,
             pageLength: 10,
             lengthMenu: [5, 10, 15, 20],
@@ -123,12 +128,12 @@
             dom: '<"top-controls d-flex justify-content-between"fB>rt<"bottom-controls"ip>',
             buttons: [
                 {
-                    text: '<i class="fas fa-plus"></i> Agregar Nueva Facultad   ',
+                    text: '<i class="fas fa-plus"></i> Agregar Nuevo Semestre   ',
                     className: 'btnAgregar btn btn-primary mb-2',
                     action: function (e, dt, node, config) {
                         e.preventDefault();
-                        $('#formFacultad')[0].reset();
-                        $('#modalFacultad').modal('show');
+                        $('#formSemestre')[0].reset();
+                        $('#modalSemestre').modal('show');
                     }
                 },   
                 {
@@ -147,16 +152,17 @@
                 
             ],
             ajax: {
-                url: "/datos_facultades",
+                url: "/datos_semestres",
                 type: "GET",
                 dataSrc: ""
             },
             processing: true,
             serverSide: false,
             columns: [
-                { data: "idFacultad", className: 'text-center' },
-                { data: "nombre"},
-                { data: "abreviatura", className: 'text-center'},
+                { data: "idSemestre", className: 'text-center' },
+                { data: "nombre", className: 'text-center'},
+                { data: "fechaInicio", className: 'text-center'},
+                { data: "fechaFin", className: 'text-center'},
                 { 
                     data: "estado",
                     className: 'text-center',
@@ -169,10 +175,10 @@
                     className: 'text-center',
                     render: function (data, type, row) {
                         return `
-                            <button class="btn btn-primary btn-sm btnVer" data-id="${row.idFacultad}" title="Ver"><i class="fas fa-eye"></i></button>
-                            <button class="btn btn-warning btn-sm btnModificar" data-id="${row.idFacultad}" title="Modificar"><i class="fas fa-pencil-alt"></i></button>
-                            <button class="btn btn-danger btn-sm btnEliminar" data-id="${row.idFacultad}" data-nombre="${row.nombre}" title="Eliminar"><i class="fas fa-times"></i></button>
-                            <button class="btn btn-secondary btn-sm btnDarDeBaja" data-id="${row.idFacultad}" data-nombre="${row.nombre}" title="Dar de Baja"><i class="fas fa-arrow-down"></i></button>
+                            <button class="btn btn-primary btn-sm btnVer" data-id="${row.idSemestre}" title="Ver"><i class="fas fa-eye"></i></button>
+                            <button class="btn btn-warning btn-sm btnModificar" data-id="${row.idSemestre}" title="Modificar"><i class="fas fa-pencil-alt"></i></button>
+                            <button class="btn btn-danger btn-sm btnEliminar" data-id="${row.idSemestre}" data-nombre="${row.nombre}" title="Eliminar"><i class="fas fa-times"></i></button>
+                            <button class="btn btn-secondary btn-sm btnDarDeBaja" data-id="${row.idSemestre}" data-nombre="${row.nombre}" title="Dar de Baja"><i class="fas fa-arrow-down"></i></button>
                         `;
                     }
                 }
@@ -195,75 +201,80 @@
 
         // Función para deshabilitar los controles
         function deshabilitarControles(){
-            $('#idFacultadMod').prop('disabled', true);
-            $('#nombreFacultadMod').prop('disabled', true);
-            $('#abreviaturaFacultadMod').prop('disabled', true);
+            $('#idSemestreMod').prop('disabled', true);
+            $('#nombreSemestreMod').prop('disabled', true);
+            $('#fechaInicioMod').prop('disabled', true);
+            $('#fechaFinMod').prop('disabled', true);
             $('#estadoMod').prop('disabled', true);
         }
 
         // Función para habilitar los controles
         function habilitarControles(){
-            $('#idFacultadMod').prop('disabled', false);
-            $('#nombreFacultadMod').prop('disabled', false);
-            $('#abreviaturaFacultadMod').prop('disabled', false);
+            $('#idSemestreMod').prop('disabled', false);
+            $('#nombreSemestreMod').prop('disabled', false);
+            $('#fechaInicioMod').prop('disabled', false);
+            $('#fechaFinMod').prop('disabled', false);
             $('#estadoMod').prop('disabled', false);
         }
 
-        // Evento para Ver Facultad
-        $('#tabla-facultad tbody').on('click', '.btnVer', function () {
+        // Evento para Ver Semestre
+        $('#tabla-semestre tbody').on('click', '.btnVer', function () {
             var id = $(this).data('id');
             $.ajax({
-                url: '/obtener_facultad_por_id/' + id,
+                url: '/obtener_semestre_por_id/' + id,
                 type: 'GET',
                 contentType: 'application/json',
                 success: function (response) {
                     if (response.error) {
                         mostrarAlerta("error", "Error", response.error);
                     } else {
-                        $('#modal-title').text("Ver Facultad");
-                        $('#formFacultad')[0].reset();
-                        $('#idFacultadMod').val(response.idFacultad);
-                        $('#nombreFacultadMod').val(response.nombre);
-                        $('#abreviaturaFacultadMod').val(response.abreviatura);
+                        $('#modal-title').text("Ver Semestre");
+                        $('#formSemestre')[0].reset();
+                        $('#idSemestreMod').val(response.idSemestre);
+                        $('#nombreSemestreMod').val(response.nombre);
+                        $('#fechaInicioMod').val(response.fechaInicio);
+                        $('#fechaFinMod').val(response.fechaFin);
                         $('#estadoMod').val(response.estado);
                         deshabilitarControles();
                         $('#btnCancelar').hide();
                         $('#btnGuardar').hide();
                         $('#btnCerrar').show();
-                        $('#modalFacultad').modal('show');
+                        $('#modalSemestre').modal('show');
                     }
                 },
                 error: function (xhr, status, error) {
-                    mostrarAlerta("error", "Error", "Hubo un error al obtener la facultad.");
+                    mostrarAlerta("error", "Error", "Hubo un error al obtener la semestre.");
                 }
             });
         });
 
-        // Evento para Agregar Facultad
+        // Evento para Agregar Semestre
         $(document).on('click', '.btnAgregar', function (e) {
             e.preventDefault();
-            $('#modal-title').text("Agregar Facultad");
-            $('#formFacultad')[0].reset();
-            $('#idFacultadMod').val('');
-            $('#nombreFacultadMod').val('');
-            $('#abreviaturaFacultadMod').val('');
+            $('#modal-title').text("Agregar Semestre");
+            $('#formSemestre')[0].reset();
+            $('#idSemestreMod').val('');
+            $('#nombreSemestreMod').val('');
+            $('#fechaInicioMod').val('');
+            $('#fechaFinMod').val('');
             $('#estadoMod').val('');
             habilitarControles();
             $('#btnCancelar').show();
             $('#btnGuardar').show();
             $('#btnCerrar').hide();
-            $('#modalFacultad').modal('show');
+            $('#modalSemestre').modal('show');
         });
-        $('#formFacultad').submit(function (e) {
+        $('#formSemestre').submit(function (e) {
             e.preventDefault();
-            if ($('#idFacultadMod').val() === '') {
+            if ($('#idSemestreMod').val() === '') {
                 var data = {
-                    nombre: $('#nombreFacultadMod').val(),
-                    abreviatura: $('#abreviaturaFacultadMod').val(),
+                    nombre: $('#nombreSemestreMod').val(),
+                    fechaInicio: $('#fechaInicioMod').val(),
+                    fechaFin: $('#fechaFinMod').val(),
                     estado: $('#estadoMod').val(),
                 };
                 $.ajax({
-                    url: '/agregar_facultad',
+                    url: '/agregar_semestre',
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(data),
@@ -273,55 +284,57 @@
                         } else {
                             mostrarAlerta("success", "Éxito", response.mensaje);
                             table.ajax.reload();
-                            $('#modalFacultad').modal('hide');
+                            $('#modalSemestre').modal('hide');
                         }
                     },
                     error: function (xhr, status, error) {
-                        mostrarAlerta("error", "Error", "Hubo un error al agregar la facultad.");
+                        mostrarAlerta("error", "Error", "Hubo un error al agregar la semestre.");
                     }
                 });
             }
         });
 
-        // Evento para Modificar Facultad
-        $('#tabla-facultad tbody').on('click', '.btnModificar', function () {
+        // Evento para Modificar Semestre
+        $('#tabla-semestre tbody').on('click', '.btnModificar', function () {
             var id = $(this).data('id');
             $.ajax({
-                url: '/obtener_facultad_por_id/' + id,
+                url: '/obtener_semestre_por_id/' + id,
                 type: 'GET',
                 contentType: 'application/json',
                 success: function (response) {
                     if (response.error) {
                         mostrarAlerta("error", "Error", response.error);
                     } else {
-                        $('#modal-title').text("Modificar Facultad");
-                        $('#formFacultad')[0].reset();
-                        $('#idFacultadMod').val(response.idFacultad);
-                        $('#nombreFacultadMod').val(response.nombre);
-                        $('#abreviaturaFacultadMod').val(response.abreviatura);
+                        $('#modal-title').text("Modificar Semestre");
+                        $('#formSemestre')[0].reset();
+                        $('#idSemestreMod').val(response.idSemestre);
+                        $('#nombreSemestreMod').val(response.nombre);
+                        $('#fechaInicioMod').val(response.fechaInicio);
+                        $('#fechaFinMod').val(response.fechaFin);
                         $('#estadoMod').val(response.estado);
                         habilitarControles();
                         $('#btnCancelar').show();
                         $('#btnGuardar').show();
                         $('#btnCerrar').hide();
-                        $('#modalFacultad').modal('show');
+                        $('#modalSemestre').modal('show');
                     }
                 },
                 error: function (xhr, status, error) {
-                    mostrarAlerta("error", "Error", "Hubo un error al obtener la facultad.");
+                    mostrarAlerta("error", "Error", "Hubo un error al obtener la semestre.");
                 }
             });
         });
-        $('#formFacultad').submit(function (e) {
+        $('#formSemestre').submit(function (e) {
             e.preventDefault();
             var data = {
-                idFacultad: $('#idFacultadMod').val(),
-                nombre: $('#nombreFacultadMod').val(),
-                abreviatura: $('#abreviaturaFacultadMod').val(),
+                idSemestre: $('#idSemestreMod').val(),
+                nombre: $('#nombreSemestreMod').val(),
+                fechaInicio: $('#fechaInicioMod').val(),
+                fechaFin: $('#fechaFinMod').val(),
                 estado: $('#estadoMod').val(),
             };
             $.ajax({
-                url: '/modificar_facultad',
+                url: '/modificar_semestre',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(data),
@@ -331,60 +344,60 @@
                     } else {
                         mostrarAlerta("success", "Éxito", response.mensaje);
                         table.ajax.reload();
-                        $('#modalFacultad').modal('hide');
+                        $('#modalSemestre').modal('hide');
                     }
                 },
                 error: function (xhr, status, error) {
-                    mostrarAlerta("error", "Error", "Hubo un error al modificar la facultad.");
+                    mostrarAlerta("error", "Error", "Hubo un error al modificar la semestre.");
                 }
             });
         });
 
-        // Evento para Eliminar Facultad
-        $('#tabla-facultad tbody').on('click', '.btnEliminar', function () {
+        // Evento para Eliminar Semestre
+        $('#tabla-semestre tbody').on('click', '.btnEliminar', function () {
             var id = $(this).data('id');
             var nombre = $(this).data('nombre');
-            $('#modal-title-confirmar').text('Eliminar Facultad');
-            $('#texto-confirmar').text('¿Estás seguro de que deseas eliminar la facultad ');
-            $('#nombreFacultadConfirmar').text(nombre);
-            $('#idFacultadConfirmar').val(id);
-            $('#confirmarFacultad').data('accion', 'eliminar');
+            $('#modal-title-confirmar').text('Eliminar Semestre');
+            $('#texto-confirmar').text('¿Estás seguro de que deseas eliminar la semestre ');
+            $('#nombreSemestreConfirmar').text(nombre);
+            $('#idSemestreConfirmar').val(id);
+            $('#confirmarSemestre').data('accion', 'eliminar');
             $('#modalConfirmar').modal('show');
         });
 
-        // Evento para Dar de Baja Facultad
-        $('#tabla-facultad tbody').on('click', '.btnDarDeBaja', function () {
+        // Evento para Dar de Baja Semestre
+        $('#tabla-semestre tbody').on('click', '.btnDarDeBaja', function () {
             var id = $(this).data('id');
             var nombre = $(this).data('nombre');
-            $('#modal-title-confirmar').text('Dar de Baja Facultad');
-            $('#texto-confirmar').text('¿Estás seguro de que deseas dar de baja la facultad ');
-            $('#nombreFacultadConfirmar').text(nombre);
-            $('#idFacultadConfirmar').val(id);
-            $('#confirmarFacultad').data('accion', 'darDeBaja');
+            $('#modal-title-confirmar').text('Dar de Baja Semestre');
+            $('#texto-confirmar').text('¿Estás seguro de que deseas dar de baja la semestre ');
+            $('#nombreSemestreConfirmar').text(nombre);
+            $('#idSemestreConfirmar').val(id);
+            $('#confirmarSemestre').data('accion', 'darDeBaja');
             $('#modalConfirmar').modal('show');
         });
 
         // Evento para Confirmar
-        $('#confirmarFacultad').click(function () {
-            var id = $('#idFacultadConfirmar').val();
+        $('#confirmarSemestre').click(function () {
+            var id = $('#idSemestreConfirmar').val();
             var accion = $(this).data('accion');
             var url = '';
             var mensajeExito = '';
             var mensajeError = '';
             if (accion === 'eliminar') {
-                url = '/eliminar_facultad';
-                mensajeExito = 'La facultad fue eliminado correctamente';
-                mensajeError = 'Hubo un error al eliminar la facultad.';
+                url = '/eliminar_semestre';
+                mensajeExito = 'La semestre fue eliminado correctamente';
+                mensajeError = 'Hubo un error al eliminar la semestre.';
             } else if (accion === 'darDeBaja') {
-                url = '/dar_de_baja_facultad';
-                mensajeExito = 'La facultad fue dado de baja correctamente';
-                mensajeError = 'Hubo un error al dar de baja la facultad.';
+                url = '/dar_de_baja_semestre';
+                mensajeExito = 'La semestre fue dado de baja correctamente';
+                mensajeError = 'Hubo un error al dar de baja la semestre.';
             }
             $.ajax({
                 url: url,
                 type: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify({ idFacultad: id }),
+                data: JSON.stringify({ idSemestre: id }),
                 success: function (response) {
                     if (response.error) {
                         mostrarAlerta("error", "Error", response.error);

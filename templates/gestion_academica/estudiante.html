@@ -200,8 +200,8 @@
                     className: 'btnAgregar btn btn-primary mb-2',
                     action: function (e, dt, node, config) {
                         e.preventDefault();
-                        $('#formAgregarEstudiante')[0].reset();
-                        $('#modalAgregarEstudiante').modal('show');
+                        $('#formEstudiante')[0].reset();
+                        $('#modalEstudiante').modal('show');
                     }
                 },   
                 {
@@ -323,7 +323,7 @@
                     });
                 },
                 error: function (xhr, status, error) {
-                    mostrarAlerta("error", "Error", "Hubo un error al cargar los tipos de documentos.");
+                    mostrarAlerta("error", "Error", "Hubo un error al cargar las escuelas.");
                 }
             });
         }
@@ -344,7 +344,7 @@
                     });
                 },
                 error: function (xhr, status, error) {
-                    mostrarAlerta("error", "Error", "Hubo un error al cargar los tipos de documentos.");
+                    mostrarAlerta("error", "Error", "Hubo un error al cargar los usuarios.");
                 }
             });
         }
@@ -425,7 +425,7 @@
             });
         });
 
-        // Evento para Agregar estudiante
+        // Evento para Agregar Estudiante
         $(document).on('click', '.btnAgregar', function (e) {
             e.preventDefault();
             $('#modal-title').text("Agregar Estudiante");
@@ -446,7 +446,6 @@
             $('#btnCerrar').hide();
             $('#modalEstudiante').modal('show');
         });
-
         $('#formEstudiante').submit(function (e) {
             e.preventDefault();
             if ($('#idEstudianteMod').val() === '') {
@@ -486,7 +485,7 @@
             }
         });
 
-        // Evento para Modificar estudiante
+        // Evento para Modificar Estudiante
         $('#tabla-estudiante tbody').on('click', '.btnModificar', function () {
             var id = $(this).data('id');
             $.ajax({
@@ -587,7 +586,7 @@
             $('#modalConfirmar').modal('show');
         });
 
-        // Evento para confirmar
+        // Evento para Confirmar
         $('#confirmarEstudiante').click(function () {
             var id = $('#idEstudianteConfirmar').val();
             var accion = $(this).data('accion');
