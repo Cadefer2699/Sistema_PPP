@@ -30,7 +30,7 @@ def obtener_escuelas():
     
     return escuelas
 
-# Obtener una escuela por su ID
+# Obtener una escuela por su ID, incluyendo facultad y horas requeridas
 def obtener_escuela_por_id(idEscuela):
     conexion = obtener_conexion()
     if not conexion:
@@ -38,9 +38,19 @@ def obtener_escuela_por_id(idEscuela):
     
     try:
         with conexion.cursor() as cursor:
-            cursor.execute("SELECT * FROM escuela WHERE idEscuela = %s", (idEscuela,))
+            # Realizar el JOIN para obtener los datos de facultad y horas PPP
+            cursor.execute("""
+                SELECT e.idEscuela, e.nombre, e.abreviatura, e.estado, 
+                       f.nombre AS facultad, h.hRequeridas
+                FROM escuela e
+                INNER JOIN facultad f ON e.idFacultad = f.idFacultad
+                INNER JOIN horas_ppp h ON e.idHoras = h.idHoras
+                WHERE e.idEscuela = %s
+            """, (idEscuela,))
+            
             row = cursor.fetchone()
             if row:
+                # Mapeamos las columnas a los valores para crear el diccionario de respuesta
                 columnas = [desc[0] for desc in cursor.description]
                 escuela_dict = dict(zip(columnas, row))
                 return escuela_dict
@@ -50,6 +60,7 @@ def obtener_escuela_por_id(idEscuela):
         return {"error": str(e)}
     finally:
         conexion.close()
+
 
 def obtener_escuela_por_id_modificar(idEscuela):
     conexion = obtener_conexion()

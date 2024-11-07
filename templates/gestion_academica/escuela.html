@@ -45,7 +45,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <!-- LOS DATOS SE CARGAN DINAMICAMENTE -->
+                <!-- Los datos se cargarán dinámicamente -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
@@ -211,6 +211,56 @@
                 url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
             }
         });
+        // Funcion para mostrar alerta
+        function mostrarAlerta(tipo, titulo, mensaje) {
+            Swal.fire({
+                icon: tipo,
+                title: titulo,
+                html: mensaje,
+                showConfirmButton: true,
+                timer: 5000
+            });
+        }
+        
+        // Función para cargar facultades dinámicamente
+        function cargarFacultades(selectedFacultadId) {
+            $.ajax({
+                url: '/datos_facultades',
+                type: 'GET',
+                contentType: 'application/json',
+                success: function (response) {
+                    var select = $('#facultadEscuela');
+                    select.empty();
+                    select.append('<option value="" disabled selected>Seleccionar facultad</option>');
+                    response.forEach(function (facultad) {
+                        var selected = facultad.idFacultad == selectedFacultadId ? 'selected' : '';
+                        select.append(`<option value="${facultad.idFacultad}" ${selected}>${facultad.nombre}</option>`);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    Swal.fire('Error', 'No se pudieron cargar las facultades.', 'error');
+                }
+            });
+        }
+        // Función para deshabilitar los controles del formulario de modificación de escuela
+        function deshabilitarControles() {
+            $('#idEscuelaMod').prop('disabled', true);
+            $('#nombreEscuelaMod').prop('disabled', true);
+            $('#abreviaturaEscuelaMod').prop('disabled', true);
+            $('#estadoEscuelaMod').prop('disabled', true);
+            $('#facultadEscuelaMod').prop('disabled', true);
+            $('#horasEscuelaMod').prop('disabled', true);
+        }
+
+        // Función para habilitar los controles del formulario de modificación de escuela
+        function habilitarControles() {
+            $('#idEscuelaMod').prop('disabled', false);
+            $('#nombreEscuelaMod').prop('disabled', false);
+            $('#abreviaturaEscuelaMod').prop('disabled', false);
+            $('#estadoEscuelaMod').prop('disabled', false);
+            $('#facultadEscuelaMod').prop('disabled', false);
+            $('#horasEscuelaMod').prop('disabled', false);
+        }
 
         // Evento para Ver Escuela
         $('#tabla-escuela tbody').on('click', '.btnVer', function () {
@@ -221,9 +271,11 @@
                 contentType: 'application/json',
                 success: function (response) {
                     if (response.error) {
-                        Swal.fire("Error", response.error, "error");
+                        mostrarAlerta("error", "Error", response.error);
                     } else {
                         var estado = response.estado === 'A' ? 'Activo' : 'Inactivo';
+                        
+                        // Cargar los datos en el modal
                         $('#modalVerEscuela .modal-body').html(`
                             <table class="table table-striped table-bordered">
                                 <tr><th>ID</th><td>${response.idEscuela}</td></tr>
@@ -234,11 +286,13 @@
                                 <tr><th>Horas para PPP</th><td>${response.hRequeridas}</td></tr>
                             </table>
                         `);
+                        
+                        // Mostrar el modal
                         $('#modalVerEscuela').modal('show');
                     }
                 },
                 error: function () {
-                    Swal.fire("Error", "Hubo un error al obtener la escuela.", "error");
+                    mostrarAlerta("error", "Error", "Hubo un error al obtener la escuela.");
                 }
             });
         });
@@ -271,7 +325,9 @@
                     Swal.fire("Error", "Hubo un error al agregar la escuela.", "error");
                 }
             });
+            
         });
+        
 
         // Evento para Modificar Escuela
         $('#tabla-escuela tbody').on('click', '.btnModificar', function () {
