@@ -30,6 +30,27 @@ def obtener_escuelas():
     
     return escuelas
 
+# Función para obtener facultades
+def obtener_facultades():
+    conexion = obtener_conexion()
+    if not conexion:
+        return {"error": "No se pudo establecer conexión con la base de datos."}
+    
+    facultades = []
+    try:
+        with conexion.cursor() as cursor:
+            cursor.execute("SELECT idFacultad, nombre FROM facultad")  # Asegúrate de que la consulta es correcta
+            rows = cursor.fetchall()
+            for row in rows:
+                facultad_dict = {"idFacultad": row[0], "nombre": row[1]}
+                facultades.append(facultad_dict)
+    except Exception as e:
+        return {"error": str(e)}
+    finally:
+        conexion.close()
+    
+    return facultades
+
 # Obtener una escuela por su ID, incluyendo facultad y horas requeridas
 def obtener_escuela_por_id(idEscuela):
     conexion = obtener_conexion()

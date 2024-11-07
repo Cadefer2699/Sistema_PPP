@@ -12,6 +12,11 @@ def datos_escuelas():
     escuelas = controlador_escuela.obtener_escuelas()
     return jsonify(escuelas)
 
+@router_escuela.route("/datos_facultades", methods=["GET"])
+def datos_facultades():
+    facultades = controlador_escuela.obtener_facultades()  # Llamamos a la función para obtener las facultades
+    return jsonify(facultades)  
+
 @router_escuela.route("/obtener_escuela_por_id/<int:idEscuela>", methods=["GET"])
 def obtener_escuela_por_id(idEscuela):
     escuela = controlador_escuela.obtener_escuela_por_id(idEscuela)
