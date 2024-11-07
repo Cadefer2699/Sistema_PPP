@@ -186,31 +186,15 @@
         }
         var table = $('#tabla-estudiante').DataTable({
             paging: true,
-            pageLength: 5,
+            pageLength: 10,
             lengthMenu: [5, 10, 15, 20],
             info: true,
             responsive: true,
             autoWidth: true,
             searching: true,
             order: [], 
-            dom: `
-                <'row mb-3'<'col-12 col-md-4'B><'col-12 col-md-4'f><'col-12 col-md-4'>> 
-                <'row'<'col-12'rt>>
-                <'row'<'col-12'ip>>
-            `,
+            dom: '<"top-controls d-flex justify-content-between"fB>rt<"bottom-controls"ip>',
             buttons: [
-                {
-                    extend: 'collection',
-                    text: '<i class="fas fa-file-export"></i> Exportar/Imprimir',
-                    className: 'btn btn-secondary mb-2',
-                    buttons: [
-                        { extend: 'copy', text: '<i class="fas fa-copy"></i> Copiar', className: 'dropdown-item' },
-                        { extend: 'csv', text: '<i class="fas fa-file-csv"></i> CSV', className: 'dropdown-item' },
-                        { extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel', className: 'dropdown-item' },
-                        { extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> PDF', className: 'dropdown-item' },
-                        { extend: 'print', text: '<i class="fas fa-print"></i> Imprimir', className: 'dropdown-item' }
-                    ]
-                },
                 {
                     text: '<i class="fas fa-plus"></i> Agregar Nuevo Estudiante',
                     className: 'btnAgregar btn btn-primary mb-2',
@@ -219,7 +203,21 @@
                         $('#formAgregarEstudiante')[0].reset();
                         $('#modalAgregarEstudiante').modal('show');
                     }
+                },   
+                {
+                    extend: 'collection',
+                    text: '<i class="fas fa-file-export"></i> Exportar/Imprimir',
+                    className: 'btn btn-secondary mb-2',
+                    autoClose: true,
+                    buttons: [
+                        { extend: 'copy', text: '<i class="fas fa-copy"></i> Copiar', className: 'dropdown-item' },
+                        { extend: 'csv', text: '<i class="fas fa-file-csv"></i> CSV', className: 'dropdown-item' },
+                        { extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel', className: 'dropdown-item' },
+                        { extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> PDF', className: 'dropdown-item' },
+                        { extend: 'print', text: '<i class="fas fa-print"></i> Imprimir', className: 'dropdown-item' }
+                    ]
                 }
+                
             ],
             ajax: {
                 url: "/datos_estudiantes",
@@ -253,6 +251,8 @@
                 url: "{{ url_for('static', filename='js/es-ES.json') }}"
             }
         });
+
+        
 
         // Funcion para mostrar alerta
         function mostrarAlerta(tipo, titulo, mensaje) {
