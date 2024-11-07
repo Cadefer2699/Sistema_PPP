@@ -55,7 +55,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="fechaInicioMod" class="form-label">Fecha Inicio:</label>
-                        <input type="date" class="form-control" id="fechaInicioMod" name="fechaInicioMod" required>
+                        <input type="date" class="form-control" id="fechaInicioMod" name="fechaInicioMod" required></input>
                     </div>
                     <div class="mb-3">
                         <label for="fechaFinMod" class="form-label">Fecha Fin:</label>
@@ -199,6 +199,15 @@
             });
         }
 
+        // Función para formatear la fecha a dd/mm/yyyy
+        function formatFechaParaInput(fecha) {
+            const date = new Date(fecha);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate() + 1).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
         // Función para deshabilitar los controles
         function deshabilitarControles(){
             $('#idSemestreMod').prop('disabled', true);
@@ -232,8 +241,8 @@
                         $('#formSemestre')[0].reset();
                         $('#idSemestreMod').val(response.idSemestre);
                         $('#nombreSemestreMod').val(response.nombre);
-                        $('#fechaInicioMod').val(response.fechaInicio);
-                        $('#fechaFinMod').val(response.fechaFin);
+                        $('#fechaInicioMod').val(formatFechaParaInput(response.fechaInicio));
+                        $('#fechaFinMod').val(formatFechaParaInput(response.fechaFin));
                         $('#estadoMod').val(response.estado);
                         deshabilitarControles();
                         $('#btnCancelar').hide();
@@ -309,8 +318,8 @@
                         $('#formSemestre')[0].reset();
                         $('#idSemestreMod').val(response.idSemestre);
                         $('#nombreSemestreMod').val(response.nombre);
-                        $('#fechaInicioMod').val(response.fechaInicio);
-                        $('#fechaFinMod').val(response.fechaFin);
+                        $('#fechaInicioMod').val(formatFechaParaInput(response.fechaInicio));
+                        $('#fechaFinMod').val(formatFechaParaInput(response.fechaFin));
                         $('#estadoMod').val(response.estado);
                         habilitarControles();
                         $('#btnCancelar').show();
