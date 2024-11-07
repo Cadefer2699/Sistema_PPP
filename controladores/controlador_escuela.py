@@ -39,7 +39,7 @@ def obtener_facultades():
     facultades = []
     try:
         with conexion.cursor() as cursor:
-            cursor.execute("SELECT idFacultad, nombre FROM facultad")  # Asegúrate de que la consulta es correcta
+            cursor.execute("SELECT idFacultad, nombre FROM facultad")
             rows = cursor.fetchall()
             for row in rows:
                 facultad_dict = {"idFacultad": row[0], "nombre": row[1]}
@@ -51,7 +51,7 @@ def obtener_facultades():
     
     return facultades
 
-# Obtener una escuela por su ID, incluyendo facultad y horas requeridas
+# Función para obtener los datos de una escuela por ID
 def obtener_escuela_por_id(idEscuela):
     conexion = obtener_conexion()
     if not conexion:
@@ -59,10 +59,9 @@ def obtener_escuela_por_id(idEscuela):
     
     try:
         with conexion.cursor() as cursor:
-            # Realizar el JOIN para obtener los datos de facultad y horas PPP
-            cursor.execute("""
+            cursor.execute(""" 
                 SELECT e.idEscuela, e.nombre, e.abreviatura, e.estado, 
-                       f.nombre AS facultad, h.hRequeridas
+                       f.idFacultad, f.nombre AS facultad, h.hRequeridas
                 FROM escuela e
                 INNER JOIN facultad f ON e.idFacultad = f.idFacultad
                 INNER JOIN horas_ppp h ON e.idHoras = h.idHoras
@@ -71,7 +70,6 @@ def obtener_escuela_por_id(idEscuela):
             
             row = cursor.fetchone()
             if row:
-                # Mapeamos las columnas a los valores para crear el diccionario de respuesta
                 columnas = [desc[0] for desc in cursor.description]
                 escuela_dict = dict(zip(columnas, row))
                 return escuela_dict
@@ -82,7 +80,7 @@ def obtener_escuela_por_id(idEscuela):
     finally:
         conexion.close()
 
-
+#
 def obtener_escuela_por_id_modificar(idEscuela):
     conexion = obtener_conexion()
     if not conexion:
@@ -142,30 +140,41 @@ def agregar_escuela(nombre, abreviatura, estado, idFacultad, hRequeridas):
         conexion.close()
 
 # Modificar una escuela
-def modificar_escuela(idEscuela, nombre, abreviatura, estado, idFacultad, idHoras):
-    if not idEscuela or not nombre or not abreviatura or not estado or not idFacultad or not idHoras:
-        return {"error": "Todos los campos son requeridos."}
-    if estado not in ['A', 'I']:
-        return {"error": "El estado debe ser 'A' (Activo) o 'I' (Inactivo)."}
-
+def modificar_escuela(idEscuela, nombre, abreviatura, estado, idFacultad, hRequeridas):
     conexion = obtener_conexion()
     if not conexion:
         return {"error": "No se pudo establecer conexión con la base de datos."}
 
     try:
         with conexion.cursor() as cursor:
+            # Comprobamos que la facultad existe
+            cursor.execute("SELECT COUNT(*) FROM facultad WHERE idFacultad = %s", (idFacultad,))
+            if cursor.fetchone()[0] == 0:
+                return {"error": f"No existe una facultad con id {idFacultad}."}
+
+            # Comprobamos que la escuela existe
+            cursor.execute("SELECT COUNT(*) FROM escuela WHERE idEscuela = %s", (idEscuela,))
+            if cursor.fetchone()[0] == 0:
+                return {"error": f"No existe una escuela con id {idEscuela}."}
+
+            # Realizamos la actualización
             cursor.execute("""
-                UPDATE escuela 
-                SET nombre = %s, abreviatura = %s, estado = %s, idFacultad = %s, idHoras = %s 
+                UPDATE escuela
+                SET nombre = %s, abreviatura = %s, estado = %s, idFacultad = %s, hRequeridas = %s
                 WHERE idEscuela = %s
-            """, (nombre, abreviatura, estado, idFacultad, idHoras, idEscuela))
-            conexion.commit()
+            """, (nombre, abreviatura, estado, idFacultad, hRequeridas, idEscuela))
+            
+            conexion.commit()  # Confirmar los cambios en la base de datos
+            print("Escuela modificada correctamente")  # Asegúrate de que la actualización se realizó
             return {"mensaje": "Escuela modificada correctamente"}
+
     except Exception as e:
-        conexion.rollback()
+        conexion.rollback()  # Si algo falla, revertir los cambios
+        print(f"Error al modificar la escuela: {str(e)}")  # Log de error
         return {"error": f"Error al modificar la escuela: {str(e)}"}
     finally:
         conexion.close()
+
 
 # Eliminar una escuela
 def eliminar_escuela(idEscuela):

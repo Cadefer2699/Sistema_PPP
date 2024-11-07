@@ -3,13 +3,13 @@
 {% block contenido %}
 
 <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
-    <ol class="breadcrumb" style="padding-bottom: 0px; margin-bottom: -10px;">
+    <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url_for('router_main.index') }}">Inicio</a></li>
         <li class="breadcrumb-item"><a href="{{ url_for('router_main.gestion_academica') }}">Módulo de Gestión Académica</a></li>
         <li class="breadcrumb-item active" aria-current="page">Escuelas</li>
     </ol>
 </nav>
-    
+
 <div class="container-fluid my-4">
     <div class="card w-100">
         <div class="card-header bg-red-usat text-white">Escuelas</div>
@@ -81,13 +81,13 @@
                     </div>
                     <div class="mb-3">
                         <label for="facultadEscuela" class="form-label">Facultad:</label>
-                        <select class="form-control" id="facultadEscuela" name="facultad" required>
+                        <select class="form-control" id="facultadEscuela" name="facultadEscuela" required>
                             <!-- Opciones de facultades se cargarán dinámicamente -->
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="horasEscuela" class="form-label">Horas para PPP:</label>
-                        <input type="number" class="form-control" id="horasEscuela" name="hRequeridas" placeholder="Horas requeridas" required>
+                        <input type="number" class="form-control" id="horasEscuela" name="horasEscuela" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Guardar</button>
                 </form>
@@ -123,8 +123,8 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="facultadEscuela" class="form-label">Facultad:</label>
-                        <select class="form-control" id="facultadEscuela" name="facultadEscuela" required>
+                        <label for="facultadEscuelaMod" class="form-label">Facultad:</label>
+                        <select class="form-control" id="facultadEscuelaMod" name="facultadEscuelaMod" required>
                             <!-- Opciones de facultades se cargarán dinámicamente -->
                         </select>
                     </div>
@@ -178,6 +178,7 @@
                     className: 'btn btn-primary mb-2',
                     action: function () {
                         $('#formAgregarEscuela')[0].reset();
+                        cargarFacultades('#facultadEscuela');
                         $('#modalAgregarEscuela').modal('show');
                     }
                 }
@@ -211,187 +212,103 @@
                 url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
             }
         });
-        // Funcion para mostrar alerta
-        function mostrarAlerta(tipo, titulo, mensaje) {
-            Swal.fire({
-                icon: tipo,
-                title: titulo,
-                html: mensaje,
-                showConfirmButton: true,
-                timer: 5000
-            });
-        }
-        
-        // Función para cargar facultades dinámicamente
-        function cargarFacultades(selectedFacultadId) {
+
+        // Función para cargar las facultades en los select de los formularios
+        function cargarFacultades(selector, selectedId = null) {
             $.ajax({
                 url: '/datos_facultades',
                 type: 'GET',
-                contentType: 'application/json',
                 success: function (response) {
-                    var select = $('#facultadEscuela');
+                    const select = $(selector);
                     select.empty();
                     select.append('<option value="" disabled selected>Seleccionar facultad</option>');
-                    response.forEach(function (facultad) {
-                        var selected = facultad.idFacultad == selectedFacultadId ? 'selected' : '';
+                    response.forEach(facultad => {
+                        const selected = facultad.idFacultad == selectedId ? 'selected' : '';
                         select.append(`<option value="${facultad.idFacultad}" ${selected}>${facultad.nombre}</option>`);
                     });
                 },
-                error: function (xhr, status, error) {
-                    Swal.fire('Error', 'No se pudieron cargar las facultades.', 'error');
+                error: function () {
+                    Swal.fire("Error", "No se pudieron cargar las facultades.", "error");
                 }
             });
         }
-       
 
         // Evento para Ver Escuela
         $('#tabla-escuela tbody').on('click', '.btnVer', function () {
-            var id = $(this).data('id');
+            const id = $(this).data('id');
             $.ajax({
                 url: '/obtener_escuela_por_id/' + id,
                 type: 'GET',
-                contentType: 'application/json',
                 success: function (response) {
-                    if (response.error) {
-                        mostrarAlerta("error", "Error", response.error);
-                    } else {
-                        var estado = response.estado === 'A' ? 'Activo' : 'Inactivo';
-                        
-                        // Cargar los datos en el modal
-                        $('#modalVerEscuela .modal-body').html(`
-                            <table class="table table-striped table-bordered">
-                                <tr><th>ID</th><td>${response.idEscuela}</td></tr>
-                                <tr><th>Nombre</th><td>${response.nombre}</td></tr>
-                                <tr><th>Abreviatura</th><td>${response.abreviatura}</td></tr>
-                                <tr><th>Estado</th><td>${estado}</td></tr>
-                                <tr><th>Facultad</th><td>${response.facultad}</td></tr>
-                                <tr><th>Horas para PPP</th><td>${response.hRequeridas}</td></tr>
-                            </table>
-                        `);
-                        
-                        // Mostrar el modal
-                        $('#modalVerEscuela').modal('show');
-                    }
+                    const estado = response.estado === 'A' ? 'Activo' : 'Inactivo';
+                    $('#modalVerEscuela .modal-body').html(`
+                        <table class="table table-striped table-bordered">
+                            <tr><th>ID</th><td>${response.idEscuela}</td></tr>
+                            <tr><th>Nombre</th><td>${response.nombre}</td></tr>
+                            <tr><th>Abreviatura</th><td>${response.abreviatura}</td></tr>
+                            <tr><th>Estado</th><td>${estado}</td></tr>
+                            <tr><th>Facultad</th><td>${response.facultad}</td></tr>
+                            <tr><th>Horas para PPP</th><td>${response.hRequeridas}</td></tr>
+                        </table>
+                    `);
+                    $('#modalVerEscuela').modal('show');
                 },
                 error: function () {
-                    mostrarAlerta("error", "Error", "Hubo un error al obtener la escuela.");
-                }
-            });
-        });
-
-        // Evento para abrir el modal de agregar escuela
-        $(document).on('click', '.btnAgregar', function (e) {
-        e.preventDefault();
-        $('#modal-title').text("Agregar Escuela");
-        $('#formAgregarEscuela')[0].reset();  // Limpiar el formulario
-
-        // Llamar a cargar las facultades al abrir el modal
-        cargarFacultades();  // Cargar facultades al abrir el modal
-
-        $('#modalAgregarEscuela').modal('show');  // Mostrar el modal
-    });
-
-
-        // Función para cargar facultades en el select
-        function cargarFacultades() {
-            $.ajax({
-                url: '/datos_facultades',  // Ruta del servidor para obtener las facultades
-                type: 'GET',
-                contentType: 'application/json',
-                success: function (response) {
-                    // Verifica la respuesta de la API en la consola
-                    console.log(response);
-
-                    var select = $('#facultadEscuela');  // Selecciona el elemento del select
-                    select.empty();  // Limpia cualquier opción anterior en el select
-
-                    // Agrega una opción por defecto en el select
-                    select.append('<option value="" disabled selected>Seleccionar facultad</option>');
-
-                    // Verifica si la respuesta es un array de facultades
-                    if (Array.isArray(response) && response.length > 0) {
-                        response.forEach(function (facultad) {
-                            // Agrega una opción por cada facultad
-                            select.append(`<option value="${facultad.idFacultad}">${facultad.nombre}</option>`);
-                        });
-                    } else {
-                        // Si no hay facultades, muestra un mensaje en la consola
-                        Swal.fire("Error", "No se encontraron facultades.", "error");
-                    }
-                },
-                error: function (xhr, status, error) {
-                    // Maneja errores en la solicitud AJAX
-                    Swal.fire('Error', 'No se pudieron cargar las facultades.', 'error');
-                    console.log(error);  // Log del error en la consola para depuración
-                }
-            });
-        }
-
-        // Llama a la función cargarFacultades cuando la página se haya cargado completamente
-        $(document).ready(function() {
-            cargarFacultades();  // Carga las facultades al cargar la página
-        });
-
-        // Evento para Agregar Escuela
-        $('#formAgregarEscuela').submit(function (e) {
-            e.preventDefault();
-
-            var hRequeridas = $('#horasEscuela').val(); // Obtener el valor de las horas
-            // Verificar que el valor de horas sea numérico
-            if (isNaN(hRequeridas) || hRequeridas <= 0) {
-                Swal.fire("Error", "Las horas requeridas deben ser un número mayor que cero.", "error");
-                return;  // Evitar que el formulario se envíe si las horas no son válidas
-            }
-
-            var data = {
-                nombre: $('#nombreEscuela').val(),
-                abreviatura: $('#abreviaturaEscuela').val(),
-                estado: $('#estadoEscuela').val(),
-                facultad: $('#facultadEscuela').val(),
-                hRequeridas: hRequeridas  // Enviar las horas como número
-            };
-
-            $.ajax({
-                url: '/agregar_escuela',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(data),
-                success: function(response) {
-                    if (response.error) {
-                        Swal.fire("Error", response.error, "error");
-                    } else {
-                        Swal.fire("Éxito", response.mensaje, "success");
-                        table.ajax.reload();  // Recargar la tabla
-                        $('#modalAgregarEscuela').modal('hide');
-                    }
-                },
-                error: function() {
-                    Swal.fire("Error", "Hubo un error al agregar la escuela.", "error");
+                    Swal.fire("Error", "Hubo un error al obtener la escuela.", "error");
                 }
             });
         });
 
         // Evento para Modificar Escuela
         $('#tabla-escuela tbody').on('click', '.btnModificar', function () {
-            var id = $(this).data('id');
+            const id = $(this).data('id');
             $.ajax({
                 url: '/obtener_escuela_por_id/' + id,
                 type: 'GET',
-                success: function (data) {
-                    $('#idEscuelaMod').val(data.idEscuela);
-                    $('#nombreEscuelaMod').val(data.nombre);
-                    $('#abreviaturaEscuelaMod').val(data.abreviatura);
-                    $('#estadoEscuelaMod').val(data.estado);
-                    $('#facultadEscuelaMod').val(data.facultad);
-                    $('#horasEscuelaMod').val(data.hRequeridas);
+                success: function (response) {
+                    $('#idEscuelaMod').val(response.idEscuela);
+                    $('#nombreEscuelaMod').val(response.nombre);
+                    $('#abreviaturaEscuelaMod').val(response.abreviatura);
+                    $('#estadoEscuelaMod').val(response.estado);
+                    $('#horasEscuelaMod').val(response.hRequeridas);
+                    cargarFacultades('#facultadEscuelaMod', response.idFacultad);
                     $('#modalModificarEscuela').modal('show');
+                },
+                error: function () {
+                    Swal.fire("Error", "Hubo un error al obtener la escuela.", "error");
                 }
             });
         });
 
+        // Evento para agregar escuela
+        $('#formAgregarEscuela').submit(function (e) {
+            e.preventDefault();
+            const data = {
+                nombre: $('#nombreEscuela').val(),
+                abreviatura: $('#abreviaturaEscuela').val(),
+                estado: $('#estadoEscuela').val(),
+                facultad: $('#facultadEscuela').val(),
+                hRequeridas: $('#horasEscuela').val()
+            };
+            $.ajax({
+                url: '/agregar_escuela',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function () {
+                    table.ajax.reload();
+                    $('#modalAgregarEscuela').modal('hide');
+                },
+                error: function () {
+                    Swal.fire("Error", "Hubo un error al agregar la escuela.", "error");
+                }
+            });
+        });
+
+        // Evento para modificar escuela
         $('#formModificarEscuela').submit(function (e) {
             e.preventDefault();
-            var data = {
+            const data = {
                 idEscuela: $('#idEscuelaMod').val(),
                 nombre: $('#nombreEscuelaMod').val(),
                 abreviatura: $('#abreviaturaEscuelaMod').val(),
@@ -400,24 +317,23 @@
                 hRequeridas: $('#horasEscuelaMod').val()
             };
             $.ajax({
-                url: '/modificar_escuela',
+                url: '/actualizar_escuela',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(data),
-                success: function (response) {
-                    Swal.fire("Éxito", response.mensaje, "success");
+                success: function () {
                     table.ajax.reload();
                     $('#modalModificarEscuela').modal('hide');
                 },
                 error: function () {
-                    Swal.fire("Error", "Hubo un error al modificar la escuela.", "error");
+                    Swal.fire("Error", "Hubo un error al actualizar la escuela.", "error");
                 }
             });
         });
 
-        // Evento para Eliminar Escuela
+        // Evento para eliminar escuela
         $('#tabla-escuela tbody').on('click', '.btnEliminar', function () {
-            var id = $(this).data('id');
+            const id = $(this).data('id');
             Swal.fire({
                 title: '¿Estás seguro?',
                 text: "Esta acción no se puede deshacer.",
@@ -428,11 +344,13 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '/eliminar_escuela/' + id,
-                        type: 'DELETE',
-                        success: function (response) {
-                            Swal.fire("Éxito", response.mensaje, "success");
+                        url: '/eliminar_escuela',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ idEscuela: id }),
+                        success: function () {
                             table.ajax.reload();
+                            Swal.fire("Eliminado", "La escuela ha sido eliminada.", "success");
                         },
                         error: function () {
                             Swal.fire("Error", "Hubo un error al eliminar la escuela.", "error");
@@ -442,17 +360,17 @@
             });
         });
 
-        // Evento para Dar de Baja Escuela
+        // Evento para dar de baja escuela
         $('#tabla-escuela tbody').on('click', '.btnDarDeBaja', function () {
-            var id = $(this).data('id');
+            const id = $(this).data('id');
             $.ajax({
                 url: '/dar_de_baja_escuela',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({ idEscuela: id }),
-                success: function (response) {
-                    Swal.fire("Éxito", response.mensaje, "success");
+                success: function () {
                     table.ajax.reload();
+                    Swal.fire("Éxito", "La escuela ha sido dada de baja.", "success");
                 },
                 error: function () {
                     Swal.fire("Error", "No se pudo dar de baja la escuela.", "error");
