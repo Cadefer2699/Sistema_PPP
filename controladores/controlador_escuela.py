@@ -152,11 +152,6 @@ def modificar_escuela(idEscuela, nombre, abreviatura, estado, idFacultad, hReque
             if cursor.fetchone()[0] == 0:
                 return {"error": f"No existe una facultad con id {idFacultad}."}
 
-            # Comprobamos que la escuela existe
-            cursor.execute("SELECT COUNT(*) FROM escuela WHERE idEscuela = %s", (idEscuela,))
-            if cursor.fetchone()[0] == 0:
-                return {"error": f"No existe una escuela con id {idEscuela}."}
-
             # Realizamos la actualización
             cursor.execute("""
                 UPDATE escuela
