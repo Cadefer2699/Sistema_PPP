@@ -1,0 +1,298 @@
+{% extends "/ppp/home.html" %}
+{% block titulo %} Dashboard de Tendencias por Escuela {% endblock %}
+{% block contenido %}
+<nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('router_main.index') }}">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('router_main.practicas_pre_profesionales') }}">Módulo de Prácticas Pre Profesionales</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Dashboard de Tendencias</li>
+    </ol>
+</nav>
+
+<div class="container-fluid my-4">
+    <!-- Botón de actualización -->
+    <div class="text-end mb-3">
+        <button id="btn-refresh" class="btn btn-primary">
+            <i class="fas fa-sync-alt"></i> Actualizar Dashboard
+        </button>
+    </div>
+
+    <!-- Resumen General -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title text-white">Total Prácticas</h5>
+                    <h2 id="total-practicas">0</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title text-white">Prácticas Finalizadas</h5>
+                    <h2 id="total-finalizadas">0</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title text-white">Promedio Horas</h5>
+                    <h2 id="promedio-horas">0</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <h5 class="card-title text-white">Tasa de Finalización</h5>
+                    <h2 id="tasa-finalizacion">0%</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficos principales -->
+    <div class="row mb-4">
+        <!-- Tendencias por Escuela -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-red-usat text-white">
+                    Tendencias por Escuela
+                </div>
+                <div class="card-body">
+                    <canvas id="grafico-tendencias"></canvas>
+                </div>
+            </div>
+        </div>
+        <!-- Distribución de Modalidades -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-red-usat text-white">
+                    Distribución de Modalidades
+                </div>
+                <div class="card-body">
+                    <canvas id="grafico-modalidades"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Instituciones y Tasas de Finalización -->
+    <div class="row">
+        <!-- Top Instituciones -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-red-usat text-white">
+                    Top Instituciones por Escuela
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="tabla-instituciones">
+                            <thead>
+                                <tr>
+                                    <th>Escuela</th>
+                                    <th>Institución</th>
+                                    <th>Total Practicantes</th>
+                                    <th>Promedio Horas</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Tasas de Finalización Mensual -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-red-usat text-white">
+                    Tasas de Finalización Mensual
+                </div>
+                <div class="card-body">
+                    <canvas id="grafico-tasas"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    $(document).ready(function() {
+        let graficos = {};
+
+        function inicializarGraficos(datos) {
+            // Destruir gráficos existentes si existen
+            Object.values(graficos).forEach(grafico => {
+                if (grafico) grafico.destroy();
+            });
+
+            // Actualizar cards de resumen
+            let totalPracticas = 0;
+            let totalFinalizadas = 0;
+            let sumaHoras = 0;
+            let contadorHorasValidas = 0;
+
+            datos.tendencias_generales.forEach(item => {
+                totalPracticas += parseInt(item.Total_Practicas) || 0;
+                totalFinalizadas += parseInt(item.Practicas_Finalizadas) || 0;
+                
+                const horas = parseFloat(item.Promedio_Horas);
+                if (!isNaN(horas) && horas > 0) {
+                    sumaHoras += horas;
+                    contadorHorasValidas++;
+                }
+            });
+
+            const promedioHoras = contadorHorasValidas > 0 ? (sumaHoras / contadorHorasValidas).toFixed(2) : '0.00';
+            const tasaFinalizacion = totalPracticas > 0 ? ((totalFinalizadas / totalPracticas) * 100).toFixed(2) : '0.00';
+
+            $('#total-practicas').text(totalPracticas);
+            $('#total-finalizadas').text(totalFinalizadas);
+            $('#promedio-horas').text(promedioHoras);
+            $('#tasa-finalizacion').text(tasaFinalizacion + '%');
+
+            // Gráfico de tendencias
+            const ctxTendencias = document.getElementById('grafico-tendencias').getContext('2d');
+            graficos.tendencias = new Chart(ctxTendencias, {
+                type: 'bar',
+                data: {
+                    labels: datos.tendencias_generales.map(item => item.Escuela),
+                    datasets: [{
+                        label: 'Total Prácticas',
+                        data: datos.tendencias_generales.map(item => item.Total_Practicas),
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: 'Prácticas Finalizadas',
+                        data: datos.tendencias_generales.map(item => item.Practicas_Finalizadas),
+                        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Gráfico de modalidades
+            const ctxModalidades = document.getElementById('grafico-modalidades').getContext('2d');
+            const modalidadesData = {};
+            datos.modalidades_por_escuela.forEach(item => {
+                if (!modalidadesData[item.modalidad]) {
+                    modalidadesData[item.modalidad] = 0;
+                }
+                modalidadesData[item.modalidad] += parseInt(item.Total) || 0;
+            });
+
+            graficos.modalidades = new Chart(ctxModalidades, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(modalidadesData).map(mod => 
+                        mod === 'P' ? 'Presencial' : 
+                        mod === 'V' ? 'Virtual' : 'Híbrido'
+                    ),
+                    datasets: [{
+                        data: Object.values(modalidadesData),
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.5)',
+                            'rgba(54, 162, 235, 0.5)',
+                            'rgba(255, 206, 86, 0.5)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+
+            // Tabla de instituciones
+            const tabla = $('#tabla-instituciones tbody');
+            tabla.empty();
+            datos.instituciones_populares.forEach(item => {
+                tabla.append(`
+                    <tr>
+                        <td>${item.Escuela}</td>
+                        <td>${item.Institucion}</td>
+                        <td>${item.Total_Practicantes}</td>
+                        <td>${parseFloat(item.Promedio_Horas).toFixed(2)}</td>
+                    </tr>
+                `);
+            });
+
+            // Gráfico de tasas de finalización
+            const ctxTasas = document.getElementById('grafico-tasas').getContext('2d');
+const escuelas = [...new Set(datos.tasas_finalizacion.map(item => item.Escuela))];
+const datasets = escuelas.map((escuela, index) => {
+    const escuelaData = datos.tasas_finalizacion.filter(item => item.Escuela === escuela);
+    // Crear array de 12 meses con valores por defecto de 0
+    const tasasPorMes = new Array(12).fill(0);
+    
+    // Llenar solo los meses que tienen datos
+    escuelaData.forEach(item => {
+        const mesIndex = item.Mes - 1; // Convertir mes a índice 0-11
+        tasasPorMes[mesIndex] = parseFloat(item.Tasa_Finalizacion) || 0;
+    });
+    
+    return {
+        label: escuela,
+        data: tasasPorMes,
+        borderColor: `hsl(${index * 360 / escuelas.length}, 70%, 50%)`,
+        fill: false,
+        tension: 0.1 // Hace la línea más suave
+    };
+});
+
+            graficos.tasas = new Chart(ctxTasas, {
+                type: 'line',
+                data: {
+                    labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        }
+
+        // Función para actualizar dashboard
+        function actualizarDashboard() {
+            $.ajax({
+                url: '/datos_dashboard_tendencias',
+                method: 'GET',
+                success: function(response) {
+                    inicializarGraficos(response);
+                },
+                error: function(error) {
+                    console.error('Error al cargar los datos:', error);
+                    alert('Error al cargar los datos del dashboard');
+                }
+            });
+        }
+
+        // Evento click para el botón de refresh
+        $('#btn-refresh').click(function() {
+            actualizarDashboard();
+        });
+
+        // Carga inicial
+        actualizarDashboard();
+    });
+</script>
+{% endblock %}

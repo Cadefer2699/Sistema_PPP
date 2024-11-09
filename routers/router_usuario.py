@@ -3,8 +3,22 @@ import controladores.controlador_usuario as controlador_usuario
 
 router_usuario = Blueprint('router_usuario', __name__)
 
-# Ruta para obtener la lista de géneros
 @router_usuario.route("/datos_usuarios", methods=["GET"])
 def datos_usuarios():
     usuarios = controlador_usuario.obtener_usuarios()
     return jsonify(usuarios)
+
+@router_usuario.route("/datos_usuarios_estudiantes", methods=["GET"])
+def datos_usuarios_estudiantes():
+    usuarios = controlador_usuario.obtener_usuarios_estudiantes()
+    return jsonify(usuarios)
+
+@router_usuario.route("/datos_usuarios_docentes", methods=["GET"])
+def datos_usuarios_docentes():
+    usuarios = controlador_usuario.obtener_usuarios_docentes()
+    return jsonify(usuarios)
+
+@router_usuario.route("/datos_usuario_informe", methods=["GET"])
+def obtener_datos_usuario_informe():
+    usuario_informe = controlador_usuario.obtener_datos_usuario_informe()
+    return jsonify(usuario_informe)

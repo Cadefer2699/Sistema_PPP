@@ -23,27 +23,6 @@
 </head>
 
 <style>
-    html, body {
-        height: 100%;
-    }
-    .navbar {
-        position: fixed;
-        top: 0;
-        width: 83%;
-        right: 0;
-        z-index: 1000;
-    }
-    .footer {
-        background-color: #cfcfcf;
-        text-align: center;
-        padding: 10px 0; /* Ajustar el padding */
-        color: rgb(92, 92, 92);
-        position: fixed; /* Mantiene el footer fijo */
-        bottom: 0; /* Alinea el footer en la parte inferior */
-        width: 83%;
-        right: 0; /* Alinea el footer al borde derecho */
-        height: 50px; /* Ajustar altura del footer */
-    }
     .avatar {
         width: 40px;
         height: 40px;
@@ -51,10 +30,26 @@
         border: 2px solid black;
         object-fit: cover;
         background-color: lightgray;
+        }
+    body{
+        overflow: hidden;
+    }
+    html, body {
+        height: 100%;
     }
     .wrapper {
         display: flex;
         height: 100%;
+    }
+    .footer {
+        background-color: #cfcfcf;
+        text-align: center;
+        padding: 0px 0;
+        color: rgb(92, 92, 92);
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 7%;
     }
     .content {
         height: 100%;
@@ -64,48 +59,63 @@
         flex: 1;
     }
     .sidebar {
-        position: fixed; /* Mantiene el sidebar fijo */
-        top: 0; /* Alinea el sidebar en la parte superior */
-        left: 0; /* Alinea el sidebar a la izquierda */
-        height: 100%; /* Hace que el sidebar ocupe toda la altura */
-        width: 81.9%;  /* Ancho fijo para el sidebar */
-        overflow-y: auto; /* Permitir scroll si el contenido del sidebar es mayor */
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 81.9%;
+        overflow-y: auto;
     }
     .main {
-        margin-left: 16.9%; /* Deja espacio para el sidebar */
-        display: fixed;
+        margin-left: 16.9%;
+        display: flex;
         flex-direction: column;
-        z-index: 1000;
-        height: 100%; /* Hacer que el contenedor principal ocupe toda la altura */
+        height: 100%;
     }
-    
+    .navbar {
+        position: fixed;
+        top: 0;
+        width: 83%;
+        right: 0;
+        z-index: 1000;
+    }
+    .sidebar-link {
+        display: flex;
+        align-items: center;
+    }
+    .sidebar-link i {
+        width: 24px;
+        height: 24px;
+        text-align: center;
+        margin-right: 10px;
+    }
     
     @media (max-width: 768px) {
         .sidebar {
-            width: 200px; /* Reducir el ancho en pantallas más pequeñas */
+            width: 200px;
         }
         
         .main {
-            margin-left: 200px; /* Ajustar margen del main */
+            margin-left: 200px;
         }
 
         .navbar {
-            left: 200px; /* Ajustar posición del navbar */
+            left: 200px;
         }
     }
 
     @media (max-width: 576px) {
         .sidebar {
-            display: none; /* Ocultar el sidebar en pantallas muy pequeñas */
+            display: none;
         }
         
         .main {
-            margin-left: 0; /* Ajustar margen del main */
+            margin-left: 0;
         }
 
         .navbar {
-            left: 0; /* Ajustar posición del navbar */
-            width: 100%; /* Hacer que el navbar ocupe todo el ancho */
+            left: 0;
+            width: 100%;
         }
     }
 </style>
@@ -129,32 +139,78 @@
                     </li>
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ url_for('router_main.informeInicialEstudiante') }}">
-                            <i class="align-middle" data-feather="user"></i>
+                            <i class="far fa-file fa-lg"></i>
                             <span class="align-middle">Informe Inicial Estudiante</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ url_for('router_main.informeInicialEmpresa') }}">
-                            <i class="align-middle" data-feather="user"></i>
+                            <i class="fas fa-file fa-lg"></i>
                             <span class="align-middle">Informe Inicial Empresa</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ url_for('router_main.informeFinalEstudiante') }}">
-                            <i class="align-middle" data-feather="user"></i>
+                            <i class="far fa-file-alt fa-lg"></i>
                             <span class="align-middle">Informe Final Estudiante</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ url_for('router_main.informeFinalEmpresa') }}">
-                            <i class="align-middle" data-feather="user"></i>
+                            <i class="fas fa-file-alt fa-lg"></i>
                             <span class="align-middle">Informe Final Empresa</span>
+                        </a>
+                    </li>        
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ url_for('router_main.ppp') }}">
+                            <i class="fas fa-graduation-cap fa-lg"></i>
+                            <span class="align-middle">Prácticas Pre Profesionales</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-header">
+                        Reportes
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ url_for('router_main.InformesAlumno') }}">
+                            <i class="fas fa-chart-line fa-lg"></i>
+                            <span class="align-middle">Informes por Alumno</span>
+                        </a>
+                    </li>
+                    <!-- <li class="sidebar-item">
+                        <a class="sidebar-link" href="">
+                            <i class="fas fa-chart-bar fa-lg"></i>
+                            <span class="align-middle">Reporte 2</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ url_for('router_main.ppp') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Prácticas Pre Profesionales</span>
+                        <a class="sidebar-link" href="">
+                            <i class="fas fa-chart-area fa-lg"></i>
+                            <span class="align-middle">Reporte 3</span>
+                        </a>
+                    </li> -->
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ url_for('router_main.horas_practica') }}">
+                            <i class="fas fa-chart-area fa-lg"></i>
+                            <span class="align-middle">Horas de práctica</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ url_for('router_main.horas_practica_escuela') }}">
+                            <i class="fas fa-chart-area fa-lg"></i>
+                            <span class="align-middle">Horas de práctica por escuela</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ url_for('router_main.practicas_terminadas') }}">
+                            <i class="fas fa-chart-area fa-lg"></i>
+                            <span class="align-middle">Prácticas terminadas del mes</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ url_for('router_main.dashboard_tendencias') }}">
+                            <i class="fas fa-chart-area fa-lg"></i>
+                            <span class="align-middle">Dashboard de Tendencias</span>
                         </a>
                     </li>
                 </ul>

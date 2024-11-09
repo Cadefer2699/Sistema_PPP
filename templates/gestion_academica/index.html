@@ -26,7 +26,7 @@
         justify-content: center; 
         align-items: center;
         main-height: 100%;  
-        border-radius: 8px; 
+        border-radius: 10px; 
         position: relative; 
         margin-bottom: 1px; /* Espacio inferior entre cajas */
     }
@@ -51,6 +51,16 @@
         display: block; 
     }
     
+    .numero-con-icono {
+        display: flex;
+        justify-content: space-between; /* Alinea el número y el ícono en extremos opuestos */
+        align-items: center;
+        color: white;
+        font-weight: bold;
+        font-size: 3rem;
+    }
+    
+    
     .small-box .small-box-footer {
         background: rgba(0, 0, 0, 0.1);
         color: #000;
@@ -72,10 +82,11 @@
         <div class="row">
             <!-- PRIMERA COLUMNA -->
             <div class="col-lg-3 col-md-6 mb-4">
-                <div class="small-box bg-info shadow-sm rounded">
+                <div class="small-box bg-info ">
                     <div class="inner">
-                        <h1>
-                            {{ estadisticas['registrados'] }}
+                        <h1 class="numero-con-icono">
+                            <span>{{ estadisticas['registrados'] }}</span>
+                            <i class="fas fa-user-graduate icono-pleateado"></i>
                         </h1>
                         <h4>Estudiantes Registrados</h4>
                     </div>
@@ -86,8 +97,9 @@
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h1>
-                            {{ estadisticas['proceso'] }}
+                        <h1 class="numero-con-icono">
+                            <span>{{ estadisticas['proceso'] }}</span>
+                            <i class="fas fa-briefcase"></i> <!-- Ícono plateado -->
                         </h1>
                         <h4>Prácticas en Curso</h4>
                     </div>
@@ -101,8 +113,9 @@
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="small-box bg-warning">
                     <div class="inner">
-                        <h1>
-                            {{ estadisticas['espera_informes']}}
+                        <h1 class="numero-con-icono">
+                            <span>{{ estadisticas['espera_informes'] }}</span>
+                            <i class="fas fa-file-alt"></i> <!-- Ícono plateado -->
                         </h1>
                         <h4>Espera de Informes</h4>
                     </div>
@@ -116,8 +129,9 @@
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="small-box bg-primary shadow-sm roundeds">
                     <div class="inner">
-                        <h1>
-                            {{ estadisticas['finalizada']}}
+                        <h1 class="numero-con-icono">
+                            <span>{{ estadisticas['finalizada'] }}</span>
+                            <i class="fas fa-check-circle"></i>
                         </h1>
                         <h4>Prácticas Finalizas</h4>
                     </div>
@@ -132,10 +146,10 @@
             <!-- Custom tabs (Charts with tabs)-->
             <div class="col-lg-6 mb-4">
                 <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">
+                    <div class="card-header bg-red-usat text-white">
+                        <h3 class="card-title" style="color: white !important;">
                             <i class="fas fa-chart-pie mr-1"></i>
-                            Gráfico Estudiantes por Ciclo
+                            Gráfico Estudiantes por Semestre
                         </h3>
                         <div class="card-tools">
                             <ul class="nav nav-pills ml-auto">
@@ -159,10 +173,10 @@
             <!-- Gráfico de torta-->
             <div class="col-lg-6 mb-4">
                 <div class="card card-primary card-outline">
-                    <div class="card-header">
-                        <h3 class="card-title">
+                    <div class="card-header bg-red-usat text-white" >
+                        <h3 class="card-title" style="color: white !important;">
                             <i class="far fa-chart-bar"></i>
-                            Gráfico de torta
+                            Gráfico de Prácticas Iniciadas y Finalizadas
                         </h3>
                     </div>
                     <div class="card-body" style="display: flex; justify-content: center; align-items: center;">
@@ -197,28 +211,24 @@
     <script src="https://cdn.jsdelivr.net/npm/jqvmap@1.5.1/dist/maps/jquery.vmap.world.js"></script>
 
     <script>
-        // Datos de prueba para el gráfico
-        var registrosPorFecha = [
-            { fecha: '2024-06-04', cantidad_registrados: 1 },
-            { fecha: '2024-07-05', cantidad_registrados: 2 },
-            { fecha: '2024-08-04', cantidad_registrados: 8 },
-            { fecha: '2024-09-05', cantidad_registrados: 2 },
-            { fecha: '2024-10-04', cantidad_registrados: 10 },
-            { fecha: '2024-11-05', cantidad_registrados: 2 },
-        ];
+        // Verifica los datos en la consola
+        console.log("Datos de registrosPorFecha:", {{ registrosPorFecha | tojson }});
+        console.log("Datos de ppp_finalizadas:", {{ ppp_finalizadas | tojson }});
+    
+    /**# Gráfico de lineas */   
+        var registrosPorFecha = {{ registrosPorFecha | tojson}}; 
 
-        var fechas = registrosPorFecha.map(r => new Date(r.fecha));
-        var cantidades = registrosPorFecha.map(r => r.cantidad_registrados);
-
-        // Script para Gráfico de líneas
+        var nombres = registrosPorFecha.map(r => r.nombre); // Eje x: nombres de los semestres
+        var total_ids = registrosPorFecha.map(r => r.total_id); // Eje y: total de estudiantes registrados
+    
         var ctxRevenue = document.getElementById('revenue-chart-canvas').getContext('2d');
         var revenueChart = new Chart(ctxRevenue, {
             type: 'line',
             data: {
-                labels: fechas,
+                labels: nombres, // Eje x
                 datasets: [{
-                    label: 'Estudiantes Registrados por Ciclo',
-                    data: cantidades,
+                    label: 'Estudiantes Registrados por Semestre Académico',
+                    data: total_ids, // Eje y
                     borderColor: 'rgba(60,141,188,0.8)',
                     backgroundColor: 'rgba(60,141,188,0.4)',
                     fill: true, 
@@ -231,13 +241,7 @@
                 responsive: true,
                 scales: {
                     x: {
-                        type: 'time',
-                        time: {
-                            unit: 'day',
-                            displayFormats: {
-                                day: 'MMM dd'
-                            }
-                        },
+                        type: 'category',
                         title: {
                             display: true,
                             text: 'Ciclo'
@@ -276,8 +280,9 @@
                 }
             }
         });
+        
 
-        //Script para el Gráfico de torta
+    /**# Gráfico de Torta */
         const totalConFecha = {{ ppp_finalizadas['total_con_fecha']}}; 
         const totalSinFecha = {{ ppp_finalizadas['total_sin_fecha']}}; 
 
@@ -317,7 +322,7 @@
                     datalabels: {
                         color: '#fff',
                         font: {
-                            size: 16,
+                            size: 22,
                             weight: 'bold'
                         },
                         formatter: (value, ctx) => {
@@ -329,19 +334,6 @@
             plugins: [ChartDataLabels]
         });
 
-        $(document).ready(function() {
-            $('#world-map').vectorMap({
-                map: 'world_en',
-                backgroundColor: 'transparent',
-                color: '#ffffff',
-                hoverOpacity: 0.7,
-                selectedColor: '#666666',
-                enableZoom: true,
-                showTooltip: true,
-                values: {},
-                scaleColors: ['#C8EEFF', '#0071A4'],
-                normalizeFunction: 'polynomial'
-            });
-        });
+        
     </script>
 {% endblock %}

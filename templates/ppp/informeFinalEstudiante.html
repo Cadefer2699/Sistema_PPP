@@ -12,214 +12,247 @@
     body {
         overflow: hidden;
     }
-
-    .container-fluid {
-        padding: 20px;
-    }
-
     fieldset {
         margin-bottom: 20px;
-        padding: 15px;
+        padding-bottom: 15px;
     }
-
-    legend {
-        font-size: 1.2rem;
-        font-weight: bold;
-        padding-bottom: 10px;
-    }
-
     .form-label {
         margin-bottom: 5px;
     }
-
-    .row > div {
-        margin-bottom: 15px;
+    .nav-tabs .nav-link {
+        color: black;
+        background-color: #f1f1f1;
+        border: 1px solid #dee2e6;
+        border-radius: 5px 5px 0 0;
     }
-
-    .card-body {
-        padding: 20px;
+    .nav-tabs .nav-link.active {
+        color: black;
+        background-color: white;
+        border-bottom-color: transparent;
     }
-
-    table {
-        margin-top: 10px;
+    .tab-pane {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 15px;
+        margin-top: 15px;
     }
-
 </style>
+
 <div class="container-fluid my-4 scrollable">
     <div class="card w-100">
         <div class="card-header bg-red-usat text-white">
             Informe Final de Prácticas Pre Profesionales (Estudiante)
         </div>
         <div class="card-body">
-            <form action="" method="POST">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="datos-estudiante-tab" data-bs-toggle="tab" data-bs-target="#datos-estudiante" type="button" role="tab" aria-controls="datos-estudiante" aria-selected="true">Datos del Estudiante</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="introduccion-tab" data-bs-toggle="tab" data-bs-target="#introduccion" type="button" role="tab" aria-controls="introduccion" aria-selected="false">Introducción</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="descripcion-institucion-tab" data-bs-toggle="tab" data-bs-target="#descripcion-institucion" type="button" role="tab" aria-controls="descripcion-institucion" aria-selected="false">Descripción de la Institución</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="labores-tab" data-bs-toggle="tab" data-bs-target="#labores" type="button" role="tab" aria-controls="labores" aria-selected="false">Labores</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="conclusiones-tab" data-bs-toggle="tab" data-bs-target="#conclusiones" type="button" role="tab" aria-controls="conclusiones" aria-selected="false">Conclusiones</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="bibliografia-tab" data-bs-toggle="tab" data-bs-target="#bibliografia" type="button" role="tab" aria-controls="bibliografia" aria-selected="false">Bibliografía</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="recomendaciones-tab" data-bs-toggle="tab" data-bs-target="#recomendaciones" type="button" role="tab" aria-controls="recomendaciones" aria-selected="false">Recomendaciones</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="anexos-tab" data-bs-toggle="tab" data-bs-target="#anexos" type="button" role="tab" aria-controls="anexos" aria-selected="false">Anexos</button>
+                </li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
                 <!-- Datos del Estudiante -->
-                <fieldset>
-                    <legend>Datos del Estudiante</legend>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <label for="nombre_estudiante" class="form-label">Nombres del Estudiante:</label>
-                            <input type="text" class="form-control" id="nombre_estudiante" name="nombre_estudiante" required>
+                <div class="tab-pane fade show active" id="datos-estudiante" role="tabpanel" aria-labelledby="datos-estudiante-tab">
+                    <fieldset>
+                        <legend>Datos del Estudiante</legend>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="nombre_estudiante" class="form-label">Nombres del Estudiante:</label>
+                                <input type="text" class="form-control" id="nombre_estudiante" name="nombre_estudiante" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="apellido_estudiante" class="form-label">Apellidos del Estudiante:</label>
+                                <input type="text" class="form-control" id="apellido_estudiante" name="apellido_estudiante" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="nombre_institucion" class="form-label">Nombre de la Institución:</label>
+                                <input type="text" class="form-control" id="nombre_institucion" name="nombre_institucion" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="fecha_entrega" class="form-label">Fecha de Entrega del Informe:</label>
+                                <input type="date" class="form-control" id="fecha_entrega" name="fecha_entrega" required>
+                            </div>
                         </div>
-                        <div class="col-md-3">
-                            <label for="apellido_estudiante" class="form-label">Apellidos del Estudiante:</label>
-                            <input type="text" class="form-control" id="apellido_estudiante" name="apellido_estudiante" required>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="nombre_institucion" class="form-label">Nombre de la Institución:</label>
-                            <input type="text" class="form-control" id="nombre_institucion" name="nombre_institucion" required>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="fecha_entrega" class="form-label">Fecha de Entrega del Informe:</label>
-                            <input type="date" class="form-control" id="fecha_entrega" name="fecha_entrega" required>
-                        </div>
-                    </div>
-                </fieldset>
+                    </fieldset>
+                </div>
 
                 <!-- Introducción -->
-                <fieldset>
-                    <legend>Introducción</legend>
-                    <div class="mb-3">
-                        <label for="introduccion" class="form-label">Introducción:</label>
-                        <textarea class="form-control" id="introduccion" name="introduccion" rows="4" required></textarea>
-                    </div>
-                </fieldset>
+                <div class="tab-pane fade" id="introduccion" role="tabpanel" aria-labelledby="introduccion-tab">
+                    <fieldset>
+                        <legend>Introducción</legend>
+                        <div class="mb-3">
+                            <label for="introduccion" class="form-label">Introducción:</label>
+                            <textarea class="form-control" id="introduccion" name="introduccion" rows="4" required></textarea>
+                        </div>
+                    </fieldset>
+                </div>
 
                 <!-- Descripción de la Institución -->
-                <fieldset>
-                    <legend>Descripción de la Institución</legend>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label for="razon_social" class="form-label">Razón Social de la Institución:</label>
-                            <input type="text" class="form-control" id="razon_social" name="razon_social" required>
+                <div class="tab-pane fade" id="descripcion-institucion" role="tabpanel" aria-labelledby="descripcion-institucion-tab">
+                    <fieldset>
+                        <legend>Descripción de la Institución</legend>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="razon_social" class="form-label">Razón Social de la Institución:</label>
+                                <input type="text" class="form-control" id="razon_social" name="razon_social" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="direccion" class="form-label">Dirección:</label>
+                                <input type="text" class="form-control" id="direccion" name="direccion" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="giro_institucion" class="form-label">Giro de la Institución:</label>
+                                <input type="text" class="form-control" id="giro_institucion" name="giro_institucion" required>
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            <label for="direccion" class="form-label">Dirección:</label>
-                            <input type="text" class="form-control" id="direccion" name="direccion" required>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="representante" class="form-label">Representante Legal:</label>
+                                <input type="text" class="form-control" id="representante" name="representante" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="mision" class="form-label">Misión:</label>
+                                <input type="text" class="form-control" id="mision" name="mision" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="vision" class="form-label">Visión:</label>
+                                <input type="text" class="form-control" id="vision" name="vision" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="cantidad_trabajadores" class="form-label">Cantidad de Trabajadores:</label>
+                                <input type="number" class="form-control" id="cantidad_trabajadores" name="cantidad_trabajadores" required>
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            <label for="giro_institucion" class="form-label">Giro de la Institución:</label>
-                            <input type="text" class="form-control" id="giro_institucion" name="giro_institucion" required>
+                        <div class="mb-3">
+                            <label for="infraestructura_fisica" class="form-label">Infraestructura Física:</label>
+                            <textarea class="form-control" id="infraestructura_fisica" name="infraestructura_fisica" rows="3" required></textarea>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <label for="representante" class="form-label">Representante Legal:</label>
-                            <input type="text" class="form-control" id="representante" name="representante" required>
+                        <div class="mb-3">
+                            <label for="infraestructura_tecnologica" class="form-label">Infraestructura Tecnológica:</label>
+                            <textarea class="form-control" id="infraestructura_tecnologica" name="infraestructura_tecnologica" rows="3" required></textarea>
                         </div>
-                        <div class="col-md-3">
-                            <label for="mision" class="form-label">Misión:</label>
-                            <input type="text" class="form-control" id="mision" name="mision" required>
+                        <div class="mb-3">
+                            <label for="organigrama" class="form-label">Organigrama:</label>
+                            <textarea class="form-control" id="organigrama" name="organigrama" rows="3" required></textarea>
                         </div>
-                        <div class="col-md-3">
-                            <label for="vision" class="form-label">Visión:</label>
-                            <input type="text" class="form-control" id="vision" name="vision" required>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="cantidad_trabajadores" class="form-label">Cantidad de Trabajadores:</label>
-                            <input type="number" class="form-control" id="cantidad_trabajadores" name="cantidad_trabajadores" required>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="infraestructura_fisica" class="form-label">Infraestructura Física:</label>
-                        <textarea class="form-control" id="infraestructura_fisica" name="infraestructura_fisica" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="infraestructura_tecnologica" class="form-label">Infraestructura Tecnológica:</label>
-                        <textarea class="form-control" id="infraestructura_tecnologica" name="infraestructura_tecnologica" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="organigrama" class="form-label">Organigrama:</label>
-                        <textarea class="form-control" id="organigrama" name="organigrama" rows="3" required></textarea>
-                    </div>
-                </fieldset>
+                    </fieldset>
+                </div>
 
                 <!-- Labores Desarrolladas por el Estudiante -->
-                <fieldset>
-                    <legend>Labores Desarrolladas por el Estudiante</legend>
-                    <div class="mb-3">
-                        <label for="area_trabajo" class="form-label">Descripción del Área de Trabajo y Relaciones Laborales:</label>
-                        <textarea class="form-control" id="area_trabajo" name="area_trabajo" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="labores_realizadas" class="form-label">Descripción de las Labores Realizadas:</label>
-                        <textarea class="form-control" id="labores_realizadas" name="labores_realizadas" rows="3" required></textarea>
-                    </div>
-                </fieldset>
+                <div class="tab-pane fade" id="labores" role="tabpanel" aria-labelledby="labores-tab">
+                    <fieldset>
+                        <legend>Labores Desarrolladas por el Estudiante</legend>
+                        <div class="mb-3">
+                            <label for="area_trabajo" class="form-label">Descripción del Área de Trabajo y Relaciones Laborales:</label>
+                            <textarea class="form-control" id="area_trabajo" name="area_trabajo" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="labores_realizadas" class="form-label">Descripción de las Labores Realizadas:</label>
+                            <textarea class="form-control" id="labores_realizadas" name="labores_realizadas" rows="3" required></textarea>
+                        </div>
+                    </fieldset>
+                </div>
 
-                <!-- Conclusiones y Bibliografía -->
-                <div class="flex-row">
-                    <div class="conclusiones-col">
-                        <fieldset>
-                            <legend>
-                                Conclusiones
-                                <button type="button" class="btn btn-primary btn-sm" id="agregarConclusion" style="margin-left: 10px; font-size: 1.2rem; font-weight: bold;">+</button>
-                            </legend>
-                            <table class="table table-bordered" id="tabla-conclusiones">
-                                <thead>
-                                    <tr>
-                                        <th style="text-align:center">Descripción de la conclusión</th>
-                                        <th style="text-align:center">Opciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><textarea class="form-control" name="conclusiones[]" rows="2" placeholder="Conclusión"></textarea></td>
-                                        <td style="text-align:center">
-                                            <button type="button" class="btn btn-danger btn-sm" onclick="eliminarFilaConclusion(this)">Eliminar</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </fieldset>
-                    </div>
+                <!-- Conclusiones -->
+                <div class="tab-pane fade" id="conclusiones" role="tabpanel" aria-labelledby="conclusiones-tab">
+                    <fieldset>
+                        <legend>
+                            Conclusiones
+                            <button type="button" class="btn btn-primary btn-sm" id="agregarConclusion">+</button>
+                        </legend>
+                        <table class="table table-bordered" id="tabla-conclusiones">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:center">Descripción de la conclusión</th>
+                                    <th style="text-align:center">Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><textarea class="form-control" name="conclusiones[]" rows="2" placeholder="Conclusión"></textarea></td>
+                                    <td style="text-align:center">
+                                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminarFilaConclusion(this)">Eliminar</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+                </div>
 
-                    <!-- Bibliografía -->
-                    <div class="bibliografia-col">
-                        <fieldset>
-                            <legend>Bibliografía</legend>
-                            <div class="mb-3">
-                                <label for="bibliografia" class="form-label">Bibliografía (Estilo IEEE):</label>
-                                <textarea class="form-control" id="bibliografia" name="bibliografia" rows="8" required></textarea>
-                            </div>
-                        </fieldset>
-                    </div>
+                <!-- Bibliografía -->
+                <div class="tab-pane fade" id="bibliografia" role="tabpanel" aria-labelledby="bibliografia-tab">
+                    <fieldset>
+                        <legend>Bibliografía</legend>
+                        <div class="mb-3">
+                            <label for="bibliografia" class="form-label">Bibliografía (Estilo IEEE):</label>
+                            <textarea class="form-control" id="bibliografia" name="bibliografia" rows="8" required></textarea>
+                        </div>
+                    </fieldset>
                 </div>
 
                 <!-- Recomendaciones -->
-                <fieldset>
-                    <legend>
-                        Recomendaciones
-                        <button type="button" class="btn btn-primary btn-sm" id="agregarRecomendacion" style="margin-left: 10px; font-size: 1.2rem; font-weight: bold;">+</button>
-                    </legend>
-                    <table class="table table-bordered" id="tabla-recomendaciones">
-                        <thead>
-                            <tr>
-                                <th class="col-conclusiones" style="text-align:center">Descripción de la recomendación</th>
-                                <th style="text-align:center">Opciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><textarea class="form-control" name="recomendaciones[]" rows="2" placeholder="Recomendación"></textarea></td>
-                                <td style="text-align:center">
-                                    <button type="button" class="btn btn-danger btn-sm" onclick="eliminarFilaRecomendacion(this)">Eliminar</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </fieldset>
+                <div class="tab-pane fade" id="recomendaciones" role="tabpanel" aria-labelledby="recomendaciones-tab">
+                    <fieldset>
+                        <legend>
+                            Recomendaciones
+                            <button type="button" class="btn btn-primary btn-sm" id="agregarRecomendacion">+</button>
+                        </legend>
+                        <table class="table table-bordered" id="tabla-recomendaciones">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:center">Descripción de la recomendación</th>
+                                    <th style="text-align:center">Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><textarea class="form-control" name="recomendaciones[]" rows="2" placeholder="Recomendación"></textarea></td>
+                                    <td style="text-align:center">
+                                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminarFilaRecomendacion(this)">Eliminar</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+                </div>
 
                 <!-- Anexos -->
-                <fieldset>
-                    <legend>Anexos</legend>
-                    <div class="mb-3">
-                        <label for="anexos" class="form-label">Anexos:</label>
-                        <textarea class="form-control" id="anexos" name="anexos" rows="3"></textarea>
-                    </div>
-                </fieldset>
-
-                <button type="submit" class="btn btn-primary">Guardar Informe</button>
-            </form>
+                <div class="tab-pane fade" id="anexos" role="tabpanel" aria-labelledby="anexos-tab">
+                    <fieldset>
+                        <legend>Anexos</legend>
+                        <div class="mb-3">
+                            <label for="anexos" class="form-label">Anexos:</label>
+                            <textarea class="form-control" id="anexos" name="anexos" rows="3"></textarea>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary mt-3" style="margin-top: 15px;">Guardar Informe</button>
+            </div>  
         </div>
     </div>
 </div>
@@ -230,7 +263,6 @@
 
 <!-- Script para manejar el agregado dinámico de conclusiones y recomendaciones -->
 <script>
-    // Función para agregar una nueva fila de conclusión
     document.getElementById('agregarConclusion').addEventListener('click', function() {
         var nuevaFila = `
             <tr>
@@ -243,13 +275,11 @@
         document.querySelector('#tabla-conclusiones tbody').insertAdjacentHTML('beforeend', nuevaFila);
     });
 
-    // Función para eliminar una fila de conclusión
     function eliminarFilaConclusion(btn) {
         var fila = btn.closest('tr');
         fila.remove();
     }
 
-    // Función para agregar una nueva fila de recomendación
     document.getElementById('agregarRecomendacion').addEventListener('click', function() {
         var nuevaFila = `
             <tr>
@@ -262,7 +292,6 @@
         document.querySelector('#tabla-recomendaciones tbody').insertAdjacentHTML('beforeend', nuevaFila);
     });
 
-    // Función para eliminar una fila de recomendación
     function eliminarFilaRecomendacion(btn) {
         var fila = btn.closest('tr');
         fila.remove();

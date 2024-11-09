@@ -1,12 +1,9 @@
 from bd import obtener_conexion
 
-# OPERACIONES CRUD
-
 def obtener_estudiantes():
     conexion = obtener_conexion()
     if not conexion:
         return {"error": "No se pudo establecer conexión con la base de datos."}
-
     estudiantes = []
     try:
         with conexion.cursor() as cursor:
@@ -20,10 +17,10 @@ def obtener_estudiantes():
                 LEFT JOIN escuela e ON p.idEscuela = e.idEscuela
                 LEFT JOIN usuario u ON p.idUsuario = u.idUsuario
                 WHERE u.idTipoUsuario = 3
+                ORDER BY p.apellidos ASC, p.nombre ASC 
             """)
             column_names = [desc[0] for desc in cursor.description]
             rows = cursor.fetchall()
-
             for row in rows:
                 estudiante_dict = dict(zip(column_names, row))
                 estudiantes.append(estudiante_dict)
@@ -31,30 +28,22 @@ def obtener_estudiantes():
         return {"error": str(e)}
     finally:
         conexion.close()
-
     return estudiantes
 
 def obtener_estudiante_por_id(idEstudiante):
     conexion = obtener_conexion()
     if not conexion:
         return {"error": "No se pudo establecer conexión con la base de datos."}
-
-    estudiante = None
     try:
         with conexion.cursor() as cursor:
             cursor.execute("""
                 SELECT p.idPersona, p.numDoc, p.nombre, p.apellidos, p.codUniversitario, p.tel1, p.tel2, 
-                    p.correoP, p.correoUSAT, p.estado, g.nombre as genero, td.nombre as tipoDocumento, 
+                       p.correoP, p.correoUSAT, p.estado, g.nombre as genero, td.nombre as tipoDocumento, 
                         e.nombre as escuela, u.username as usuario
                 FROM persona p
-                LEFT JOIN genero g ON p.idGenero = g.idGenero
-                LEFT JOIN tipo_documento td ON p.idTipoDoc = td.idTipoDoc
-                LEFT JOIN escuela e ON p.idEscuela = e.idEscuela
-                LEFT JOIN usuario u ON p.idUsuario = u.idUsuario
                 WHERE p.idPersona = %s
             """, (idEstudiante,))
             row = cursor.fetchone()
-
             if row:
                 columnas = [desc[0] for desc in cursor.description]
                 estudiante_dict = dict(zip(columnas, row))
@@ -70,8 +59,6 @@ def obtener_estudiante_por_id_modificar(idEstudiante):
     conexion = obtener_conexion()
     if not conexion:
         return {"error": "No se pudo establecer conexión con la base de datos."}
-
-    estudiante = None
     try:
         with conexion.cursor() as cursor:
             cursor.execute("""
@@ -82,7 +69,6 @@ def obtener_estudiante_por_id_modificar(idEstudiante):
                 WHERE p.idPersona = %s
             """, (idEstudiante,))
             row = cursor.fetchone()
-
             if row:
                 columnas = [desc[0] for desc in cursor.description]
                 estudiante_dict = dict(zip(columnas, row))
@@ -94,15 +80,14 @@ def obtener_estudiante_por_id_modificar(idEstudiante):
     finally:
         conexion.close()
 
-
 def agregar_estudiante(numDoc, nombre, apellidos, codUniversitario, tel1, tel2, correoP, correoUSAT, estado, idGenero, idTipoDoc, idUsuario, idEscuela):
+    if not tel2:
+        tel2 = None
     conexion = obtener_conexion()
     if not conexion:
         return {"error": "No se pudo establecer conexión con la base de datos."}
-
     try:
         with conexion.cursor() as cursor:
-            # Inserta el nuevo estudiante en la tabla persona
             cursor.execute("""
                 INSERT INTO persona (numDoc, nombre, apellidos, codUniversitario, tel1, tel2, correoP, correoUSAT, estado, idGenero, idTipoDoc, idUsuario, idEscuela)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
@@ -121,10 +106,8 @@ def modificar_estudiante(idEstudiante, numDoc, nombre, apellidos, codUniversitar
     conexion = obtener_conexion()
     if not conexion:
         return {"error": "No se pudo establecer conexión con la base de datos."}
-
     try:
         with conexion.cursor() as cursor:
-            # Actualiza la información del estudiante en la tabla persona
             cursor.execute("""
                 UPDATE persona
                 SET numDoc = %s, nombre = %s, apellidos = %s, codUniversitario = %s, tel1 = %s, tel2 = %s, 
@@ -144,10 +127,8 @@ def eliminar_estudiante(idEstudiante):
     conexion = obtener_conexion()
     if not conexion:
         return {"error": "No se pudo establecer conexión con la base de datos."}
-
     try:
         with conexion.cursor() as cursor:
-            # Elimina al estudiante de la tabla persona
             cursor.execute("DELETE FROM persona WHERE idPersona = %s", (idEstudiante,))
             conexion.commit()
             return {"mensaje": "Estudiante eliminado correctamente"}
@@ -158,42 +139,16 @@ def eliminar_estudiante(idEstudiante):
         conexion.close()
 
 def dar_de_baja_estudiante(idEstudiante):
-    # Validaciones
     if not idEstudiante:
-        return {"error": "El ID de la estudiante es requerido."}
-
+        return {"error": "El ID del estudiante es requerido."}
     conexion = obtener_conexion()
     if not conexion:
         return {"error": "No se pudo establecer conexión con la base de datos."}
-
     try:
         with conexion.cursor() as cursor:
-            cursor.callproc('GestionEstudiante', [4, idEstudiante, None, None])
+            cursor.execute("UPDATE persona SET estado = 'I' WHERE idPersona = %s", (idEstudiante,))
             conexion.commit()
-            return {"mensaje": "Estudiante dada de baja correctamente"}
-    except Exception as e:
-        conexion.rollback()
-        return {"error": str(e)}
-    finally:
-        conexion.close()
-
-def cambiar_estado_estudiante(idEstudiante, nuevo_estado):
-    # Validaciones
-    if not idEstudiante or not nuevo_estado:
-        return {"error": "El ID y el nuevo estado son requeridos."}
-    if nuevo_estado not in ['A', 'I']:
-        return {"error": "El estado debe ser 'A' (Activo) o 'I' (Inactivo)."}
-
-    conexion = obtener_conexion()
-    if not conexion:
-        return {"error": "No se pudo establecer conexión con la base de datos."}
-
-    try:
-        with conexion.cursor() as cursor:
-            # Llamar al procedimiento almacenado para cambiar estado
-            cursor.callproc('GestionEstudiante', [4, idEstudiante, None, nuevo_estado])
-            conexion.commit()
-            return {"mensaje": "Estado de la estudiante actualizado correctamente"}
+            return {"mensaje": "Estudiante dado de baja correctamente"}
     except Exception as e:
         conexion.rollback()
         return {"error": str(e)}
@@ -201,7 +156,6 @@ def cambiar_estado_estudiante(idEstudiante, nuevo_estado):
         conexion.close()
 
 # OTRAS OPERACIONES
-
 def obtener_estudiantes_activas():
     conexion = obtener_conexion()
     if not conexion:
@@ -218,7 +172,40 @@ def obtener_estudiantes_activas():
         return {"error": str(e)}
     finally:
         conexion.close()
-        
+
+def obtener_estudiantes_con_estado():
+    conexion = obtener_conexion()
+    if not conexion:
+        return {"error": "No se pudo establecer conexión con la base de datos."}
+    
+    estudiantes = []
+    try:
+        with conexion.cursor() as cursor:
+            cursor.execute("""
+                SELECT 
+                    idEstudiante, 
+                    nombre, 
+                    CASE 
+                        WHEN estado = 'A' THEN 'Activo' 
+                        ELSE 'Inactivo' 
+                    END AS estado 
+                FROM estudiante 
+                ORDER BY nombre
+            """)
+            column_names = [desc[0] for desc in cursor.description]
+            rows = cursor.fetchall()
+
+            for row in rows:
+                estudiante_dict = dict(zip(column_names, row))
+                estudiantes.append(estudiante_dict)
+    except Exception as e:
+        return {"error": str(e)}
+    finally:
+        conexion.close()
+
+    return estudiantes
+
+#Carlos Delgado 9-11-2024
 def obtener_estudiantes_por_fecha(): 
     conexion = obtener_conexion()
     if not conexion:
@@ -229,15 +216,14 @@ def obtener_estudiantes_por_fecha():
         with conexion.cursor() as cursor:
             cursor.execute(
                 """
-                SELECT DATE(pp.fechaInicio) as fecha, COUNT(pe.idPersona) as cantidad_personas
-                FROM practicas_preprofesionales as pp 
-                INNER JOIN persona as pe ON pp.idPersona = pe.idPersona
-                GROUP BY dATE(fechaInicio)
-                ORDER BY fecha; 
+                SELECT COUNT(pp.idSemestre) as total_id, sa.nombre as nombre
+                FROM practicas_preprofesionales as pp
+                INNER JOIN semestre_academico as sa on pp.idSemestre = sa.idSemestre
+                GROUP BY sa.nombre
                 """)
             rows = cursor.fetchall()
             
-            registros_por_fecha = [{"fecha": row[0], "cantidad_personas": row[1]} for row in rows]
+            registros_por_fecha = [{"total_id": row[0], "nombre": row[1]} for row in rows]
             
             
     except Exception as e:
@@ -316,35 +302,3 @@ def obtener_ppp_finalizadas():
         conexion.close()
         
     return estado_ppp
-        
-def obtener_estudiantes_con_estado():
-    conexion = obtener_conexion()
-    if not conexion:
-        return {"error": "No se pudo establecer conexión con la base de datos."}
-    
-    estudiantes = []
-    try:
-        with conexion.cursor() as cursor:
-            cursor.execute("""
-                SELECT 
-                    idEstudiante, 
-                    nombre, 
-                    CASE 
-                        WHEN estado = 'A' THEN 'Activo' 
-                        ELSE 'Inactivo' 
-                    END AS estado 
-                FROM estudiante 
-                ORDER BY nombre
-            """)
-            column_names = [desc[0] for desc in cursor.description]
-            rows = cursor.fetchall()
-
-            for row in rows:
-                estudiante_dict = dict(zip(column_names, row))
-                estudiantes.append(estudiante_dict)
-    except Exception as e:
-        return {"error": str(e)}
-    finally:
-        conexion.close()
-
-    return estudiantes

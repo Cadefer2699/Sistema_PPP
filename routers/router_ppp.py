@@ -12,6 +12,11 @@ def datos_practicas():
     practicas = controlador_practicas.obtener_practicas()
     return jsonify(practicas)
 
+@router_practicas.route("/obtener_ultimo_id", methods=["GET"])
+def obtener_ultimo_id():
+    practicas = controlador_practicas.obtener_ultimo_id()
+    return jsonify(practicas)
+
 @router_practicas.route("/obtener_practica_por_id/<int:idPractica>", methods=["GET"])
 def obtener_practica_por_id(idPractica):
     practica = controlador_practicas.obtener_practica_por_id(idPractica)
@@ -21,18 +26,19 @@ def obtener_practica_por_id(idPractica):
 def agregar_practica():
     data = request.json
     fechaInicio = data.get('fechaInicio')
-    fechaFin = data.get('fechaFin')
+    horario = data.get('horario')
     modalidad = data.get('modalidad')
     area = data.get('area')
     numeroHorasPPP = data.get('numeroHorasPPP')
-    numDocEstudiante = data.get('numDocEstudiante')
+    numeroHorasPendientes = data.get('numeroHorasPendientes')
+    numeroHorasRealizadas = data.get('numeroHorasRealizadas')
     idSemestre = data.get('idSemestre')
     idLinea = data.get('idLinea')
     numDocInstitucion = data.get('numDocInstitucion')
-    idEstado = data.get('idEstado')
     idTipoPractica = data.get('idTipoPractica')
+    idPersona = data.get('idPersona')
     
-    resultado = controlador_practicas.agregar_practica(fechaInicio, fechaFin, modalidad, area, numeroHorasPPP, numDocEstudiante, idSemestre, idLinea, numDocInstitucion, idEstado, idTipoPractica)
+    resultado = controlador_practicas.agregar_practica(fechaInicio, horario, modalidad, area, numeroHorasPPP, numeroHorasPendientes, numeroHorasRealizadas, idSemestre, idLinea, numDocInstitucion, idTipoPractica, idPersona)
     return jsonify(resultado)
 
 @router_practicas.route("/modificar_practica", methods=["POST"])

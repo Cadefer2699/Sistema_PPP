@@ -8,9 +8,10 @@
         <li class="breadcrumb-item active"><a href="{{ url_for('router_main.ppp') }}">Prácticas Pre Profesionales</a></li>
     </ol>
 </nav>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
     body {
-        overflow: auto;
+        overflow: hidden;
     }
     .scrollable {
       height: 42%;
@@ -81,6 +82,17 @@
         background-color: #f0f0f0;
     }
 
+    .disabled {
+        pointer-events: none; /* Desactiva la interacción */
+        opacity: 0.6; /* Cambia la opacidad para el efecto visual */
+    }
+
+    .disabled .form-control,
+    .disabled .form-select,
+    .disabled .form-check-input {
+        background-color: #e9ecef; /* Color de fondo para inputs deshabilitados */
+        color: #6c757d; /* Color de texto para inputs deshabilitados */
+    }
 </style>
 <div class="container-fluid my-4">
     <div class="card w-100" style="height: 100%;">
@@ -92,6 +104,19 @@
                 <!-- Encabezado -->
                 <fieldset>   
                     <div class="row">
+                        <div class="col-3">
+                            <label for="id" class="form-label">ID:</label>
+                            <div class="d-flex align-items-end">
+                                <input type="text" class="form-control me-2" id="id" name="id" required>
+                                <button id="btnBuscarID" type="submit" class="btn btn-secondary me-2">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                                <button id="btnNuevo" type="submit" class="btn btn-primary d-flex align-items-center" onclick="obtenerUltimoID()">
+                                    <i class="fas fa-plus me-1"></i> Nuevo
+                                </button>
+                            </div>
+                        </div>                                         
+                        <div class="col"></div>  
                         <div class="col-2">
                             <label for="semestrea" class="form-label">Semestre Académico:</label>
                             <select class="form-select" id="semestrea" name="semestrea" required>
@@ -100,17 +125,18 @@
                         </div>
                         <div class="col-5">
                             <label for="estudiante" class="form-label">Estudiante:</label>
-                            <div class="custom-combo">
-                                <input type="text" id="estudiante" class="form-control" placeholder="Seleccionar estudiante" autocomplete="off">
-                                <ul id="dropdown-estudiantes" class="dropdown-menu"></ul>
+                            <div class="d-flex align-items-end">
+                                <div class="flex-grow-1 me-2">
+                                    <div class="custom-combo">
+                                        <input type="text" id="estudiante" class="form-control" placeholder="Seleccionar estudiante" autocomplete="off">
+                                        <ul id="dropdown-estudiantes" class="dropdown-menu"></ul>
+                                    </div>
+                                </div>
+                                <button id="btnBuscarE" type="submit" class="btn btn-secondary">
+                                    <i class="bi bi-search"></i>
+                                </button>
                             </div>
-                        </div>                        
-                        <div class="col">
-                        </div>
-                        <div class="col-2">
-                            <label for="id" class="form-label">ID:</label>
-                            <input type="text" class="form-control" id="id" name="id" required>
-                        </div>
+                        </div>                                                                                         
                     </div>   
                 </fieldset>
 
@@ -138,12 +164,12 @@
                             <div class="tab-pane fade show active" id="ppp" role="tabpanel" aria-labelledby="ppp-tab">
                                 <div class="row mb-3">
                                     <div class="col-md-5">
-                                        <label for="fechainicial" class="form-label">Fecha Inicial:</label>
-                                        <input type="date" class="form-control" id="fechainicial" name="fechainicial" required>
+                                        <label for="fechaInicio" class="form-label">Fecha Inicial:</label>
+                                        <input type="date" class="form-control" id="fechaInicio" name="fechaInicio" required>
                                     </div>
                                     <div class="col-md-5">
-                                        <label for="fechafinal" class="form-label">Fecha Final:</label>
-                                        <input type="date" class="form-control" id="fechafinal" name="fechafinal" required>
+                                        <label for="fechaFin" class="form-label">Fecha Final:</label>
+                                        <input type="date" class="form-control" id="fechaFin" name="fechaFin">
                                     </div>
                                     <div class="col-md-2">
                                         <label class="form-label">Modalidad:</label>
@@ -162,7 +188,7 @@
                                 <div class="row mb-3">
                                     <div class="col">
                                         <label for="horario" class="form-label">Horario:</label>
-                                        <input type="text" class="form-control" id="horario" name="horario" required>
+                                        <input type="text" class="form-control" id="horario" name="horario">
                                     </div>
                                 </div>                           
                                 <div class="row mb-3">
@@ -172,13 +198,13 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label for="horaspendientes" class="form-label">Horas Pendientes:</label>
-                                        <input type="number" class="form-control" id="horaspendientes" name="horaspendientes" required>
+                                        <input type="number" class="form-control" id="horaspendientes" name="horaspendientes">
                                     </div>
                                 </div>                           
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="horaspractica" class="form-label">Horas de Práctica:</label>
-                                        <input type="number" class="form-control" id="horaspractica" name="horaspractica" value="0" required>
+                                        <input type="number" class="form-control" id="horaspractica" name="horaspractica" value="0">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="requiere" class="form-label">Requiere nuevas PPP</label>
@@ -248,7 +274,7 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="semestrefinal" class="form-label">Semestre Finalización:</label>
-                                        <select class="form-select" id="semestrefinal" name="semestrefinal" required>
+                                        <select class="form-select" id="semestrefinal" name="semestrefinal">
                                             <option value="" disabled selected>Seleccionar semestre</option>
                                         </select>
                                     </div>
@@ -258,7 +284,7 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="fechasupervision" class="form-label">Fecha:</label>
-                                        <input type="date" class="form-control" id="fechasupervision" name="fechasupervision" required>
+                                        <input type="date" class="form-control" id="fechasupervision" name="fechasupervision">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="estadosupervision" class="form-label">Estado:</label>
@@ -270,11 +296,11 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="funciones" class="form-label">Funciones:</label>
-                                    <textarea class="form-control" id="funciones" name="funciones" rows="3" required></textarea>
+                                    <textarea class="form-control" id="funciones" name="funciones" rows="3"></textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="observacion" class="form-label">Observación:</label>
-                                    <textarea class="form-control" id="observacion" name="observacion" rows="3" required></textarea>
+                                    <textarea class="form-control" id="observacion" name="observacion" rows="3"></textarea>
                                 </div>  
                             </div>
                         </div>
@@ -313,11 +339,11 @@
                                 <div class="row mb-3">                     
                                     <div class="col-md-6">
                                         <label for="fechainicialestudiante" class="form-label">Fecha Subido:</label>
-                                        <input type="date" class="form-control" id="fechainicialestudiante" name="fechainicialestudiante" required>
+                                        <input type="date" class="form-control" id="fechainicialestudiante" name="fechainicialestudiante">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="fechainicialinstitucion" class="form-label">Fecha Subido:</label>
-                                        <input type="date" class="form-control" id="fechainicialinstitucion" name="fechainicialinstitucion" required>
+                                        <input type="date" class="form-control" id="fechainicialinstitucion" name="fechainicialinstitucion">
                                     </div>
                                 </div>
                             </div>
@@ -339,11 +365,11 @@
                                 <div class="row mb-3">                     
                                     <div class="col-md-6">
                                         <label for="fechafinalestudiante" class="form-label">Fecha Subido:</label>
-                                        <input type="date" class="form-control" id="fechafinalestudiante" name="fechafinalestudiante" required>
+                                        <input type="date" class="form-control" id="fechafinalestudiante" name="fechafinalestudiante">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="fechafinalinstitucion" class="form-label">Fecha Subido:</label>
-                                        <input type="date" class="form-control" id="fechafinalinstitucion" name="fechafinalinstitucion" required>
+                                        <input type="date" class="form-control" id="fechafinalinstitucion" name="fechafinalinstitucion">
                                     </div>
                                 </div>
                             </div>
@@ -357,12 +383,12 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label for="fechaconstancia" class="form-label">Fecha Subido:</label>
-                                        <input type="date" class="form-control" id="fechaconstancia" name="fechaconstancia" required>
+                                        <input type="date" class="form-control" id="fechaconstancia" name="fechaconstancia">
                                     </div>                    
                                 </div>
                             </div>
                             <div class="text-end">
-                                <button type="submit" class="btn btn-primary" style="margin-top: 15px;">Guardar</button>
+                                <button id="btnGuardar" type="submit" class="btn btn-primary" style="margin-top: 15px;">Guardar</button>
                             </div>
                         </div> 
                     </div>
@@ -373,6 +399,74 @@
 </div>
 
 <script>
+    function limpiarControles() {
+        document.getElementById('fechaInicio').value = '';
+        document.getElementById('horario').value = '';
+        document.getElementById('area').value = '';
+        document.getElementById('horasrequeridas').value = '';
+        document.getElementById('horaspendientes').value = '';
+        document.getElementById('horaspractica').value = '';
+        document.getElementById('giroinstitucion').value = '';
+        document.getElementById('jefe').value = '';
+        document.getElementById('estudiante').value = '';
+        document.getElementById('id').value = '';
+        document.getElementById('id').disabled = false;
+        document.getElementById('semestrea').selectedIndex = 0;
+        document.getElementById('lineadesarrollo').selectedIndex = 0;
+        document.getElementById('razonsocial').selectedIndex = 0;
+        document.getElementById('tipo_practica').selectedIndex = 0;
+        const modalidadRadios = document.querySelectorAll('input[name="modalidad"]');
+        modalidadRadios.forEach(radio => {
+            radio.checked = false;
+        });
+    }
+
+    
+    function disableTabs() {
+        const tabs = document.querySelectorAll('.nav-link');
+        const tabContents = document.querySelectorAll('.tab-pane');
+        
+        tabs.forEach(tab => {
+            tab.classList.add('disabled');
+            tab.setAttribute('aria-disabled', 'true');
+            tab.setAttribute('tabindex', '-1'); // Evitar que las pestañas sean focusables
+        });
+
+        tabContents.forEach(content => {
+            content.classList.add('disabled');
+        });
+    }
+
+    function enableTabs() {
+        const tabs = document.querySelectorAll('.nav-link');
+        const tabContents = document.querySelectorAll('.tab-pane');
+        
+        tabs.forEach(tab => {
+            tab.classList.remove('disabled');
+            tab.removeAttribute('aria-disabled');
+            tab.removeAttribute('tabindex');
+        });
+
+        tabContents.forEach(content => {
+            content.classList.remove('disabled');
+        });
+    }
+    disableTabs();
+
+    function obtenerUltimoID() {
+        const inputID = document.getElementById('id');
+        if (inputID.value === '') {
+            fetch('/obtener_ultimo_id')
+                .then(response => response.json())
+                .then(data => {
+                    inputID.value = data[0].ultimoID;
+                })
+                .catch(error => console.error('Error al obtener el último ID:', error));
+        }
+        inputID.disabled = true;
+        enableTabs();
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         fetch('/datos_semestres')
             .then(response => response.json())
@@ -380,7 +474,7 @@
                 const select = document.getElementById('semestrea');
                 data.forEach(semestre => {
                     const option = document.createElement('option');
-                    option.value = semestre.id;
+                    option.value = semestre.idSemestre;
                     option.textContent = semestre.nombre;   
                     select.appendChild(option);
                 });
@@ -404,67 +498,18 @@
     });
 
     document.addEventListener('DOMContentLoaded', function() {
-        fetch('/datos_estudiantes')
-            .then(response => response.json())
-            .then(data => {
-                const select = document.getElementById('estudiante');
-                data.forEach(estudiante => {
-                    const option = document.createElement('option');
-                    option.value = estudiante.idPersona;
-                    option.textContent = `${estudiante.apellidos} ${estudiante.nombre}`;
-                    select.appendChild(option);
-                });
-            })
-            .catch(error => console.error('Error:', error));
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
         fetch('/datos_tipo_practicas')
             .then(response => response.json())
             .then(data => {
                 const select = document.getElementById('tipo_practica');
                 data.forEach(tipo_practica => {
                     const option = document.createElement('option');
-                    option.value = tipo_practica.id;
+                    option.value = tipo_practica.idTipoPractica;
                     option.textContent = tipo_practica.nombre;
                     select.appendChild(option);
                 });
             })
             .catch(error => console.error('Error:', error));
-    });
-
-    document.getElementById('estudiante').addEventListener('change', function() {
-        fetch(`/datos_horas_ppp?id=${this.value}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error en la solicitud');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.length > 0) {
-                    document.getElementById('horasrequeridas').value = data[0].hRequeridas;                
-                } else {
-                    console.log('No se encontraron datos para el estudiante.');
-                    document.getElementById('horasrequeridas').value = '';
-                }
-            })
-            .catch(error => {
-                console.error('Error al obtener las horas requeridas:', error);
-            });
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('horaspractica').value = 0;
-        function calcularHorasPendientes() {
-            const requeridas = parseFloat(document.getElementById('horasrequeridas').value) || 0;
-            const practica = parseFloat(document.getElementById('horaspractica').value) || 0;
-            const pendientes = requeridas - practica;
-            document.getElementById('horaspendientes').value = pendientes;
-            document.getElementById('requiere').checked = (pendientes > 0);
-        }
-        document.getElementById('horasrequeridas').addEventListener('input', calcularHorasPendientes);
-        document.getElementById('horaspractica').addEventListener('input', calcularHorasPendientes);
     });
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -474,7 +519,7 @@
                 const select = document.getElementById('lineadesarrollo');
                 data.forEach(linea_desarrollo => {
                     const option = document.createElement('option');
-                    option.value = linea_desarrollo.id;
+                    option.value = linea_desarrollo.idLinea;
                     option.textContent = linea_desarrollo.nombre;
                     select.appendChild(option);
                 });
@@ -511,12 +556,12 @@
                 })
                 .then(data => {
                     if (data && data.length > 0) {
-                        jefeInput.value = `${data[0].apellidos} ${data[0].nombre}`;
-                        jefeInput.value = 'No se encontró jefe';
+                        jefeInput.value = `${data[0].apellidos} ${data[0].nombre}`;                       
                     }
                 })
                 .catch(error => {
                     console.error('Error al obtener el jefe inmediato:', error);
+                    jefeInput.value = 'No se encontró jefe.';
                 });
         }
     });
@@ -538,7 +583,7 @@
 
     const inputEstudiante = document.getElementById('estudiante');
     const dropdownEstudiantes = document.getElementById('dropdown-estudiantes');
-
+    let idPersona = 0;
     inputEstudiante.addEventListener('input', function() {
         const searchText = this.value.toLowerCase();
         fetch('/datos_estudiantes')
@@ -553,10 +598,14 @@
                     resultados.forEach(estudiante => {
                         const li = document.createElement('li');
                         li.textContent = `${estudiante.apellidos} ${estudiante.nombre}`;
-                        li.dataset.id = estudiante.id;
+                        li.dataset.id = estudiante.idPersona;                   
+                        li.value = estudiante.idPersona;
                         li.addEventListener('click', () => {
                             inputEstudiante.value = li.textContent;
+                            idPersona = li.value;
                             dropdownEstudiantes.classList.remove('show');
+                            handleEstudianteChange();
+                            calcularHorasPendientes();
                         });
                         dropdownEstudiantes.appendChild(li);
                     });
@@ -567,13 +616,101 @@
             })
             .catch(error => console.error('Error:', error));
     });
-
     document.addEventListener('click', function(event) {
         if (!inputEstudiante.contains(event.target) && !dropdownEstudiantes.contains(event.target)) {
             dropdownEstudiantes.classList.remove('show');
         }
     });
 
+    function handleEstudianteChange() {
+        fetch(`/datos_horas_ppp?id=${idPersona}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la solicitud');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.length > 0) {
+                    document.getElementById('horasrequeridas').value = data[0].hRequeridas;
+                    calcularHorasPendientes();             
+                } else {
+                    console.log('No se encontraron datos para el estudiante.');
+                    document.getElementById('horasrequeridas').value = '';
+                }
+            })
+            .catch(error => {
+                console.error('Error al obtener las horas requeridas:', error);
+            });
+    }
+
+    function calcularHorasPendientes(){
+        document.getElementById('horaspractica').value = 0;
+        const requeridas = parseFloat(document.getElementById('horasrequeridas').value) || 0;
+        const practica = parseFloat(document.getElementById('horaspractica').value) || 0;
+        const pendientes = requeridas - practica;
+        document.getElementById('horaspendientes').value = pendientes;
+        document.getElementById('requiere').checked = (pendientes > 0);
+    }
+    document.addEventListener('DOMContentLoaded', calcularHorasPendientes);
+    document.getElementById('horasrequeridas').addEventListener('input', calcularHorasPendientes);
+    document.getElementById('horaspractica').addEventListener('input', calcularHorasPendientes);
+    document.getElementById('estudiante').addEventListener('input', calcularHorasPendientes)
+  
+
+    document.getElementById('btnGuardar').addEventListener('click', function() {
+        const fechaInicio = document.getElementById('fechaInicio').value;
+        const horario = document.getElementById('horario').value;
+        const modalidad = document.querySelector('input[name="modalidad"]:checked').value;
+        const area = document.getElementById('area').value;
+        const numeroHorasPPP = document.getElementById('horasrequeridas').value;
+        const numeroHorasPendientes = document.getElementById('horaspendientes').value;
+        const numeroHorasRealizadas = document.getElementById('horaspractica').value;
+        const idSemestre = document.getElementById('semestrea').value;
+        const idLinea = document.getElementById('lineadesarrollo').value;
+        const numDocInstitucion = document.getElementById('razonsocial').value;
+        const idTipoPractica = document.getElementById('tipo_practica').value;
+        if (!fechaInicio || !modalidad || !horario || !area || !numeroHorasPPP || !numeroHorasPendientes || !numeroHorasRealizadas || !idSemestre || !idLinea || !numDocInstitucion || !idTipoPractica || !idPersona) {
+            alert("Todos los campos son requeridos.");
+            return;
+        }
+        fetch('/agregar_practica', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                fechaInicio,
+                horario,
+                modalidad,
+                area,
+                numeroHorasPPP,
+                numeroHorasPendientes,
+                numeroHorasRealizadas,
+                idSemestre,
+                idLinea,
+                numDocInstitucion,
+                idTipoPractica,
+                idPersona
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                console.error("Error al agregar la práctica:", data.error);
+                alert("Error al agregar la práctica: " + data.error);
+            } else {
+                console.log("Práctica agregada correctamente:", data.mensaje);
+                alert("Práctica agregada correctamente");
+                limpiarControles();
+                disableTabs();
+            }
+        })
+        .catch(error => {
+            console.error("Error en la solicitud:", error);
+            alert("Hubo un error al realizar la solicitud.");
+        });
+    });
 
 </script>
 

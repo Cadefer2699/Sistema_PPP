@@ -1,0 +1,98 @@
+{% extends "/ppp/home.html" %}
+{% block titulo %} Informes Alumno {% endblock %}
+{% block contenido %}
+<nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('router_main.index') }}">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('router_main.practicas_pre_profesionales') }}">Módulo de Prácticas Pre Profesionales</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Informes por Alumno</li>
+    </ol>
+</nav>
+
+<div class="container-fluid my-4">
+    <div class="card w-100" id="card_estudiantes">
+        <div class="card-header bg-red-usat text-white" id="headingOne" data-bs-toggle="collapse"
+            data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+            Informes por Estudiantes
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="tabla-informes-estudiantes" class="table table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th style="text-align:center">Nombre</th>
+                            <th style="text-align:center">Apellidos</th>
+                            <th style="text-align:center">Semestre Académico</th>
+                            <th style="text-align:center">ID Práctica</th>
+                            <th style="text-align:center">Informe Inicial</th>
+                            <th style="text-align:center">Informe Final</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Los datos se cargarán dinámicamente con DataTables -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        if ($.fn.DataTable.isDataTable('#tabla-informes-estudiantes')) {
+            $('#tabla-informes-estudiantes').DataTable().clear().destroy();
+        }
+        $('#tabla-informes-estudiantes').DataTable({
+            paging: true,
+            info: false,
+            responsive: true,
+            autoWidth: true,
+            searching: true,
+            order: [],
+            ajax: {
+                url: "/datos_informesAlumnos",
+                type: "GET",
+                dataSrc: ""
+            },
+            columns: [
+                { data: "Nombre_Alumno", className: 'text-center' },
+                { data: "Apellidos_Alumno", className: 'text-center' },
+                { data: "Semestre_Academico", className: 'text-center' },
+                { data: "ID_Practica", className: 'text-center' },
+                {
+                    data: "Informe_Inicial",
+                    className: 'text-center',
+                    render: function (data, type, row) {
+                        if (data === "Por subir" || data === null) {
+                            return '<button class="btn btn-secondary" disabled><i class="fas fa-eye"></i></button> ' +
+                                   '<button class="btn btn-secondary" disabled><i class="fas fa-download"></i></button>';
+                        } else {
+                            return '<button class="btn btn-primary"><i class="fas fa-eye"></i></button> ' +
+                                   '<button class="btn btn-primary"><i class="fas fa-download"></i></button>';
+                        }
+                    }
+                },
+                {
+                    data: "Informe_Final",
+                    className: 'text-center',
+                    render: function (data, type, row) {
+                        if (data === "Por subir" || data === null) {
+                            return '<button class="btn btn-secondary" disabled><i class="fas fa-eye"></i></button> ' +
+                                   '<button class="btn btn-secondary" disabled><i class="fas fa-download"></i></button>';
+                        } else {
+                            return '<button class="btn btn-primary"><i class="fas fa-eye"></i></button> ' +
+                                   '<button class="btn btn-primary"><i class="fas fa-download"></i></button>';
+                        }
+                    }
+                }
+            ],
+            language: {
+                url: "{{ url_for('static', filename='js/es-ES.json') }}"
+            }
+        });
+    });
+</script>
+{% endblock %}
+{% endblock %}

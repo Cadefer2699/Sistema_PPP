@@ -23,22 +23,22 @@
 </head>
 <style>
     .avatar {
-            width: 40px; /* Ajusta el tamaño de la imagen según sea necesario */
-            height: 40px; /* Ajusta el tamaño de la imagen según sea necesario */
-            border-radius: 50%; /* Hace la imagen circular */
-            border: 2px solid black; /* Aplica un borde blanco delgado */
-            object-fit: cover; /* Asegura que la imagen se ajuste al contenedor */
-            background-color: lightgray;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid black;
+        object-fit: cover;
+        background-color: lightgray;
         }
     body{
         overflow: hidden;
     }
     html, body {
-        height: 100%; /* Asegura que todo el documento tenga un 100% de altura */
+        height: 100%;
     }
     .wrapper {
-        display: flex; /* Usar flexbox para disposición de elementos */
-        height: 100%; /* Hacer que el wrapper ocupe toda la altura */
+        display: flex;
+        height: 100%;
     }
     .footer {
         background-color: #cfcfcf;
@@ -52,58 +52,69 @@
     }
     .content {
         height: 100%;
-        margin-top: 5%; /* Deja espacio debajo del navbar */
-        margin-bottom: 2%; /* Deja espacio arriba del footer */
-        overflow-y: auto; /* Agregar scroll vertical si el contenido supera la altura */
-        flex: 1; /* Permitir que el contenido ocupe el espacio restante */
+        margin-top: 5%;
+        margin-bottom: 2%;
+        overflow-y: auto;
+        flex: 1;
     }
     .sidebar {
-        position: fixed; /* Mantiene el sidebar fijo */
-        top: 0; /* Alinea el sidebar en la parte superior */
-        left: 0; /* Alinea el sidebar a la izquierda */
-        height: 100%; /* Hace que el sidebar ocupe toda la altura */
-        width: 81.9%;  /* Ancho fijo para el sidebar */
-        overflow-y: auto; /* Permitir scroll si el contenido del sidebar es mayor */
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 81.9%;
+        overflow-y: auto;
     }
     .main {
-        margin-left: 16.9%; /* Deja espacio para el sidebar */
+        margin-left: 16.9%;
         display: flex;
         flex-direction: column;
-        height: 100%; /* Hacer que el contenedor principal ocupe toda la altura */
+        height: 100%;
     }
     .navbar {
-        position: fixed; /* Mantiene el navbar fijo */
-        top: 0; /* Alinea el navbar en la parte superior */
+        position: fixed;
+        top: 0;
         width: 83%;
-        right: 0; /* Alinea el navbar al borde derecho */
-        z-index: 1000; /* Asegura que el navbar esté por encima del contenido */
+        right: 0;
+        z-index: 1000;
     }
+    .sidebar-link {
+        display: flex;
+        align-items: center;
+    }
+    .sidebar-link i {
+        width: 24px;
+        height: 24px;
+        text-align: center;
+        margin-right: 10px;
+    }
+    
     @media (max-width: 768px) {
         .sidebar {
-            width: 200px; /* Reducir el ancho en pantallas más pequeñas */
+            width: 200px;
         }
         
         .main {
-            margin-left: 200px; /* Ajustar margen del main */
+            margin-left: 200px;
         }
 
         .navbar {
-            left: 200px; /* Ajustar posición del navbar */
+            left: 200px;
         }
     }
 
     @media (max-width: 576px) {
         .sidebar {
-            display: none; /* Ocultar el sidebar en pantallas muy pequeñas */
+            display: none;
         }
         
         .main {
-            margin-left: 0; /* Ajustar margen del main */
+            margin-left: 0;
         }
 
         .navbar {
-            left: 0; /* Ajustar posición del navbar */
-            width: 100%; /* Hacer que el navbar ocupe todo el ancho */
+            left: 0;
+            width: 100%;
         }
     }
 </style>
@@ -127,57 +138,77 @@
                 <ul class="sidebar-nav">
                     <li class="sidebar-header">
                         Módulo de Gestión Académica
+                    </li>                   
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ url_for('router_main.docente') }}">
+                            <i class="fas fa-chalkboard-teacher fa-lg"></i>
+                            <span class="align-middle">Docentes</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ url_for('router_main.escuela') }}">
+                            <i class="fas fa-school fa-lg"></i>
+                            <span class="align-middle">Escuelas</span>
+                        </a>
                     </li>
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ url_for('router_main.estudiante') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Estudiante</span>
+                            <i class="fas fa-user-graduate fa-lg"></i>
+                            <span class="align-middle">Estudiantes</span>
                         </a>
-                    </li>
-
+                    </li>                   
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ url_for('router_main.docente') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Docente</span>
+                        <a class="sidebar-link" href="{{ url_for('router_main.facultad') }}">                           
+                            <i class="fas fa-landmark fa-lg"></i>
+                            <span class="align-middle">Facultades</span>
                         </a>
                     </li>
-
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ url_for('router_facultad.facultad') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Facultad</span>
+                        <a class="sidebar-link" href="{{ url_for('router_main.genero') }}">
+                            <i class="fas fa-venus-mars fa-lg"></i>
+                            <span class="align-middle">Géneros</span>
                         </a>
                     </li>
-
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ url_for('router_main.escuela') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Escuela</span>
+                        <a class="sidebar-link" href="{{ url_for('router_main.institucion') }}">
+                            <i class="far fa-building fa-lg"></i>
+                            <span class="align-middle">Instituciones</span>
                         </a>
                     </li>
-
                     <li class="sidebar-item">
-
-                        <a class="sidebar-link" href="{{ url_for('router_main.supervision') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Supervisión</span>
+                        <a class="sidebar-link" href="{{ url_for('router_main.semestre') }}">
+                            <i class="far fa-calendar-check fa-lg"></i>
+                            <span class="align-middle">Semestres</span>
                         </a>
                     </li>
-
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ url_for('router_main.tipopracticas') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Tipo de Prácticas</span>
+                        <a class="sidebar-link" href="{{ url_for('router_main.usuario') }}">
+                            <i class="far fa-user fa-lg"></i>
+                            <span class="align-middle">Usuarios</span>
                         </a>
                     </li>
 
-
-                        <a class="sidebar-link" href="{{ url_for('router_main.dap') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Gestionar DAP</span>
+                    <li class="sidebar-header">
+                        Reportes
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="">
+                            <i class="fas fa-chart-line fa-lg"></i>
+                            <span class="align-middle">Reporte 1</span>
                         </a>
                     </li>
-
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="">
+                            <i class="fas fa-chart-bar fa-lg"></i>
+                            <span class="align-middle">Reporte 2</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="">
+                            <i class="fas fa-chart-area fa-lg"></i>
+                            <span class="align-middle">Reporte 3</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </nav>
