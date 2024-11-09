@@ -7,7 +7,7 @@ from werkzeug.utils import secure_filename
 from bd import obtener_conexion
 from bd import obtener_conexion
 import controladores.controlador_usuario as controlador_usuario
-
+import controladores.controlador_informeAlumno as controlador_informeAlumno
 import time
 
 login_attempts = {}
@@ -152,4 +152,73 @@ def ppp():
 def InformesAlumno():
     return render_template('ppp/InformesAlumno.html')
 
+@router_main.route("/horas-practica")
+def horas_practica():
+    return render_template('ppp/informeHorasPractica.html')
 
+@router_main.route("/horas-practica-escuela")
+def horas_practica_escuela():
+    return render_template('ppp/informeHorasPracticaEscuela.html')
+
+
+@router_main.route("/datos_horas_practica")
+def datos_horas_practica():
+    try:
+        datos = controlador_informeAlumno.obtener_reporte_horas_practicas()
+        if isinstance(datos, dict) and "error" in datos:
+            return jsonify({"error": datos["error"]}), 500
+        return jsonify(datos)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@router_main.route("/datos_horas_practica_escuela")
+def datos_horas_practica_escuela():
+    try:
+        datos = controlador_informeAlumno.obtener_resumen_horas_por_escuela()
+        if isinstance(datos, dict) and "error" in datos:
+            return jsonify({"error": datos["error"]}), 500
+        return jsonify(datos)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500    
+    
+    
+@router_main.route("/practicas-terminadas")
+def practicas_terminadas():
+    return render_template('ppp/informePracticasTerminadas.html')
+
+@router_main.route("/datos_practicas_terminadas")
+def datos_practicas_terminadas():
+    try:
+        # Obtener mes y año de los parámetros de la URL
+        mes = request.args.get('mes', type=int)
+        anio = request.args.get('anio', type=int)
+        
+        # Si no se proporcionan mes y año, usar los valores actuales
+        if not mes or not anio:
+            from datetime import datetime
+            fecha_actual = datetime.now()
+            mes = fecha_actual.month
+            anio = fecha_actual.year
+        
+        # Llamar al controlador con los parámetros
+        datos = controlador_informeAlumno.obtener_practicas_terminadas_mes(mes, anio)
+        
+        if isinstance(datos, dict) and "error" in datos:
+            return jsonify({"error": datos["error"]}), 500
+        return jsonify(datos)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@router_main.route("/dashboard-tendencias")
+def dashboard_tendencias():
+    return render_template('ppp/dashboardTendencias.html')
+
+@router_main.route("/datos_dashboard_tendencias")
+def datos_dashboard_tendencias():
+    try:
+        datos = controlador_informeAlumno.obtener_dashboard_tendencias_escuela()
+        if isinstance(datos, dict) and "error" in datos:
+            return jsonify({"error": datos["error"]}), 500
+        return jsonify(datos)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500    

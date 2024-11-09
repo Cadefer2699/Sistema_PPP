@@ -1,0 +1,186 @@
+{% extends "/ppp/home.html" %}
+{% block titulo %} Resumen de Horas por Escuela {% endblock %}
+{% block contenido %}
+<nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('router_main.index') }}">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('router_main.practicas_pre_profesionales') }}">Módulo de Prácticas Pre Profesionales</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Resumen de Horas por Escuela</li>
+    </ol>
+</nav>
+
+<div class="container-fluid my-4">
+    <div class="card w-100" id="card_resumen_escuelas">
+        <div class="card-header bg-red-usat text-white">
+            Resumen de Horas de Práctica por Escuela
+        </div>
+        <div class="card-body">
+            <!-- Sección de estadísticas generales -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <h5 class="card-title text-white">Total Estudiantes</h5>
+                            <h3 class="card-text" id="total_estudiantes">0</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <h5 class="card-title text-white">Total Horas Realizadas</h5>
+                            <h3 class="card-text" id="total_horas_realizadas">0</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body">
+                            <h5 class="card-title text-white">Total Horas Pendientes</h5>
+                            <h3 class="card-text" id="total_horas_pendientes">0</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-info text-white">
+                        <div class="card-body">
+                            <h5 class="card-title text-white">Promedio General</h5>
+                            <h3 class="card-text" id="promedio_general">0%</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de resumen por escuela -->
+            <div class="table-responsive">
+                <table id="tabla-resumen-escuelas" class="table table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th style="text-align:center">Escuela</th>
+                            <th style="text-align:center">Total Estudiantes</th>
+                            <th style="text-align:center">Horas Realizadas</th>
+                            <th style="text-align:center">Horas Pendientes</th>
+                            <th style="text-align:center">Promedio Avance</th>
+                            <th style="text-align:center">Gráfico</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Los datos se cargarán dinámicamente con DataTables -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    $(document).ready(function () {
+        if ($.fn.DataTable.isDataTable('#tabla-resumen-escuelas')) {
+            $('#tabla-resumen-escuelas').DataTable().clear().destroy();
+        }
+
+        $('#tabla-resumen-escuelas').DataTable({
+            paging: true,
+            info: false,
+            responsive: true,
+            autoWidth: true,
+            searching: true,
+            order: [],
+            ajax: {
+                url: "/datos_horas_practica_escuela",
+                type: "GET",
+                dataSrc: function(json) {
+                    // Calcular totales para los cards
+                    let totalEstudiantes = 0;
+                    let totalHorasRealizadas = 0;
+                    let totalHorasPendientes = 0;
+                    let sumaPromedios = 0;
+                    let escuelasConDatos = 0;
+            
+                    json.forEach(function(item) {
+                        // Convertir los valores a números
+                        totalEstudiantes += parseInt(item.Total_Estudiantes) || 0;
+                        totalHorasRealizadas += parseInt(item.Total_Horas_Realizadas) || 0;
+                        totalHorasPendientes += parseInt(item.Total_Horas_Pendientes) || 0;
+                        
+                        if (item.Promedio_Avance) {
+                            sumaPromedios += parseFloat(item.Promedio_Avance);
+                            escuelasConDatos++;
+                        }
+                    });
+            
+                    // Calcular promedio general solo si hay escuelas con datos
+                    let promedioGeneral = escuelasConDatos > 0 ? (sumaPromedios / escuelasConDatos).toFixed(2) : 0;
+            
+                    // Actualizar cards con formato de número
+                    $('#total_estudiantes').text(totalEstudiantes);
+                    $('#total_horas_realizadas').text(totalHorasRealizadas.toLocaleString());
+                    $('#total_horas_pendientes').text(totalHorasPendientes.toLocaleString());
+                    $('#promedio_general').text(promedioGeneral + '%');
+            
+                    return json;
+                }
+            },
+            columns: [
+                { data: "Escuela", className: 'text-center' },
+                { data: "Total_Estudiantes", className: 'text-center' },
+                { data: "Total_Horas_Realizadas", className: 'text-center' },
+                { data: "Total_Horas_Pendientes", className: 'text-center' },
+                { 
+                    data: "Promedio_Avance",
+                    className: 'text-center',
+                    render: function(data, type, row) {
+                        return data + '%';
+                    }
+                },
+                {
+                    data: null,
+                    className: 'text-center',
+                    render: function(data, type, row) {
+                        const completado = row.Total_Horas_Realizadas;
+                        const pendiente = row.Total_Horas_Pendientes;
+                        const canvasId = 'chart-' + row.Escuela.replace(/\s+/g, '-').toLowerCase();
+                        return '<canvas id="' + canvasId + '" width="150" height="150"></canvas>';
+                    }
+                }
+            ],
+            drawCallback: function(settings) {
+                // Crear gráficos circulares para cada fila
+                this.api().rows().every(function() {
+                    const data = this.data();
+                    const canvasId = 'chart-' + data.Escuela.replace(/\s+/g, '-').toLowerCase();
+                    const ctx = document.getElementById(canvasId);
+                    if (ctx) {
+                        new Chart(ctx, {
+                            type: 'doughnut',
+                            data: {
+                                labels: ['Realizadas', 'Pendientes'],
+                                datasets: [{
+                                    data: [data.Total_Horas_Realizadas, data.Total_Horas_Pendientes],
+                                    backgroundColor: ['#28a745', '#ffc107']
+                                }]
+                            },
+                            options: {
+                                responsive: false,
+                                maintainAspectRatio: true,
+                                plugins: {
+                                    legend: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            },
+            language: {
+                url: "{{ url_for('static', filename='js/es-ES.json') }}"
+            }
+        });
+    });
+</script>
+{% endblock %}
+{% endblock %}

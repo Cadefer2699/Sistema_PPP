@@ -177,7 +177,7 @@
                             <span class="align-middle">Informes por Alumno</span>
                         </a>
                     </li>
-                    <li class="sidebar-item">
+                    <!-- <li class="sidebar-item">
                         <a class="sidebar-link" href="">
                             <i class="fas fa-chart-bar fa-lg"></i>
                             <span class="align-middle">Reporte 2</span>
@@ -187,6 +187,30 @@
                         <a class="sidebar-link" href="">
                             <i class="fas fa-chart-area fa-lg"></i>
                             <span class="align-middle">Reporte 3</span>
+                        </a>
+                    </li> -->
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ url_for('router_main.horas_practica') }}">
+                            <i class="fas fa-chart-area fa-lg"></i>
+                            <span class="align-middle">Horas de práctica</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ url_for('router_main.horas_practica_escuela') }}">
+                            <i class="fas fa-chart-area fa-lg"></i>
+                            <span class="align-middle">Horas de práctica por escuela</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ url_for('router_main.practicas_terminadas') }}">
+                            <i class="fas fa-chart-area fa-lg"></i>
+                            <span class="align-middle">Prácticas terminadas del mes</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ url_for('router_main.dashboard_tendencias') }}">
+                            <i class="fas fa-chart-area fa-lg"></i>
+                            <span class="align-middle">Dashboard de Tendencias</span>
                         </a>
                     </li>
                 </ul>
