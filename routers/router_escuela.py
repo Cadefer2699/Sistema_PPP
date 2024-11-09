@@ -111,3 +111,6 @@ def eliminar_escuela():
 
     resultado = controlador_escuela.eliminar_escuela(idEscuela)
     return jsonify(resultado)
+
+
+

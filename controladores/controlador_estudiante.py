@@ -38,8 +38,8 @@ def obtener_estudiante_por_id(idEstudiante):
         with conexion.cursor() as cursor:
             cursor.execute("""
                 SELECT p.idPersona, p.numDoc, p.nombre, p.apellidos, p.codUniversitario, p.tel1, p.tel2, 
-                       p.correoP, p.correoUSAT, p.estado, g.nombre as genero, td.nombre as tipoDocumento, 
-                        e.nombre as escuela, u.username as usuario
+                       p.correoP, p.correoUSAT, p.estado, p.idGenero, p.idTipoDoc, 
+                        p.idEscuela, p.idUsuario
                 FROM persona p
                 WHERE p.idPersona = %s
             """, (idEstudiante,))
@@ -147,7 +147,9 @@ def dar_de_baja_estudiante(idEstudiante):
     try:
         with conexion.cursor() as cursor:
             cursor.execute("UPDATE persona SET estado = 'I' WHERE idPersona = %s", (idEstudiante,))
+            cursor.execute("UPDATE persona SET estado = 'I' WHERE idPersona = %s", (idEstudiante,))
             conexion.commit()
+            return {"mensaje": "Estudiante dado de baja correctamente"}
             return {"mensaje": "Estudiante dado de baja correctamente"}
     except Exception as e:
         conexion.rollback()
