@@ -10,7 +10,6 @@ def obtener_facultades():
             cursor.execute("SELECT * FROM facultad")
             column_names = [desc[0] for desc in cursor.description]
             rows = cursor.fetchall()
-
             for row in rows:
                 facultad_dict = dict(zip(column_names, row))
                 facultades.append(facultad_dict)
