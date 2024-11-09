@@ -7,7 +7,9 @@ from werkzeug.utils import secure_filename
 from bd import obtener_conexion
 from bd import obtener_conexion
 import controladores.controlador_usuario as controlador_usuario
-
+from controladores.controlador_estudiante import obtener_estudiantes_por_fecha
+from controladores.controlador_estudiante import obtener_estadisticas_estudiantes
+from controladores.controlador_estudiante import obtener_ppp_finalizadas
 import time
 
 login_attempts = {}
@@ -24,7 +26,21 @@ def index():
 
 @router_main.route("/indexga")
 def gestion_academica():
-    return render_template("/gestion_academica/index.html")
+    #obtener los registros por fecha
+    registros_por_fecha = obtener_estudiantes_por_fecha()
+    
+    # Asegúrate de que registros_por_fecha nunca sea None
+    if registros_por_fecha is None:
+        registros_por_fecha = []
+        
+    #obtener las estadisticas para las tarjetas
+    estadisticas = obtener_estadisticas_estudiantes()
+    
+    #obtener las prácticas finalizadas y las que faltan finalizar
+    ppp_finalizadas = obtener_ppp_finalizadas()
+    
+    # pasamos estadisticas y registrosPorFecha al template
+    return render_template("gestion_academica/index.html", registrosPorFecha=registros_por_fecha, estadisticas=estadisticas, ppp_finalizadas=ppp_finalizadas)
 
 @router_main.route("/indexppp")
 def practicas_pre_profesionales():
